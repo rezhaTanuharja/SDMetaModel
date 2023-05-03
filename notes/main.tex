@@ -1,0 +1,53 @@
+\documentclass[a4paper,oneside,10pt]{article}
+\setlength{\parindent}{0pt}
+
+\input{includes/packages}
+
+\bibliography{literature}
+
+% DOCUMENT STARTS HERE
+
+\begin{document}
+
+\setlength{\headheight}{50pt}
+
+\input{includes/title_page}
+
+\thispagestyle{titlepage} 
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+\fancyfoot[C]{\thepage}
+\pagenumbering{arabic} 
+
+% ABSTRACT
+\section*{Abstract}
+\begin{singlespace}
+\textit{\blindtext}
+\end{singlespace}
+
+% KEYWORDS
+\paragraph*{Keywords:} this, that.
+
+
+% SECTIONS
+\subfile{sections/DomainDecomposition} 
+% \input{./sections/00_introduction}
+% \input{./sections/01_sec1}
+% \input{./sections/02_sec2}
+%\input{./sections/03_sec3}
+%\input{./sections/04_sec4}
+%\input{./sections/05_sec5}
+% \input{./sections/99_conclusions}
+
+% APPENDIX
+%\appendix
+%\input{./sections/0inf_appendix}
+
+% PREFERENCES
+%\renewcommand*\refname{\normalsize{REFERENCES}}
+%\nocite{*} %Even non-cited BibTeX-Entries will be shown.
+\printbibliography
+
+\end{document}

@@ -1,0 +1,36 @@
+% Header and TUM Logo
+\fancypagestyle{titlepage} {
+    \fancyhf{}
+    \fancyhead [R] {
+        \includegraphics[height=1.0cm]{TUM_Logo.png}
+    }
+    \fancyhead [C] {
+        \large{Software Lab} \\ \large{Winter Term 2022/23}
+    }
+    \headsep18mm
+}
+
+% Title and Authors
+\begin{center}
+    \large{\textbf{Implementation of High Performance Marching Cubes Library} }\\[11pt]
+\end{center}
+\begin{center}
+    Ivan Maximenko*,
+    Qining Tang*,
+    Rezha Tanuharja*\\[5pt]
+\end{center}
+
+% Footer
+\long\def\symbolfootnote[#1]#2{
+    \begingroup
+        \def\thefootnote{\fnsymbol{footnote}}\footnote[#1]{#2}
+    \endgroup
+}
+
+{
+    \let\thefootnote\relax\footnotetext {
+        * \textit{Technische Universit\"at M\"unchen}
+    }
+}
+
+

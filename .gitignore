@@ -1,0 +1,13 @@
+
+# ignore compilation artifact of latex 
+
+*/*.aux 
+*/*.bbl 
+*/*.blg 
+*/*.fdb_latexmk 
+*/*.fls 
+*/*.log 
+*/*.run.xml 
+*/*.synctex.gz 
+*/*-blx.bib 
+

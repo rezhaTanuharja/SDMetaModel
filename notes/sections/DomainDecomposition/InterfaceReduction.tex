@@ -1,0 +1,13 @@
+\documentclass[../DomainDecomposition.tex]{subfiles} 
+\bibliography{../../literature}
+
+\begin{document}
+
+\subsection{Interface DoFs Reduction} 
+
+This part will be adapted from \cite{krattiger2019interface} (future reading). 
+\vspace{10pt} 
+
+The Hurty/Craig-Bampton method in structural dynamics represents the interior dynamics of each subcomponent in a substructured system with a truncated set of normal modes and retains all of the physical degrees of freedom at the substructure interfaces. This makes the assembly of substructures into a reduced-order system model very simple, but means that the reduced-order assembly will have as many interface degrees of freedom as the full model. When the full-model mesh is highly refined, and/or when the system is divided into many subcomponents, this can lead to an unacceptably large system of equations of motion. To overcome this, interface reduction methods aim to reduce the size of the Hurty/Craig-Bampton model by reducing the number of interface degrees of freedom. This research presents a survey of interface reduction methods for Hurty/Craig-Bampton models, and proposes improvements and generalizations to some of the methods. Some of these interface reductions operate on the assembled system-level matrices while others perform reduction locally by considering the uncoupled substructures. The advantages and disadvantages of these methods are highlighted and assessed through comparisons of results obtained from a variety of representative finite element models.
+
+\end{document}

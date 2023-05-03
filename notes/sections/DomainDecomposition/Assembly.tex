@@ -1,0 +1,98 @@
+\documentclass[../DomainDecomposition.tex]{subfiles} 
+\bibliography{../../literature}
+
+\begin{document} 
+
+\subsection{Assembly into Global System of Equations} 
+
+This part is adapted from \cite{chatterjee2021multilevel}. 
+\vspace{10pt} 
+
+Dynamic equation of a structural system with two substructures is given by the following 
+
+\begin{equation}
+    \mathbf{F} 
+    =
+    \mathbf{D} \mathbf{u} 
+    \phantom{xx} 
+    \text{or} 
+    \phantom{xx} 
+    \begin{bmatrix}
+        \mathbf{F}_{\alpha}^{I} \\ 
+        \mathbf{F}_{\beta}^{I} \\ 
+        \mathbf{F}^{B} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{D}_{\alpha}^{II} & 
+        \mathbf{0} & 
+        \mathbf{D}_{\alpha}^{IB} \\ 
+        \mathbf{0} & 
+        \mathbf{D}_{\beta}^{II} & 
+        \mathbf{D}_{\beta}^{IB} \\ 
+        \mathbf{D}_{\alpha}^{BI} & 
+        \mathbf{D}_{\beta}^{BI} & 
+        \mathbf{D}^{BB} 
+    \end{bmatrix}
+    \begin{bmatrix}
+        \mathbf{u}_{\alpha}^{I} \\ 
+        \mathbf{u}_{\beta}^{I} \\ 
+        \mathbf{u}^{B} 
+    \end{bmatrix}
+\end{equation}
+
+Using transformations $\bar{\mathbf{F}}=\mathbf{G}^{T}\mathbf{F}$, $\bar{\mathbf{D}}=\mathbf{G}^{T}\mathbf{D}\mathbf{G}$, and $\bar{\mathbf{u}}=\mathbf{G}\mathbf{u}$, the equation can be transformed into modal space 
+
+\begin{equation}
+    \bar{\mathbf{F}}
+    =
+    \bar{\mathbf{D}} 
+    \bar{\mathbf{u}} 
+    \phantom{xx} 
+    \text{or}
+    \phantom{xx} 
+    \begin{bmatrix}
+        \bar{\mathbf{F}}_{\alpha}^{N} \\ 
+        \bar{\mathbf{F}}_{\beta}^{N} \\ 
+        \bar{\mathbf{F}}^{C} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \bar{\mathbf{D}}_{\alpha}^{NN} & 
+        \mathbf{0} & 
+        \bar{\mathbf{D}}_{\alpha}^{NC} \\ 
+        \mathbf{0} & 
+        \bar{\mathbf{D}}_{\beta}^{NN} & 
+        \bar{\mathbf{D}}_{\beta}^{NC} \\ 
+        \bar{\mathbf{D}}_{\alpha}^{CN} & 
+        \bar{\mathbf{D}}_{\beta}^{CN} & 
+        \bar{\mathbf{D}}^{CC} 
+    \end{bmatrix}
+    \begin{bmatrix}
+        \bar{\mathbf{u}}_{\alpha}^{N} \\ 
+        \bar{\mathbf{u}}_{\beta}^{N} \\ 
+        \bar{\mathbf{u}}^{C} 
+    \end{bmatrix}
+\end{equation}
+
+The transformation matrix is given by the following 
+
+\begin{equation}
+    \mathbf{G} 
+    = 
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{\alpha}^{N} & 
+        \mathbf{0} & 
+        \bar{\mathbf{\Phi}}_{\alpha}^{C} \\
+        \mathbf{0} & 
+        \bar{\mathbf{\Phi}}_{\beta}^{N} & 
+        \bar{\mathbf{\Phi}}_{\beta}^{C} \\
+        \mathbf{0} & 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}
+\end{equation}
+
+Generalisation for more than two substructures is given in \cite{chatterjee2020uncertainty} (future reading). 
+
+\end{document} 

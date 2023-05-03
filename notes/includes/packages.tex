@@ -8,6 +8,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{here} 
+\usepackage{hyperref} 
 \usepackage{listings}
 \usepackage{lmodern} 
 \usepackage{makeidx}
@@ -25,9 +26,16 @@
 \usepackage[english]{babel}
 \usepackage[onehalfspacing]{setspace} 
 \usepackage[section]{placeins}
-\usepackage[style=numeric,sortcites=true,block=nbpar,backend=bibtex8]{biblatex}
+\usepackage[style=numeric,sorting=none,block=nbpar,backend=bibtex8]{biblatex}
 \usepackage[T1]{fontenc}
 \graphicspath{{images/}}
+
+\hypersetup{
+    colorlinks=true, 
+    linkcolor=black, 
+    citecolor=blue 
+    % urlcolor=blue 
+}
 
 \lstdefinestyle{cpp}{
     belowcaptionskip=1\baselineskip,

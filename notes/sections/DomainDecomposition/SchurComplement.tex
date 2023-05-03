@@ -1,0 +1,65 @@
+\documentclass[../DomainDecomposition.tex]{subfiles} 
+\bibliography{../../literature}
+
+\begin{document}
+
+\subsection{Schur Complement} 
+
+This part is adapted from \cite{chatterjee2021multilevel}. 
+\vspace{10pt} 
+
+The assembled modal system equation can be solved in two steps. 
+First, the following equation is solved for constrained modes: 
+
+\begin{equation}
+    \left[
+        \bar{\mathbf{D}}^{CC} - 
+        \bar{\mathbf{D}}_{\alpha}^{CN} 
+        \left(
+            \bar{\mathbf{D}}_{\alpha}^{NN} 
+        \right)^{-1} 
+        \bar{\mathbf{D}}_{\alpha}^{NC} -
+        \bar{\mathbf{D}}_{\beta}^{CN} 
+        \left(
+            \bar{\mathbf{D}}_{\beta}^{NN} 
+        \right)^{-1} 
+        \bar{\mathbf{D}}_{\beta}^{NC} 
+    \right]
+    \bar{\mathbf{u}}^{C} 
+    =
+    \bar{\mathbf{F}}^{C} - 
+    \bar{\mathbf{D}}_{\alpha}^{CN} 
+    \left(
+        \bar{\mathbf{D}}_{\alpha}^{NN} 
+    \right)^{-1} 
+    \bar{\mathbf{F}}_{\alpha}^{N} - 
+    \bar{\mathbf{D}}_{\beta}^{CN} 
+    \left(
+        \bar{\mathbf{D}}_{\beta}^{NN} 
+    \right)^{-1} 
+    \bar{\mathbf{F}}_{\beta}^{N}
+\end{equation}
+
+Second, the solution is substituted to the following equations and they can be solved for the internal modes simultaneously. 
+
+\begin{equation}
+    \bar{\mathbf{D}}_{\alpha}^{NN} 
+    \bar{\mathbf{u}}_{\alpha}^{N} 
+    =
+    \bar{\mathbf{F}}_{\alpha}^{N} - 
+    \bar{\mathbf{D}}_{\alpha}^{NC} 
+    \bar{\mathbf{u}}^{C} 
+\end{equation}
+
+\begin{equation}
+    \bar{\mathbf{D}}_{\beta}^{NN} 
+    \bar{\mathbf{u}}_{\beta}^{N} 
+    =
+    \bar{\mathbf{F}}_{\beta}^{N} - 
+    \bar{\mathbf{D}}_{\beta}^{NC} 
+    \bar{\mathbf{u}}^{C} 
+\end{equation}
+
+Generalisation for more than two substructures is given in \cite{chatterjee2020uncertainty} (future reading). 
+
+\end{document}

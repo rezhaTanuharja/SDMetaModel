@@ -1,0 +1,219 @@
+\documentclass[../DomainDecomposition.tex]{subfiles} 
+\bibliography{../../literature}
+
+\begin{document} 
+
+\subsection{Substructures' System of Equations}
+
+This part is adapted from \cite{craig1968coupling}. 
+\vspace{10pt} 
+
+The degree of freedoms associated with shared nodes (between two or more substructures) are referred to as boundary DoFs while other are referred to as internal DoFs. 
+The static system of equations for substructure $r$ is given by the following: 
+
+\begin{equation}
+    \begin{bmatrix}
+        \mathbf{F}_{r}^{I} \\ 
+        \mathbf{F}_{r}^{B} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{K}_{r}^{II} && 
+        \mathbf{K}_{r}^{IB} \\ 
+        \mathbf{K}_{r}^{BI} && 
+        \mathbf{K}_{r}^{BB} 
+    \end{bmatrix} 
+    \begin{bmatrix}
+        \mathbf{u}_{r}^{I} \\ 
+        \mathbf{u}_{r}^{B} 
+    \end{bmatrix} 
+    \label{Partitioned SoE} 
+\end{equation}
+
+Constraint modes are defined as the mode shapes of internal freedoms due to successive unit displacement of boundary points, all other boundary point being totally constrained. 
+Setting forces associated with internal DoFs to zero in equation \eqref{Partitioned SoE}: 
+
+\begin{equation*}
+    \mathbf{0} 
+    =
+    \mathbf{K}_{r}^{IB} \mathbf{u}_{r}^{B} + 
+    \mathbf{K}_{r}^{II} \mathbf{u}_{r}^{I} + 
+    \phantom{x}
+    \implies
+    \phantom{x}
+    \mathbf{u}_{r}^{I} 
+    =
+    -\left(\mathbf{K}_{r}^{II}\right)^{-1} 
+    \mathbf{K}_{r}^{IB} \mathbf{u}_{r}^{B} 
+\end{equation*}
+
+From which an expression for constrained modes is obtained: 
+
+\begin{equation}
+    \bar{\mathbf{\Phi}}_{r}^{C}
+    =
+    -\left(\mathbf{K}_{r}^{II}\right)^{-1} 
+    \mathbf{K}_{r}^{IB} 
+\end{equation}
+
+Normal modes are defined as the mode shapes of the substructure with totally constrained boundary. 
+These are obtained from the equations 
+
+\begin{equation}
+    \mathbf{0} 
+    = 
+    \left[
+        \mathbf{K}_{r}^{II} - 
+        \omega_{j}^{2} \mathbf{M}_{r}^{II} 
+    \right]
+    \mathbf{\Phi}_{r,j}^{I}
+    \label{Internal Eigen Equations}
+\end{equation}
+
+The eigenvectors of equation \eqref{Internal Eigen Equations} form the columns of the normal mode matrix $\mathbf{\Phi}_{r}^{N}$. 
+Model order reduction is possible through truncation of this matrix's columns i.e. by retaining only some eigenvectors in the reduced normal mode matrix $\bar{\mathbf{\Phi}}_{r}^{N}$. 
+Transformation between freedoms in physical space and modal space is given by the following: 
+
+\begin{equation}
+    \mathbf{u}_{r} 
+    = 
+    \mathbf{G}_{r} 
+    \bar{\mathbf{u}}_{r}
+    \phantom{xx} 
+    \text{or} 
+    \phantom{xx} 
+    \begin{bmatrix}
+        \mathbf{u}_{r}^{I} \\
+        \mathbf{u}_{r}^{B} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{r}^{N} &
+        \bar{\mathbf{\Phi}}_{r}^{C} \\ 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}
+    \begin{bmatrix}
+        \bar{\mathbf{u}}_{r}^{N} \\ 
+        \bar{\mathbf{u}}_{r}^{C}
+    \end{bmatrix}
+\end{equation}
+
+The modal mass and stiffness matrices are given by the followings respectively 
+
+\begin{equation}
+    \bar{\mathbf{M}}_{r} 
+    =
+    \mathbf{G}_{r}^{T} \mathbf{M}_{r} \mathbf{G}_{r}
+    \phantom{xx} 
+    \text{or} 
+    \phantom{xx} 
+    \begin{bmatrix}
+        \bar{\mathbf{M}}_{r}^{NN} & 
+        \bar{\mathbf{M}}_{r}^{NB} \\
+        \bar{\mathbf{M}}_{r}^{BN} & 
+        \bar{\mathbf{M}}_{r}^{BB} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{r}^{N} &
+        \bar{\mathbf{\Phi}}_{r}^{C} \\ 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}^{T} 
+    \begin{bmatrix}
+        \mathbf{M}_{r}^{II} & 
+        \mathbf{M}_{r}^{IB} \\
+        \mathbf{M}_{r}^{BI} & 
+        \mathbf{M}_{r}^{BB} 
+    \end{bmatrix}
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{r}^{N} &
+        \bar{\mathbf{\Phi}}_{r}^{C} \\ 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}
+\end{equation}
+
+\begin{equation}
+    \bar{\mathbf{K}}_{r} 
+    =
+    \mathbf{G}_{r}^{T} \mathbf{K}_{r} \mathbf{G}_{r}
+    \phantom{xx} 
+    \text{or} 
+    \phantom{xx} 
+    \begin{bmatrix}
+        \bar{\mathbf{K}}_{r}^{NN} & 
+        \bar{\mathbf{K}}_{r}^{NB} \\
+        \bar{\mathbf{K}}_{r}^{BN} & 
+        \bar{\mathbf{K}}_{r}^{BB} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{r}^{N} &
+        \bar{\mathbf{\Phi}}_{r}^{C} \\ 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}^{T} 
+    \begin{bmatrix}
+        \mathbf{K}_{r}^{II} & 
+        \mathbf{K}_{r}^{IB} \\
+        \mathbf{K}_{r}^{BI} & 
+        \mathbf{K}_{r}^{BB} 
+    \end{bmatrix}
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{r}^{N} &
+        \bar{\mathbf{\Phi}}_{r}^{C} \\ 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}
+\end{equation}
+
+The modal stiffness matrix is block-diagonal because 
+
+\begin{equation*}
+    \begin{aligned}
+        \bar{\mathbf{K}}_{r}^{NB} 
+        &= 
+        \left[\bar{\mathbf{\Phi}}_{r}^{N} \right]^{T} \mathbf{K}_{r}^{IB} + 
+        \left[\bar{\mathbf{\Phi}}_{r}^{N} \right]^{T} \mathbf{K}_{r}^{II} 
+              \bar{\mathbf{\Phi}}_{r}^{C} \\
+        &=
+        \left[\bar{\mathbf{\Phi}}_{r}^{N} \right]^{T} \mathbf{K}_{r}^{IB} + 
+        \left[\bar{\mathbf{\Phi}}_{r}^{N} \right]^{T} \mathbf{K}_{r}^{II} 
+            \left[
+                -\left(\mathbf{K}_{r}^{II}\right)^{-1} 
+                \mathbf{K}_{r}^{IB} 
+            \right] \\
+        &= 
+        \mathbf{0} 
+    \end{aligned}
+\end{equation*}
+
+The modal load vector is given by the following equation
+
+\begin{equation}
+    \bar{\mathbf{F}}_{r} 
+    =
+    \mathbf{G}_{r}^{T} \mathbf{F}_{r} 
+    \phantom{xx} 
+    \text{or} 
+    \phantom{xx} 
+    \begin{bmatrix}
+        \bar{\mathbf{F}}_{r}^{N} \\
+        \bar{\mathbf{F}}_{r}^{C} \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \bar{\mathbf{\Phi}}_{r}^{N} &
+        \bar{\mathbf{\Phi}}_{r}^{C} \\ 
+        \mathbf{0} & 
+        \mathbf{I} 
+    \end{bmatrix}^{T} 
+    \begin{bmatrix}
+        \mathbf{F}_{r}^{I} \\
+        \mathbf{F}_{r}^{B} \\
+    \end{bmatrix}
+\end{equation}
+
+\end{document} 

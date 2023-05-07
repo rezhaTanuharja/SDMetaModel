@@ -7,6 +7,7 @@
 **/*.fdb_latexmk 
 **/*.fls 
 **/*.log 
+**/*.out 
 **/*.run.xml 
 **/*.synctex.gz 
 **/*-blx.bib 

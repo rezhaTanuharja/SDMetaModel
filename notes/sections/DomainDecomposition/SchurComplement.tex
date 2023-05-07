@@ -8,8 +8,58 @@
 This part is adapted from \cite{chatterjee2021multilevel}. 
 \vspace{10pt} 
 
-The assembled modal system equation can be solved in two steps. 
-First, the following equation is solved for constrained modes: 
+The first two equations from equation \eqref{Modal SoE}: 
+
+\begin{equation*}
+    \bar{\mathbf{F}}_{\alpha}^{N} 
+    =
+    \bar{\mathbf{D}}_{\alpha}^{NN} \bar{\mathbf{u}}_{\alpha}^{N} 
+    +
+    \bar{\mathbf{D}}_{\alpha}^{NC} \bar{\mathbf{u}}^{C} 
+    \phantom{xx} 
+    \text{and} 
+    \phantom{xx} 
+    \bar{\mathbf{F}}_{\beta}^{N} 
+    =
+    \bar{\mathbf{D}}_{\beta}^{NN} \bar{\mathbf{u}}_{\beta}^{N} 
+    +
+    \bar{\mathbf{D}}_{\beta}^{NC} \bar{\mathbf{u}}^{C} 
+\end{equation*}
+
+We can rearrange to obtain the following expressions for the two internal freedoms: 
+
+\begin{equation}
+    \bar{\mathbf{u}}_{\alpha}^{N} 
+    =
+    \left(
+        \bar{\mathbf{D}}_{\alpha}^{NN}
+    \right)^{-1} 
+    \bar{\mathbf{F}}_{\alpha}^{N} 
+    -
+    \left(
+        \bar{\mathbf{D}}_{\alpha}^{NN}
+    \right)^{-1} 
+    \bar{\mathbf{D}}_{\alpha}^{NC} \bar{\mathbf{u}}^{C} 
+\label{Internal Freedom Schur 1} 
+\end{equation}
+
+
+\begin{equation}
+    \bar{\mathbf{u}}_{\beta}^{N} 
+    =
+    \left(
+        \bar{\mathbf{D}}_{\beta}^{NN}
+    \right)^{-1} 
+    \bar{\mathbf{F}}_{\beta}^{N} 
+    -
+    \left(
+        \bar{\mathbf{D}}_{\beta}^{NN}
+    \right)^{-1} 
+    \bar{\mathbf{D}}_{\beta}^{NC} \bar{\mathbf{u}}^{C} 
+\label{Internal Freedom Schur 2} 
+\end{equation}
+
+Substitute equations \eqref{Internal Freedom Schur 1} and \eqref{Internal Freedom Schur 2} into the last equation from equation \eqref{Modal SoE}: 
 
 \begin{equation}
     \left[
@@ -38,9 +88,10 @@ First, the following equation is solved for constrained modes:
         \bar{\mathbf{D}}_{\beta}^{NN} 
     \right)^{-1} 
     \bar{\mathbf{F}}_{\beta}^{N}
+\label{Boundary Freedom Schur} 
 \end{equation}
 
-Second, the solution is substituted to the following equations and they can be solved for the internal modes simultaneously. 
+The idea of Schur complement is to solve equation \eqref{Boundary Freedom Schur} for constrained mode first, then substituting the result to the following equations and they can be solved for the internal modes simultaneously.
 
 \begin{equation}
     \bar{\mathbf{D}}_{\alpha}^{NN} 

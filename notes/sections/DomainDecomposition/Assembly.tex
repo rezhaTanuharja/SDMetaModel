@@ -8,6 +8,7 @@
 This part is adapted from \cite{chatterjee2021multilevel}. 
 \vspace{10pt} 
 
+First, we look at assembly and formulation for two substructures. 
 Dynamic equation of a structural system with two substructures is given by the following 
 
 \begin{equation}
@@ -20,7 +21,8 @@ Dynamic equation of a structural system with two substructures is given by the f
     \begin{bmatrix}
         \mathbf{F}_{\alpha}^{I} \\ 
         \mathbf{F}_{\beta}^{I} \\ 
-        \mathbf{F}^{B} 
+        \mathbf{F}_{\alpha}^{B} + 
+        \mathbf{F}_{\beta}^{B} 
     \end{bmatrix}
     =
     \begin{bmatrix}
@@ -32,7 +34,8 @@ Dynamic equation of a structural system with two substructures is given by the f
         \mathbf{D}_{\beta}^{IB} \\ 
         \mathbf{D}_{\alpha}^{BI} & 
         \mathbf{D}_{\beta}^{BI} & 
-        \mathbf{D}^{BB} 
+        \mathbf{D}_{\alpha}^{BB} + 
+        \mathbf{D}_{\beta}^{BB} 
     \end{bmatrix}
     \begin{bmatrix}
         \mathbf{u}_{\alpha}^{I} \\ 
@@ -54,7 +57,8 @@ Using transformations $\bar{\mathbf{F}}=\mathbf{G}^{T}\mathbf{F}$, $\bar{\mathbf
     \begin{bmatrix}
         \bar{\mathbf{F}}_{\alpha}^{N} \\ 
         \bar{\mathbf{F}}_{\beta}^{N} \\ 
-        \bar{\mathbf{F}}^{C} 
+        \bar{\mathbf{F}}_{\alpha}^{C} + 
+        \bar{\mathbf{F}}_{\beta}^{C} 
     \end{bmatrix}
     =
     \begin{bmatrix}
@@ -66,7 +70,8 @@ Using transformations $\bar{\mathbf{F}}=\mathbf{G}^{T}\mathbf{F}$, $\bar{\mathbf
         \bar{\mathbf{D}}_{\beta}^{NC} \\ 
         \bar{\mathbf{D}}_{\alpha}^{CN} & 
         \bar{\mathbf{D}}_{\beta}^{CN} & 
-        \bar{\mathbf{D}}^{CC} 
+        \bar{\mathbf{D}}_{\alpha}^{CC} + 
+        \bar{\mathbf{D}}_{\beta}^{CC} 
     \end{bmatrix}
     \begin{bmatrix}
         \bar{\mathbf{u}}_{\alpha}^{N} \\ 
@@ -95,6 +100,7 @@ The transformation matrix is given by the following
     \end{bmatrix}
 \end{equation}
 
-Generalisation for more than two substructures is given in \cite{chatterjee2020uncertainty} (future reading). 
+The resulting system of equations can be solved efficiently and in parallel using Schur complement which is detailed below. 
+For systems with multiple substructures, solution is obtained via Schur complement without assembling the global matrix. 
 
 \end{document} 

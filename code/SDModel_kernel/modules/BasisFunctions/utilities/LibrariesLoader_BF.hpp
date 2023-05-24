@@ -18,7 +18,5 @@
 #include <stdexcept> 
 #include <vector> 
 
-#include <boost/math/special_functions/factorials.hpp> 
-
 #endif // LIBRARIES_LOADER_BF 
 

@@ -1,3 +1,15 @@
+/**
+  * @file GenerateIndices_test.cpp 
+  *
+  * @brief
+  * test functions to generate polynomial indices, 
+  * including errors thrown in DEBUG mode
+  *
+  * @author
+  * Tanuharja R.A. @n 
+  * contact: rezha.tanuharja@tum.de 
+  */
+
 #include "BasisFunctions.hpp" 
 #include <gtest/gtest.h> 
 
@@ -133,4 +145,136 @@ TEST ( GenerateIndices, Quadratic3D ) {
   }
 
 } // GenerateIndices, Quadratic3D
+
+
+#ifdef DEBUG_BASIS_FUNCTIONS 
+
+
+TEST ( GenerateIndices, NegativeSetSize ) {
+
+  EXPECT_THROW ({
+
+    try {
+
+      auto result = BasisFunctions::GenerateIndices<size_t> ( -1, 1 );
+
+    } catch ( const std::exception& e ) {
+
+      EXPECT_STREQ (
+        
+        "GenerateIndices: SetSize not in [1,100] range", e.what()
+        
+      );
+      
+      throw; 
+      
+    }
+
+  }, std::runtime_error );
+
+} // GenerateIndices, NegativeSetSize 
+
+
+TEST ( GenerateIndices, ZeroSetSize ) {
+
+  EXPECT_THROW ({
+
+    try {
+
+      auto result = BasisFunctions::GenerateIndices<size_t> ( 0, 1 );
+
+    } catch ( const std::exception& e ) {
+
+      EXPECT_STREQ (
+        
+        "GenerateIndices: SetSize not in [1,100] range", e.what()
+        
+      );
+      
+      throw; 
+      
+    }
+
+  }, std::runtime_error );
+
+} // GenerateIndices, ZeroSetSize  
+
+
+TEST ( GenerateIndices, HugeSetSize ) {
+
+  EXPECT_THROW ({
+
+    try {
+
+      auto result = BasisFunctions::GenerateIndices<size_t> ( 1000, 1 );
+
+    } catch ( const std::exception& e ) {
+
+      EXPECT_STREQ (
+        
+        "GenerateIndices: SetSize not in [1,100] range", e.what()
+        
+      );
+      
+      throw; 
+      
+    }
+
+  }, std::runtime_error );
+
+} // GenerateIndices, HugeSetSize   
+
+
+TEST ( GenerateIndices, NegativeMaxSum ) {
+
+  EXPECT_THROW ({
+
+    try {
+
+      auto result = BasisFunctions::GenerateIndices<size_t> ( 5, -1 );
+
+    } catch ( const std::exception& e ) {
+
+      EXPECT_STREQ (
+        
+        "GenerateIndices: MaxSum not in [0,100] range", e.what() 
+        
+      );
+      
+      throw; 
+      
+    }
+
+  }, std::runtime_error );
+
+} // GenerateIndices, NegativeMaxSum 
+
+
+TEST ( GenerateIndices, HugeMaxSum ) {
+
+  EXPECT_THROW ({
+
+    try {
+
+      auto result = BasisFunctions::GenerateIndices<size_t> ( 5, 1000 );
+
+    } catch ( const std::exception& e ) {
+
+      EXPECT_STREQ (
+        
+        "GenerateIndices: MaxSum not in [0,100] range", e.what() 
+        
+      );
+      
+      throw; 
+      
+    }
+
+
+  }, std::runtime_error );
+
+} // GenerateIndices, HugeMaxSum 
+
+
+#endif // DEBUG_BASIS_FUNCTIONS 
 

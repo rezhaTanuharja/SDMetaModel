@@ -17,11 +17,6 @@ option (
 )
 
 
-# ----- Add package "Boost" -------------------------------------------
-
-find_package ( Boost 1.81 REQUIRED ) 
-
-
 # ----- Add templated library -----------------------------------------
 
 add_library ( BasisFunctions INTERFACE 
@@ -40,16 +35,21 @@ target_include_directories ( BasisFunctions INTERFACE
   ${CMAKE_CURRENT_SOURCE_DIR}/declarations 
   ${CMAKE_CURRENT_SOURCE_DIR}/implementations  
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities
-
-  ${Boost_INCLUDE_DIR} 
   
 )
 
 target_link_libraries ( BasisFunctions INTERFACE 
 
-  ${Boost_LIBRARIES} 
-  
 )
+
+
+# ----- Enable additional checks when in DEBUG build mode ------------- 
+
+if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+  add_compile_definitions ( DEBUG_BASIS_FUNCTIONS )
+
+endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
 # ----- Configure Google Test for BasisFunctions ----------------------
@@ -64,6 +64,8 @@ if ( TEST_BASIS_FUNCTIONS )
 
     tests/GenerateIndices_test.cpp 
     tests/Truncation_test.cpp 
+    tests/HermitePolynomial_test.cpp 
+    tests/HermiteBasis_test.cpp 
     
   )
 

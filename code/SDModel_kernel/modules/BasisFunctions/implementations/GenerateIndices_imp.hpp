@@ -4,6 +4,8 @@
   * @brief
   * implements functions to generate indices of Hermite polynomials 
   *
+  * @anchor _GenerateIndices_imp_hpp_ 
+  *
   * @author
   * Tanuharja R.A. @n 
   * contact: rezha.tanuharja@tum.de 
@@ -27,7 +29,7 @@ template < typename Z >
   * Computes binomial coefficient nCk recursively. @n 
   * Used instead of boost implementation which return floating number. 
   *
-  * @tparam Z a type of non-negative integer e.g. size_t 
+  * @tparam Z non-negative integer e.g. size_t 
   *
   * @param n size of set to sample from 
   * @param k size of subset 
@@ -44,7 +46,7 @@ template < typename Z >
   * @brief 
   * Generate next set of indices based on the last generated set. 
   *
-  * @tparam Z a type of non-negative integer e.g. size_t 
+  * @tparam Z non-negative integer e.g. size_t 
   *
   * @param Indices vector to store all sets of indices 
   * @param LastSet boolean vector with 'true' to mark indices in last set 
@@ -65,8 +67,25 @@ namespace BasisFunctions {
 template < typename Z > 
 Vector<Z> GenerateIndices ( const Z SetSize, const Z MaxSum ) {
 
-  Vector<Z> Indices; 
 
+  #ifdef DEBUG_BASIS_FUNCTIONS 
+
+  if ( SetSize < 1 || SetSize > 100 ) {
+    throw std::runtime_error (
+      "GenerateIndices: SetSize not in [1,100] range"
+    );
+  }
+
+  if ( MaxSum < 0 || MaxSum > 100 ) {
+    throw std::runtime_error (
+      "GenerateIndices: MaxSum not in [0,100] range"
+    );
+  }
+
+  #endif // DEBUG_BASIS_FUNCTIONS
+  
+  
+  Vector<Z> Indices; 
   Indices.reserve (
     SetSize * BinomialCoefficient<Z> ( MaxSum + SetSize, SetSize )
   );
@@ -106,8 +125,38 @@ Vector<Z> GenerateIndices ( const Z SetSize, const Z MaxSum ) {
 template < typename Z > 
 void RemoveLargeIndices ( Vector<Z>& Indices, const Z SetSize, const Z iMax ) {
 
+
+  #ifdef DEBUG_BASIS_FUNCTIONS 
+
+  if ( SetSize < 1 || SetSize > 100 ) {
+    throw std::runtime_error (
+      "RemoveLargeIndices: SetSize not in [1,100] range"
+    );
+  }
+
+  if ( iMax < 0 || iMax > 100 ) {
+    throw std::runtime_error (
+      "RemoveLargeIndices: iMax not in [0,100] range"
+    );
+  }
+
+  #endif // DEBUG_BASIS_FUNCTIONS
+  
+  
   auto nSet = Indices.size(); 
 
+
+  #ifdef DEBUG_BASIS_FUNCTIONS 
+
+  if ( SetSize * ( nSet / SetSize ) - nSet != 0 ) {
+    throw std::runtime_error (
+      "RemoveLargeIndices: Indices vector size not multiple of SetSize"
+    );
+  }
+
+  #endif // DEBUG_BASIS_FUNCTIONS 
+  
+  
   auto i = 0; 
 
   while ( true ) {

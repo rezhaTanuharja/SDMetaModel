@@ -1,6 +1,6 @@
 ### ===================================================================
-### @file CMakeLists.txt 
-### @brief Config and Build script for RSMD project
+### @file     CMakeLists.txt 
+### @brief    Config and Build script for RSMD project
 ###
 ### >> ------------------------------------------------------------- >>
 ###
@@ -17,7 +17,7 @@
 ### @copyright  TUM Copyright (C)
 ### @version    1.0
 ### @date       2023-05-02
-### @authors    Tanuharja, R.A. 
+### @author     Tanuharja, R.A. 
 ###
 ### Some description here
 ###
@@ -73,6 +73,7 @@ set ( CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}" )
 # ----- Add modules ---------------------------------------------------
 
 add_subdirectory ( modules/BasisFunctions )
+add_subdirectory ( modules/Statistics )
 
 
 # ----- Add shared library "ReducedSurrogateModel" --------------------

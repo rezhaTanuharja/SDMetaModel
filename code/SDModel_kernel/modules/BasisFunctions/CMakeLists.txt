@@ -1,7 +1,7 @@
 ### ===================================================================
-### @file CMakeLists.txt 
-### @brief Config and Build script for BasisFunctions module 
-### @authors    Tanuharja, R.A. 
+### @file     CMakeLists.txt 
+### @brief    Config and Build script for BasisFunctions module 
+### @author   Tanuharja, R.A. 
 ### ===================================================================
 
 cmake_minimum_required ( VERSION 3.25 ) 
@@ -48,7 +48,7 @@ target_link_libraries ( BasisFunctions INTERFACE
 if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   add_compile_definitions ( DEBUG_BASIS_FUNCTIONS )
-
+  
 endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
@@ -72,16 +72,17 @@ if ( TEST_BASIS_FUNCTIONS )
   target_include_directories ( BasisFunctions_testrunner PUBLIC
 
     ${GTEST_INCLUDE_DIRS} 
-
+    
   )
 
   target_link_libraries ( BasisFunctions_testrunner PUBLIC 
 
     BasisFunctions 
     GTest::gtest_main 
-
+    
   )
 
   gtest_discover_tests ( BasisFunctions_testrunner )
   
 endif ( TEST_BASIS_FUNCTIONS )
+

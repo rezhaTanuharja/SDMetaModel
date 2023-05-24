@@ -1,5 +1,5 @@
 
-# ignore compilation artifact of latex 
+# ignore compilation and build artifact of latex 
 
 **/*.aux 
 **/*.bbl 
@@ -11,4 +11,10 @@
 **/*.run.xml 
 **/*.synctex.gz 
 **/*-blx.bib 
+
+# ignore compilation and build artifact of c++ 
+
+**/build/ 
+**/compile_commands.json 
+**/.cache 
 

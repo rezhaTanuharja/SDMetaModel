@@ -74,6 +74,7 @@ set ( CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}" )
 
 add_subdirectory ( modules/BasisFunctions )
 add_subdirectory ( modules/Statistics )
+add_subdirectory ( modules/SimpleModels )
 
 
 # ----- Add shared library "ReducedSurrogateModel" --------------------

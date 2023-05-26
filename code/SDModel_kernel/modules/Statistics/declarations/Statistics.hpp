@@ -33,7 +33,7 @@ using MatrixXT = Eigen::Matrix < T, Eigen::Dynamic, Eigen::Dynamic >;
 template < typename T > 
 using VectorXT = Eigen::Vector < T, Eigen::Dynamic >;
 
-} // Statistics 
+} // namespace Statistics 
 
 #ifndef UNIFORM_DECLARATIONS 
   #include "Uniform.hpp" 

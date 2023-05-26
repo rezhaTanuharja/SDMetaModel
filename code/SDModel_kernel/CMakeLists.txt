@@ -29,6 +29,13 @@ project ( ReducedSurrogateModel CXX )
 set ( CMAKE_CXX_STANDARD 17 ) 
 
 
+# ----- Options -------------------------------------------------------
+
+option ( 
+  TEST_RSMSD "Test RSMSD library" ON 
+)
+
+
 # ----- Add package "Eigen3" and "Boost" ------------------------------
 
 find_package ( Eigen3 3.4 REQUIRED NO_MODULE ) 
@@ -70,6 +77,15 @@ endif ()
 set ( CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}" )
 
 
+# ----- Enable additional checks when in DEBUG build mode ------------- 
+
+if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+  add_compile_definitions ( DEBUG_RSMSD )
+  
+endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+
 # ----- Add modules ---------------------------------------------------
 
 add_subdirectory ( modules/BasisFunctions )
@@ -79,26 +95,64 @@ add_subdirectory ( modules/SimpleModels )
 
 # ----- Add shared library "ReducedSurrogateModel" --------------------
 
-# add_library ( ReducedSurrogateModel SHARED 
-#
-#   declarations/Surrogate_MassSpringDamper.hpp 
-#
-#   implementations/MassSpringDamper_DMCS.cpp 
-#   
-# )
-#
-# target_include_directories ( ReducedSurrogateModel PUBLIC 
-#
-#   ${CMAKE_CURRENT_SOURCE_DIR}/declarations 
-#   ${CMAKE_CURRENT_SOURCE_DIR}/utilities
-#   ${Boost_INCLUDE_DIR} 
-#   
-# )
-#
-# target_link_libraries ( ReducedSurrogateModel PUBLIC 
-#
-#   BasisFunctions 
-#   Eigen3::Eigen 
-#   ${Boost_LIBRARIES} 
-#
-# )
+add_library ( ReducedSurrogateModel SHARED 
+
+  declarations/Stochastic.hpp 
+  declarations/submodules/DirectMC/MassSpringDamper_DMC.hpp 
+
+  implementations/DirectMC/MassSpringDamper_DMC.cpp 
+
+  utilities/LibrariesLoader_RS.hpp 
+  
+)
+
+target_include_directories ( ReducedSurrogateModel PUBLIC 
+
+  ${CMAKE_CURRENT_SOURCE_DIR}/declarations 
+  ${CMAKE_CURRENT_SOURCE_DIR}/declarations/submodules/DirectMC
+  ${CMAKE_CURRENT_SOURCE_DIR}/utilities
+  ${Boost_INCLUDE_DIR} 
+  
+)
+
+target_link_libraries ( ReducedSurrogateModel PUBLIC 
+
+  BasisFunctions 
+  SimpleModels 
+  Eigen3::Eigen 
+  ${Boost_LIBRARIES} 
+
+)
+
+
+# ----- Configure Google Test -----------------------------------------
+
+if ( TEST_RSMSD ) 
+
+  find_package ( GTest REQUIRED ) 
+
+  enable_testing () 
+
+  add_executable ( RSMSD_testrunner 
+
+    tests/DirectMC/MassSpringDamper_DMC_test.cpp 
+    
+  )
+
+  target_include_directories ( RSMSD_testrunner PUBLIC
+
+    ${GTEST_INCLUDE_DIRS} 
+    
+  )
+
+  target_link_libraries ( RSMSD_testrunner PUBLIC 
+
+    ReducedSurrogateModel 
+    GTest::gtest_main 
+    
+  )
+
+  gtest_discover_tests ( RSMSD_testrunner )
+  
+endif ( TEST_RSMSD )
+

@@ -35,6 +35,8 @@ typedef std::vector<C> VectorC;
 typedef Eigen::Matrix<R, Eigen::Dynamic, Eigen::Dynamic> MatrixXR; 
 typedef Eigen::Matrix<C, Eigen::Dynamic, Eigen::Dynamic> MatrixXC; 
 
+typedef Eigen::DiagonalMatrix<C, Eigen::Dynamic> DiagMatrixXC; 
+
 typedef Eigen::Vector<R, Eigen::Dynamic> VectorXR; 
 typedef Eigen::Vector<C, Eigen::Dynamic> VectorXC; 
 
@@ -47,10 +49,23 @@ typedef Eigen::Vector<C, Eigen::Dynamic> VectorXC;
 namespace DirectMC {
 } // namespace DirectMC 
 
+/**
+  * @namespace Surrogate  
+  * Contain functions surrogate modelling
+  *
+  * @anchor _Surrogate_   
+  */
+namespace Surrogate {
+} // namespace Surrogate   
+
 } // namespace Stochastic 
 
 #ifndef MASS_SPRING_DAMPER_DMC_DECLARATIONS 
   #include "MassSpringDamper_DMC.hpp" 
+#endif 
+
+#ifndef NIRPCE_DECLARATIONS 
+  #include "NIRPCE.hpp" 
 #endif 
 
 #endif // STOCHASTIC_DECLARATIONS 

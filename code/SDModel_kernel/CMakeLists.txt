@@ -100,7 +100,11 @@ add_library ( ReducedSurrogateModel SHARED
   declarations/Stochastic.hpp 
   declarations/submodules/DirectMC/MassSpringDamper_DMC.hpp 
 
+  declarations/submodules/Surrogate/NIRPCE.hpp 
+
   implementations/DirectMC/MassSpringDamper_DMC.cpp 
+
+  implementations/Surrogate/NIRPCE.cpp 
 
   utilities/LibrariesLoader_RS.hpp 
   
@@ -110,6 +114,7 @@ target_include_directories ( ReducedSurrogateModel PUBLIC
 
   ${CMAKE_CURRENT_SOURCE_DIR}/declarations 
   ${CMAKE_CURRENT_SOURCE_DIR}/declarations/submodules/DirectMC
+  ${CMAKE_CURRENT_SOURCE_DIR}/declarations/submodules/Surrogate 
   ${CMAKE_CURRENT_SOURCE_DIR}/utilities
   ${Boost_INCLUDE_DIR} 
   
@@ -136,6 +141,7 @@ if ( TEST_RSMSD )
   add_executable ( RSMSD_testrunner 
 
     tests/DirectMC/MassSpringDamper_DMC_test.cpp 
+    tests/Surrogate/NIRPCE_test.cpp 
     
   )
 

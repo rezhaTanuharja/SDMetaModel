@@ -1,7 +1,7 @@
 ### ---------------------------------------------------------------------------
-### @file		  CMakeLists.txt 
-### @brief		Project configuration script for simple FE simulations
-### @author		Rezha Adrian Tanuharja
+### @file     CMakeLists.txt 
+### @brief    Project configuration script for simple FE simulations
+### @author   Rezha Adrian Tanuharja
 ### @date     2023-11-02
 ### ---------------------------------------------------------------------------
 

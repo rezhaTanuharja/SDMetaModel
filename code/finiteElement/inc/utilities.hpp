@@ -75,6 +75,53 @@ void saveVector (
 );
 
 
+/**
+ * @brief
+ * Read ASCII file and store in a vector.
+ *
+ * @param filename  name of file to read
+ * @param vector    vector to save data
+*/
+void loadVector (
+  const std::string& filename, std::vector<INT>& vector
+);
+
+
+/**
+ * @brief
+ * Pad matrix with rows of zeros.
+ *
+ * @param matrix          matrix to pad
+ * @param internalDofIds  IDs of original matrix rows
+ * @param boundaryDofIds  IDs of additional zero rows
+ *
+ * @return the padded matrix
+*/
+MatrixXF zeroPadRows (
+  const MatrixXF& matrix,
+  const std::vector<INT>& internalDofIds, 
+  const std::vector<INT>& boundaryDofIds
+);
+
+
+/**
+ * @brief
+ * Combine two vectors using two vectors of IDs.
+ *
+ * @param Xn              vector 1
+ * @param Xb              vector 2
+ * @param internalDofIds  IDs of values in Xn
+ * @param boundaryDofIds  IDs of values in Xb
+ *
+ * @return the combined vector
+*/
+VectorXF combine (
+  VectorXF Xn, VectorXF Xb, 
+  const std::vector<INT>& internalDofIds, 
+  const std::vector<INT>& boundaryDofIds
+);
+
+
 } // namespace mFEM
 
 

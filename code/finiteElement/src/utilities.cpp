@@ -106,5 +106,92 @@ void saveVector (
 } // saveVector
 
 
+void loadVector (
+  const std::string& filename, std::vector<INT>& vector
+) {
+
+  std::ifstream file ( filename );
+
+  if ( file.is_open() ) {
+
+    INT value;
+    while ( file >> value ) {
+      vector.push_back ( value );
+    }
+
+    file.close();
+
+  } // file.is_open()
+
+} // loadVector
+
+
+MatrixXF zeroPadRows (
+  const MatrixXF& matrix,
+  const std::vector<INT>& internalDofIds, 
+  const std::vector<INT>& boundaryDofIds
+) {
+
+  INT nInt = internalDofIds.size();
+  INT nExt = boundaryDofIds.size();
+
+  INT nRows = internalDofIds.size() + boundaryDofIds.size();
+
+  INT p = 0;
+  INT q = 0;
+
+  MatrixXF paddedMatrix ( nRows, matrix.cols() );
+
+  for ( INT i = 0; i < nRows; i++ ) {
+
+    if ( p >= nInt ) {
+      break;
+    }
+
+    if ( q >= nExt ) {
+      paddedMatrix.row(i) = matrix.row(p);
+      p++;
+      continue;
+    }
+
+    if ( internalDofIds[p] < boundaryDofIds[q] ) {
+
+      paddedMatrix.row(i) = matrix.row(p);
+      p++;
+      continue;
+
+    }
+
+    q++;
+
+  }
+
+
+  return paddedMatrix;
+
+} // zeroPadRows
+
+
+VectorXF combine (
+  VectorXF Xn, VectorXF Xb, 
+  const std::vector<INT>& internalDofIds, 
+  const std::vector<INT>& boundaryDofIds
+) {
+
+  VectorXF X ( internalDofIds.size() + boundaryDofIds.size() );
+
+  for ( INT i = 0; i < internalDofIds.size(); i++ ) {
+    X.coeffRef ( internalDofIds[i] ) = Xn[i];
+  }
+
+  for ( INT i = 0; i < boundaryDofIds.size(); i++ ) {
+    X.coeffRef ( boundaryDofIds[i] ) = Xb[i];
+  }
+
+  return X;
+
+} // combine 
+
+
 } // namespace mFEM
 

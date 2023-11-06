@@ -1,10 +1,18 @@
+/**
+ * @file completeModel.cpp
+ *
+ * @brief
+ * Contains implementations of direct MCS using the complete plate model.
+ *
+ * @author Rezha Adrian Tanuharja <rezhadr@outlook.com>
+ * @date 2023-11-02
+*/
+
 #include "alias.hpp"
 #include "materials.hpp"
 #include "plates.hpp"
 #include "solvers.hpp"
 #include "utilities.hpp"
-
-#include <iostream>
 
 int main ( int argc, char** argv ) {
 

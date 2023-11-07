@@ -1,4 +1,3 @@
-
 # ignore compilation and build artifact of latex 
 
 **/*.aux 
@@ -18,3 +17,6 @@
 **/compile_commands.json 
 **/.cache/ 
 
+# ignore compilation and build artifact from VS code
+
+**/.DS_Store

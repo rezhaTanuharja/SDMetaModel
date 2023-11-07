@@ -12,6 +12,10 @@
 #include "models.hpp"
 #endif
 
+#ifndef REGRESSION_DECLARATIONS
+#include "regression.hpp"
+#endif
+
 
 namespace surrogate {
 
@@ -102,7 +106,186 @@ void RPCE::trainSparse (
   const FLOAT epsilon
 ) {
 
+  INT nPoints = args.size() / dimension_;
 
+  // Compute reference coefficient of determination i.e., a baseline
+
+  std::vector<INT> pointID ( nPoints );
+  std::iota( pointID.begin(), pointID.end(), 0);
+
+  std::vector<INT> refPoints = surrogate::randomSubset( 
+    pointID, nPoints, 0
+  );
+
+  std::vector<FLOAT> refArgs;
+  std::vector<FLOAT> refResp;
+
+  for ( INT i = 0; i < nPoints; i++ ) {
+
+    if ( i >= INT ( nPoints * 0.95 ) ) {
+      break;
+    }
+
+    for ( INT j = 0; j < dimension_; j++ ) {
+      refArgs.push_back(
+        args[
+          dimension_ * refPoints[i] + j
+        ]
+      );
+    }
+
+    for ( INT j = 0; j < nDOFs_; j++ ) {
+      refResp.push_back(
+        responses[
+          nDOFs_ * refPoints[i] + j
+        ]
+      );
+    }
+
+  }
+
+  this -> train( refArgs, refResp );
+  FLOAT eps = determinationCoeff ( responses, this -> computeResponse ( args ) );
+
+  // Backward step for numerator
+
+  INT nNumBasis = numIndices_.size() / dimension_;
+
+  for ( INT i = 0; i < nNumBasis; i++ ) {
+
+    std::vector<INT> sortedPoint = surrogate::randomSubset( 
+      pointID, nPoints, i
+    );
+
+    std::vector<FLOAT> trainArgs;
+    std::vector<FLOAT> trainResp;
+
+    for ( INT j = 0; j < nPoints; j++ ) {
+
+      if ( j >= INT ( nPoints * 0.95 ) ) {
+        break;
+      }
+
+      for ( INT k = 0; k < dimension_; k++ ) {
+        trainArgs.push_back(
+          args[
+            dimension_ * sortedPoint[j] + k
+          ]
+        );
+      }
+
+      for ( INT k = 0; k < nDOFs_; k++ ) {
+        trainResp.push_back(
+          responses[
+            nDOFs_ * sortedPoint[j] + k
+          ]
+        );
+      }
+
+    }
+
+    INT n = nNumBasis - 1 - i;
+
+    std::vector<INT> oldIndices ( numIndices_.size() );
+    std::copy ( numIndices_.begin(), numIndices_.end(), oldIndices.begin() );
+
+    std::vector<INT> newIndices ( numIndices_.size() );
+    std::copy ( numIndices_.begin(), numIndices_.end(), newIndices.begin() );
+
+    newIndices.erase( 
+      newIndices.begin() + n * dimension_,
+      newIndices.begin() + n * dimension_ + dimension_
+    );
+
+    this -> setNumIndices( newIndices ) ;
+    this -> train( trainArgs, trainResp );
+
+    FLOAT newEps = determinationCoeff ( 
+      responses, this -> computeResponse ( args) 
+    );
+
+    if ( newEps > eps ) {
+      eps = newEps;
+    }
+    else if ( eps - newEps > epsilon * ( 1.0 - eps ) ) {
+      this -> setNumIndices( oldIndices );
+    }
+    else {
+      eps = newEps;
+    }
+
+  }
+
+  // Backward step for denominator
+
+  INT nDenBasis = denIndices_.size() / dimension_;
+
+  for ( INT i = 0; i < nDenBasis; i++ ) {
+
+    std::vector<INT> sortedPoint = surrogate::randomSubset( 
+      pointID, nPoints,i + 5
+    );
+
+    std::vector<FLOAT> trainArgs;
+    std::vector<FLOAT> trainResp;
+
+    for ( INT j = 0; j < nPoints; j++ ) {
+
+      if ( j >= INT ( nPoints * 0.95 ) ) {
+        break;
+      }
+
+      for ( INT k = 0; k < dimension_; k++ ) {
+        trainArgs.push_back(
+          args[
+            dimension_ * sortedPoint[j] + k
+          ]
+        );
+      }
+
+      for ( INT k = 0; k < nDOFs_; k++ ) {
+        trainResp.push_back(
+          responses[
+            nDOFs_ * sortedPoint[j] + k
+          ]
+        );
+      }
+
+    }
+
+    INT n = nDenBasis - 1 - i;
+
+    std::vector<INT> oldIndices ( denIndices_.size() );
+    std::copy ( denIndices_.begin(), denIndices_.end(), oldIndices.begin() );
+
+    std::vector<INT> newIndices ( denIndices_.size() );
+    std::copy ( denIndices_.begin(), denIndices_.end(), newIndices.begin() );
+
+    newIndices.erase( 
+      newIndices.begin() + n * dimension_,
+      newIndices.begin() + n * dimension_ + dimension_
+    );
+
+    this -> setDenIndices( newIndices ) ;
+    this -> train( trainArgs, trainResp );
+
+    FLOAT newEps = determinationCoeff ( 
+      responses, this -> computeResponse ( args ) 
+    );
+
+    if ( newEps > eps ) {
+      eps = newEps;
+    }
+    else if ( eps - newEps > epsilon * ( 1.0 - eps ) ) {
+      this -> setDenIndices( oldIndices );
+    }
+    else {
+      eps = newEps;
+    }
+
+  }
+
+  this -> train( args, responses );
 
 } // RPCE::trainSparse
 

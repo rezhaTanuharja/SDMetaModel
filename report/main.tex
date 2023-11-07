@@ -1,0 +1,98 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% main.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\documentclass[%
+  12pt,
+  a4paper,
+  twoside,
+  headinclude,
+  headsepline,
+  plainheadsepline,
+  BCOR=12mm,
+  DIV=18,
+  parskip=half,
+  openany,
+  bibliography=totoc,
+  toc=listof,
+  numbers=noenddot,
+  captions=tableheading,
+  fleqn
+]{bmvorlagen/bmthesis}
+
+
+% ----- Additional packages and custom settings -------------------------------
+
+\input{includes/settings}
+\input{includes/algorithmFunctions}
+
+
+% ----- Meta information about the thesis -------------------------------------
+
+\newcommand{\bmtitle}{%
+  Non-Intrusive Surrogate Modelling for Stochastic Linear Structural Systems Based on Collocation Using Substructuring Methods
+}
+\newcommand{\bmauthor}{B.Sc. Rezha Adrian Tanuharja}
+
+\newcommand{\bmkeywords}{%
+  Craig-Bampton Method,
+  Linear Structural Dynamics,
+  Non-Intrusive Rational Polynomial Chaos Expansion,
+  Sparse Surrogate Model,
+  Uncertainty Quantification
+}
+
+\newcommand{\bmstartpage}{5}
+
+
+% ----- Contents --------------------------------------------------------------
+
+\raggedbottom
+
+\begin{document}
+
+\frontmatter
+
+\pagenumbering{Roman}
+
+\include{decorators/cover}
+\cleardoubleemptypage
+
+\include{decorators/abstract}
+\include{decorators/declaration}
+\cleardoubleemptypage
+
+\begin{spacing}{1.0}
+  \tableofcontents
+  \listoffigures
+  \listoftables
+\end{spacing}
+
+\include{decorators/symbols}
+
+\cleardoubleplainpage
+
+\mainmatter
+
+\include{chapters/introduction}
+\include{chapters/literature}
+\include{chapters/development}
+\include{chapters/methodology}
+\include{chapters/discussion}
+\include{chapters/conclussion}
+
+\backmatter
+
+\begin{spacing}{1.0}
+  \inputencoding{latin2}
+   \bibliography{decorators/literature}
+  \inputencoding{utf8}
+\end{spacing}
+
+\end{document}

@@ -1,0 +1,30 @@
+\thispagestyle{empty}
+\newlength{\headsepold}
+\setlength{\headsepold}{\headsep}
+\setlength{\headsep}{-1.0cm}
+\begin{center}
+{\sffamily
+\fontsize{18}{18}\selectfont 
+\includegraphics[width=1.2cm, keepaspectratio=true]{bvlogo} \includegraphics[width=1.5cm, keepaspectratio=true]{bmlogo} \hfill 
+	\begin{minipage}[b]{80mm}
+ \small \centering Lehrstuhl f{\"u}r Baumechanik - TU M{\"u}nchen \\ \lehrer
+  \end{minipage}
+ \hfill \includegraphics*[width=2cm, keepaspectratio=true]{tumlogo}
+\vspace{0.5cm}
+\hrule
+\begin{center}
+\vspace{5cm}
+{\Large \textbf { \veranstaltung }}\\[4 pt]
+%\sc
+\vspace{0.5cm}
+{\normalsize \semester}\\
+\end{center}
+}
+\end{center}
+\enlargethispage{3.5cm}
+\vfill
+%\begin{flushleft}
+%\href{http://www.sqk.bv.tum.de}{\includegraphics[height=3.1cm, keepaspectratio=true]{deinvorteil}}
+%\end{flushleft}
+\newpage
+\setlength{\headsep}{\headsepold}

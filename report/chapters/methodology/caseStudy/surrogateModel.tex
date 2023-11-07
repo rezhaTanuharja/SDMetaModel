@@ -1,0 +1,47 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/methodology/caseStudy/surrogateModel.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Sparse NI-RPCE Model}
+\label{ssec: surrogate model}
+
+This study uses RPCE models with products of probabilist Hermite polynomials as the basis functions, as in \eqref{prob Hermite products}.
+The numerator is a PCE with an order of $5$ while the denominator is a PCE with an order of $6$.
+Therefore, the basis functions in the numerator and denominator satisfy
+\begin{equation}
+    \Psi_{k}\left(\mathbf{\Xi}\right)
+    =
+    {He}_{r_{k}} \left(\xi_{1}\right)
+    \cdot
+    {He}_{s_{k}} \left(\xi_{2}\right)
+    \phantom{x}
+    \forall 
+    \phantom{x}
+    r_{k}, s_{k} \in \mathbb{N}, 
+    \phantom{x}
+    r_{k} + s_{k} \leq 5
+\end{equation}
+and
+\begin{equation}
+    \Psi_{l}\left(\mathbf{\Xi}\right)
+    =
+    {He}_{r_{l}} \left(\xi_{1}\right)
+    \cdot
+    {He}_{s_{l}} \left(\xi_{2}\right)
+    \phantom{x}
+    \forall 
+    \phantom{x}
+    r_{l}, s_{l} \in \mathbb{N}, 
+    \phantom{x}
+    r_{l} + s_{l} \leq 6,
+\end{equation}
+respectively.
+The author obtains the coefficient in \eqref{RPCE_approx} by solving \eqref{SVD problem}.
+There are $49$ basis functions in the numerator and denominator of the RPCE models.
+The author reduces the number of basis functions by following the algorithms \ref{alg: sparse RPCE numerator} and \ref{alg: sparse RPCE denominator} with $\epsilon_{0}=1.0$.

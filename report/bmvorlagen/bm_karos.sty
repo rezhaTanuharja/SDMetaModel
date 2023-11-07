@@ -1,0 +1,93 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karoseite
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\karoseite}{
+\ifthenelse{\boolean{bmkaros}}{
+\begin{pgfpicture} %{0cm}{0cm}{17.5cm}{25.2cm}
+\begin{colormixin}{30!white}
+\pgfgrid[stepx=0.5cm,stepy=0.5cm]{\pgfpoint{0cm}{0cm}}{\pgfpoint{\bmkarowidth}{\bmkaroheight}}
+\end{colormixin}
+\end{pgfpicture}}{}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karoblock
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\karoblock}[1]{
+\ifthenelse{\boolean{bmkaros}}{
+  \setlength{\hochzaehl}{0cm}
+  \setlength{\seitenrest}{\textheight-\pagetotal-\lineskip-1cm}% Sicherheitsabstand: Lineskip+1cm, damit \hochzähl auf jeden Fall kliener als der verfügbare Platz bleibt
+  \whiledo{\lengthtest{\hochzaehl<\seitenrest}}{\addtolength{\hochzaehl}{0.5cm}}
+  \ifthenelse{\lengthtest{\seitenrest>#1}}{% kompletter Block passt auf eine Seite
+    \begin{pgfpicture} %{0cm}{0cm}{17.5cm}{25.2cm}
+    \begin{colormixin}{30!white}
+    \pgfgrid[stepx=0.5cm,stepy=0.5cm]{\pgfpoint{0cm}{0cm}}{\pgfpoint{\bmkarowidth}{#1}}
+    \end{colormixin}%
+    \end{pgfpicture}%
+  }{% Seite zu klein fuer kompletten Block
+    \ifthenelse{\lengthtest{\seitenrest>0.5cm}}{%mind 2 Karozeilen passen noch auf eine Seite
+		  \begin{pgfpicture}% {0cm}{0cm}{17.5cm}{\textheight-\pagetotal-\lineskip-1cm}
+      \begin{colormixin}{30!white}
+      \pgfgrid[stepx=0.5cm,stepy=0.5cm]{\pgfpoint{0cm}{0cm}}{\pgfpoint{\bmkarowidth}{\hochzaehl}}
+      \end{colormixin}
+      \end{pgfpicture}
+      \newpage
+      \setlength{\karorest}{#1-\hochzaehl}%
+      \ifthenelse{\lengthtest{\karorest>1cm}}{\karoblock{\karorest}}{}%Drucke auf nächste Seite nur, wenn mind. zwei Zeilen möglich sind
+    }%
+	  {% weniger als 1 cm Platz auf Seite -> kompletter Karoblock wird auf nächste Seite gedruckt
+	    \newpage
+	    \karoblock{#1}
+	  }
+  }
+}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karofill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\karofill}{\vfill
+\ifthenelse{\boolean{bmkaros}}{
+\setlength{\hochzaehl}{0cm}
+\setlength{\seitenrest}{\textheight-\pagetotal-\lineskip-1cm}% Sicherheitsabstand: Lineskip+1cm, damit \hochzähl auf jeden Fall kliener als der verfügbare Platz bleibt
+\ifthenelse{\lengthtest{\seitenrest>4cm}}{
+  %wieviele Kaestchen haben noch Platz
+  \whiledo{\lengthtest{\hochzaehl<\seitenrest}}{\addtolength{\hochzaehl}{0.5cm}}
+  \begin{pgfpicture}% {0cm}{0cm}{17.5cm}{\textheight-\pagetotal-\lineskip-1cm}
+      \begin{colormixin}{30!white}
+      \pgfgrid[stepx=0.5cm,stepy=0.5cm]{\pgfpoint{0cm}{0cm}}{\pgfpoint{\bmkarowidth}{\hochzaehl}}
+    \end{colormixin}
+  \end{pgfpicture}}{}}{}}
+
+%Hilfsvariablen
+\newlength{\seitenrest}
+\newlength{\hochzaehl}
+\newlength{\karorest}
+\newlength{\bmkarowidth}
+\setlength{\bmkarowidth}{17.5cm}
+\newlength{\bmkaroheight}
+\setlength{\bmkaroheight}{25.0cm}
+\newcounter{itemp}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karohintergrund - zur Verwendung innerhalb der Handouts zur Zentralübung TM1 und TM2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{eso-pic} % notwendig für Befehl für Karoraster im Hintergrund (*siehe unten)
+
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight,%
+keepaspectratio]{bmvorlagen/logos/KaroBackground.eps}%
+\vfill
+}}}
+
+% use the following command immediately after begin document to include the "`Karoraster"'
+
+%\AddToShipoutPicture{\BackgroundPic} % Karoraster im Hintergrund über alle Seiten 
+                                      % (use: \AddToShipoutPicture*{\BackgroundPic} um nur auf erster Seite Hintergrund zu ändern,
+																		  %       \ClearShipoutPicture um Hintegrund zu stoppen

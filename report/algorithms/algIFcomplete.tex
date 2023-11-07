@@ -1,0 +1,74 @@
+\begin{center}
+\begin{algorithm}[H]
+    \label{algIF}
+    \SetKwProg{ForEach}{foreach}{do}{}
+    \SetKwFunction{mcS}{sample}
+    \SetKwFunction{iS}{indSelector}
+    \SetKwFunction{cRPCE}{computeRPCE}
+    \SetKwFunction{gE}{generalizedEigensolver}
+    \SetKwFunction{mS}{modeSelector}
+    \SetKwFunction{lsR}{leastSquareRegression}
+    \vspace{1.0em}%
+    \tcc{Compute reference normal modes}
+    \vspace{1.0em}%
+    $\mathbf{Y} \longleftarrow \left\{\phantom{x}\right\}$, 
+    $\mathbf{A}_{u} \longleftarrow \left\{\phantom{x}\right\}$, 
+    $\mathbf{A}_{v} \longleftarrow \left\{\phantom{x}\right\}$ \\
+    \vspace{1.0em}%
+    \ForEach{$\omega$ in $\left\{\omega_{1}, ..., \omega_{m}\right\}$}{
+        \vspace{1.0em}%
+        $\mathbf{\Phi}_{d} \longleftarrow$
+        \mS{$
+            \mathbf{\Phi}_{n}, \omega
+        $} \\
+        \vspace{1.0em}%
+        \tcc{Generate $N_{train}$ random samples}
+        \For{$i = 1, ..., N_{sample}$}{
+            \vspace{1.0em}%
+            $\mathbf{\Xi}_{i} \longleftarrow$
+            \mcS{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            \tcc{Compute dynamic stiffness matrix $\mathbf{D}\left(\omega, \mathbf{\Xi}_{i}\right)$}
+            \tcc{Compute constraint modes}
+            \tcc{Perform component reduction}
+            \uIf{$rank==0$}{
+                \tcc{Gather summands}
+                \tcc{Solve FRF}
+                \tcc{Broadcast FRF}
+            }
+            \Else{
+                \tcc{Do nothing}
+            }
+            \tcc{Solve FRF}
+            \tcc{Store output and regressor}
+        }
+        \vspace{1.0em}%
+        $S_{u}, S_{v} \longleftarrow$
+        \iS{%
+            $\mathbf{Y}$, $\mathbf{A}_{u}$, $\mathbf{A_{v}}$
+        } \\
+        \vspace{1.0em}%
+        \For{$i = 1, ..., N_{mcs}$}{
+            \vspace{1.0em}%
+            $\mathbf{\Xi}_{i} \longleftarrow$
+            \mcS{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            $\hat{\mathbf{Y}} \longleftarrow$ 
+            \cRPCE{} \\
+            \vspace{1.0em}%
+        }
+        \tcc{Estimate probabilistic characteristics}
+    }
+  \caption{The Hybrid UCB Method}
+\end{algorithm}
+\end{center}
+
+\begin{algorithm}
+    \caption{Your algorithm with a long for loop (Part 1)}
+    \label{alg:your_algorithm_part1}
+    \KwData{Input data}
+    \KwResult{Output data}
+    \For{$i \gets 1$ to $n$}{
+        % Your loop code for part 1 goes here
+    }
+    \end{algorithm}

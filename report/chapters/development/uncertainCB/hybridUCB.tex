@@ -1,0 +1,107 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/uncertainCB/hybridUCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Hybrid Uncertain CB Method}
+\label{ssec: HUCB}
+
+The hybrid UCB method is an attempt to balance accuracy and efficiency.
+It combines the naive and crude approaches.
+The new approach computes the normal modes using a reference structure and reuses it for all samples.
+However, it recomputes the constraint modes once for each sample in each frequency of interest.
+Therefore, the method has a lower computational cost than the naive method because the computation of the normal modes only occurs once.
+In addition, the method has better accuracy than the crude method because it calculates the constraint modes for each set of input parameters.
+
+The hybrid UCB method uses a simple selection approach for the dominant modes: select a subset of eigenvalues that are closest to $\omega^{2}$ and use their associated eigenmodes as the dominant modes.
+Mathematically, this is equivalent to solving the eigenproblem
+\begin{equation}
+    \left(
+        \mathbf{K} - \omega^{2} \mathbf{M}
+    \right)^{-1}
+    \mathbf{M}
+    \mathbf{\Phi}
+    =
+    \tilde{\lambda}
+    \mathbf{\Phi}
+\end{equation}
+and use the eigenmodes associated with the largest eigenvalues' magnitudes.
+% where $\tilde{\lambda}=\left(\lambda - \omega^{2}\right)^{-1}$
+
+The hybrid UCB method uses a different definition of the constraint modes.
+Each constraint mode is the substructure's dynamic displacement when subjected to a unit displacement of a boundary DOF while the rest of the boundary DOFs are constrained.
+{By this definition, the constraint modes satisfy the dynamic equation}%
+\begin{equation}
+    \mathbf{0}
+    =
+    \mathbf{D}_{ii}
+    \tilde{\mathbf{\Phi}}_{c}
+    +
+    \mathbf{D}_{ib}
+    \mathbf{I}
+    \iff
+    \tilde{\mathbf{\Phi}}_{c}
+    =
+    -\mathbf{D}_{ii}^{-1}
+    \mathbf{D}_{ib}.
+    \label{modified_constraint_modes}
+\end{equation}
+{Using the new constraint modes, the enhanced transformation between the component's initial coordinates and the modal coordinates \eqref{enhanced_transformation} becomes}
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{U}_{i} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{\Phi}_{d} &
+        -\mathbf{D}_{ii}^{-1} \mathbf{D}_{ib}
+        +
+        \left(
+            \mathbf{\Phi}_{d}
+            \mathbf{\Lambda}_{d}^{-1}
+            \mathbf{\Phi}_{d}^{T}
+        \right)
+        \left(
+            \mathbf{D}_{ii}
+            \tilde{\mathbf{\Phi}}_{c}
+            +
+            \mathbf{D}_{ib}
+        \right)
+        \\
+        \mathbf{0}
+        &
+        \mathbf{I}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}.
+    \label{modified_enhanced_transformation}
+\end{equation}
+{The substitution of \eqref{modified_constraint_modes} into \eqref{modified_enhanced_transformation} yields}%
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{U}_{i} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{\Phi}_{d} &
+        \tilde{\mathbf{\Phi}}_{c} \\
+        \mathbf{0} & \mathbf{I}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d} \\
+        \mathbf{U}_{b}
+    \end{pmatrix},
+\end{equation}
+which is the transformation matrix of a normal CB method when using the modified constraint modes.
+Algorithm \ref{alg: HUCB} depicts the hybrid UCB method.
+
+\input{algorithms/hybridUCB}

@@ -1,0 +1,175 @@
+%%%%%%%%%%%%%%%%%%
+%% TUM Colors
+%%%%%%%%%%%%%%%%%%
+
+\definecolor{TUMBlau}{RGB}{0,101,189}
+\definecolor{TUMBlauDunkel}{RGB}{0,82,147}
+\definecolor{TUMBlauHell}{RGB}{152,198,234}
+\definecolor{TUMBlauMittel}{RGB}{100,160,200}
+\definecolor{TUMElfenbein}{RGB}{218,215,203}
+\definecolor{TUMGruen}{RGB}{162,173,0}
+\definecolor{TUMOrange}{RGB}{227,114,34}
+\definecolor{TUMDunkelGrau}{gray}{0.8}
+\definecolor{TUMGrau}{gray}{0.5}
+\definecolor{TUMHellGrau}{gray}{0.2}
+\definecolor{TUMLila}{RGB}{105,008,090}
+\definecolor{TUMRed}{RGB}{156,013,022}
+
+\newcommand{\linefullblue}{{\color{TUMBlau}---}}
+\newcommand{\linefullorange}{{\color{TUMOrange}---}}
+\newcommand{\linefullgreen}{{\color{TUMGruen}---}}
+\newcommand{\linedottedorange}{{\color{TUMOrange}--$\cdot$--}}
+\newcommand{\linedashedgreen}{{\color{TUMGruen}- - -}}
+
+
+% Fouriertransformationssymbol
+\newcommand{\myfourier}{\mbox{\unitlength1cm
+\begin{picture}(1.5,0.2)\put(0.3,0.1){\circle{0.2}}
+\thicklines
+\put(0.4,0.1){\line(1,0){0.7}}\put(1.2,0.1){\circle*{0.2}}
+\end{picture}}}
+
+\newcommand{\myinvfourier}{\mbox{\unitlength1cm
+\begin{picture}(1.5,0.2)\put(0.3,0.1){\circle*{0.2}}
+\thicklines
+\put(0.4,0.1){\line(1,0){0.7}}\put(1.2,0.1){\circle{0.2}}
+\end{picture}}}
+
+% Sonstige Befehle
+\newcommand{\stz}{\rule[-1.5mm]{0mm}{5mm}}
+\newcommand{\stze}{\rule[-1.5mm]{0mm}{5.5mm}}
+\newcommand{\stzj}{\rule[-5mm]{0mm}{14mm}}
+\newcommand{\stzjj}{\rule[-5mm]{0mm}{10mm}}
+\newcommand{\stzb}{\rule[-1mm]{0mm}{5mm}}
+\newcommand{\D}{\displaystyle}
+\newcommand{\SCS}{\scriptstyle}
+\newcommand{\SSS}{\scriptscriptstyle}
+\newcommand{\T}{\textstyle}
+\newcommand{\myarray}[1]{\ensuremath{\mathbf{#1}}} 
+\newcommand{\mymatrix}[1]{\ensuremath{\left[#1\right]}} 
+\newcommand{\myvector}[1]{\ensuremath{\bm{\mathrm{#1}}}} 
+\newcommand{\jkvector}[1]{\ensuremath{\bm{#1}}} 
+\newcommand{\einheit}[1]{\ensuremath{\mathrm{\textstyle #1}}}  
+\newcommand{\Grad}{\ifmmode \mGrad \else  $\hspace{-0.3em}^\circ$\,  \fi}
+\newcommand{\mGrad}{\ensuremath{^\circ}} % geht noch besser
+\newcommand{\infint}{\int\limits_{-\infty}^{\infty}}
+\newcommand{\lived}[2]{($\ast$#1\ifthenelse{\equal{#2}{}}{}{, $\dagger$#2})} 
+\newcommand{\expo}[1]{\cdot 10^{#1}}
+\newcommand{\myd}[1]{\;d\hspace{-1pt}#1}
+\newcommand{\mydc}[1]{d\hspace{-1pt}#1}
+
+
+%%%%%%%%%%%%%%%%%%
+%% Commands and Shortcuts
+%%%%%%%%%%%%%%%%%%
+
+% control appearance of real and imaginary part notation
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\newcommand{\sign}{\operatorname{sgn}}
+\newcommand{\sgn}{\sign}
+
+% define general symbols
+\newcommand{\phase}{\varphi}
+\newcommand{\phasecomp}{\phase^{\ast}}
+\newcommand{\phaseL}{\phase_f}
+\newcommand{\phasew}{\phase_w}
+
+\newcommand{\eigvec}{\bm{\phi}}
+
+\newcommand{\phaseshift}{\Delta \phase}
+
+\newcommand{\eigfr}{\omega_n}
+\newcommand{\eigfrD}{\omega_D}% old version up to 2019: {\overline{\omega}}
+\newcommand{\cmplxnmbr}{z}
+
+%\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\conj}[1]{{#1}^{\ast}}
+\newcommand{\cmplx}[1]{\widehat{#1}}
+
+\newcommand{\dignity}{\textit}
+
+\newcommand{\imagunit}{\mathrm{i}}
+\newcommand{\sinc}{\operatorname{sinc}}
+
+\newcommand{\Ot}{\Omega t}
+\newcommand{\ot}{\omega t}
+\newcommand{\mOt}{-\Omega t}
+\newcommand{\mot}{-\omega t}
+
+\newcommand{\four}[1]{\Tilde{#1}}
+
+\newcommand{\fourierop}[1]{\mathcal{F} \left\{ #1 \right\}}
+\newcommand{\fourierinvop}[1]{\mathcal{F}^{-1} \left\{ #1 \right\}}
+
+\newcommand{\hilbertop}[1]{\mathcal{H} \left\{ #1 \right\}}
+\newcommand{\hilbertinvop}[1]{\mathcal{H}^{-1} \left\{ #1 \right\}}
+
+\newcommand{\bracesOt}{\left( \Omega t \right)}
+\newcommand{\bracesot}{\left( \omega t \right)}
+\newcommand{\bracest}{\left( t \right)}
+
+\newcommand{\eiot}{\e^{\imagunit \omega t}}
+\newcommand{\eiOt}{\e^{\imagunit \Omega t}}
+
+\newcommand{\emiot}{\e^{- \imagunit \omega t}}
+\newcommand{\emiOt}{\e^{- \imagunit \Omega t}}
+
+\newcommand{\atantwo}{\operatorname{atan2}}
+
+\newcommand{\sqrtkoverm}{\sqrt {\frac{k}{m}}}
+\newcommand{\density}{\rho}
+
+\newcommand{\textred}[1]{{\color{red}#1}}
+\newcommand{\redref}{{\color{red}REF!!!}}
+
+\newcommand{\Eqref}[1]{Eq.~\eqref{#1}}
+
+\newcommand{\pcc}{+ \mathrm{c.c.}}
+
+\newcommand{\dash}[1]{#1^{\prime}}
+\newcommand{\ddash}[1]{#1^{\prime\prime}}
+\newcommand{\dddash}[1]{#1^{\prime\prime\prime}}
+\newcommand{\ddddash}[1]{#1^{\prime\prime\prime\prime}}
+
+\newcommand{\boxlink}[2]{
+\begin{boxxx}
+\includemedialink{#1}{y}{#2}
+\end{boxxx}
+}
+
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+\newcommand{\bmquote}[1]{\ldq#1\/\rdq}
+
+\newcommand{\matlab}{MATLAB\textsuperscript{{\tiny \textregistered}}\xspace}
+\newcommand{\ansys}{ANSYS\textsuperscript{{\tiny \textregistered}}\xspace}
+
+\newcommand{\prob}{\operatorname{Pr}}
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+
+%\newcommand\nth{\textsuperscript{th}\xspace}
+\newcommand\nth{-th\xspace}
+
+\newcommand{\ddt}{\dd{t}}
+\newcommand{\dvt}{\dv{t}}
+\newcommand{\ddx}{\dd{x}}
+\newcommand{\dvx}{\dv{x}}
+
+%patial differentials:
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\ppdiff}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+
+\newcommand{\PhysModel}{%
+  {\scalebox{.6}{\includesvg{bilder_svg/icon_phys_model}}}%
+}
+
+\makeatletter
+\newcommand{\specialcell}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\ignorespaces\fi}
+\makeatother

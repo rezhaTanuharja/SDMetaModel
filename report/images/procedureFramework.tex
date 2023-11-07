@@ -1,0 +1,163 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% images/procedureFramework.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{figure}[H]
+    \centering
+    \scalebox{0.75}{
+        \begin{tikzpicture}[
+            startstop/.style={%
+                thick, rectangle, rounded corners,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\charttwid%
+            },
+            io/.style={%
+                thick, trapezium, trapezium left angle=75, trapezium right angle=105,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\chartvgap%
+            },
+            process/.style={%
+                thick, rectangle,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\charttwid%
+            },
+            blankprocess/.style={%
+                thick, rectangle,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=none, fill=none, text width=\charttwid%
+            },
+            decision/.style={%
+                thick, diamond,%
+                minimum width=\chartvgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\chartvgap%
+            },
+            arrow/.style={thick,->,>=stealth}
+        ]
+
+        % Define nodes
+        \node (start) [startstop] {%
+            Start
+        };
+        \node (input1) [io, below of=start, yshift=-\chartvgap] {$\phantom{a}$};
+        \node (ED_1) [blankprocess, below of=start, yshift=-\chartvgap] {
+            Experimental Design 1
+            % $\left\{\mathbf{X}_{1}, ..., \mathbf{X}_{n}\right\}$
+        };
+        \node (fullEval) [process, below of=ED_1, yshift=-\chartvgap] {
+            MC Simulations\\
+            Complete Plate Model
+        };
+        \node (input2) [io, right of=ED_1, xshift=\charthgap] {$\phantom{a}$};
+        \node (ED_2) [blankprocess, right of=ED_1, xshift=\charthgap] {
+            Experimental Design 2
+            % $\left\{\widetilde{\mathbf{X}}_{1}, ..., 
+            % \widetilde{\mathbf{X}}_{n}\right\}$
+        };
+        \node (subEval) [process, below of=ED_2, yshift=-\chartvgap] {
+            MC Simulations\\
+            HUCB 
+        };
+        \node (input3) [io, below of=subEval, yshift=-\chartvgap] {
+            $\phantom{a}$
+        };
+        \node (ED_3) [blankprocess, below of=subEval, yshift=-\chartvgap] {
+            Training Data
+            % $\widetilde{\mathcal{M}}\left(
+            %     \widetilde{\mathbf{X}}_{1}
+            % \right), ...,
+            % \widetilde{\mathcal{M}}\left(
+            %     \widetilde{\mathbf{X}}_{n}
+            % \right)$
+        };
+        \node (resample) [process, below of=ED_3, yshift=-\chartvgap] {
+            Random Selection of Training Data
+        };
+        \node (input4) [io, below of=resample, yshift=-\chartvgap] {
+            $\phantom{a}$
+        };
+        \node (ED_4) [blankprocess, below of=resample, yshift=-\chartvgap] {
+            Subset of Training Data
+        };
+        \node (train) [process, below of=ED_4, yshift=-\chartvgap] {
+            Train NI-RPCE Models\\
+            Regular / Sparse Models
+        };
+        \node (evalRPCE) [process, below of=train, yshift=-\chartvgap] {
+            Evaluate NI-RPCE Model Using ED 1
+        };
+        \node (input5) [io, below of=evalRPCE, yshift=-\chartvgap] {
+            $\phantom{a}$
+        };
+        \node (ED_5) [blankprocess, below of=evalRPCE, yshift=-\chartvgap] {
+            Output Estimates\\
+            Proposed Framework
+        };
+        \node (input6) [io, left of=ED_5, xshift=-\charthgap] {
+            $\phantom{a}$
+        };
+        \node (ED_6) [blankprocess, left of=ED_5, xshift=-\charthgap] {
+            Output Benchmarks
+        };
+
+        \path 
+            (ED_5) -- (ED_6) coordinate[midway] (ED_56);
+
+        \node (compare) [process, below of=ED_56, yshift=-\chartvgap] {
+            Comparison
+        };
+        \node (iterate) [decision, below of=compare, yshift=-1.2*\chartvgap] {
+            $i < N$
+        };
+        \node (stop) [startstop, below of=iterate, yshift=-1.2*\chartvgap] {Stop};
+
+        \draw [arrow] (start) -- (ED_1);
+        \draw [arrow] (ED_1) -- (fullEval);
+        \draw [arrow] (fullEval) -- (ED_6);
+        \draw [arrow] (ED_6) |- (compare);
+
+        \path (start) -- (ED_1) coordinate[midway] (midpoint_1);
+        \draw [arrow] (midpoint_1) -| (ED_2);
+        \draw [arrow] (ED_2) -- (subEval);
+        \draw [arrow] (subEval) -- (ED_3);
+        \draw [arrow] (ED_3) -- (resample);
+        \draw [arrow] (resample) -- (ED_4);
+        \draw [arrow] (ED_4) -- (train);
+        \draw [arrow] (train) -- (evalRPCE);
+        \draw [arrow] (evalRPCE) -- (ED_5);
+        \draw [arrow] (ED_5) |- (compare);
+
+        \draw [arrow] (compare) -- (iterate);
+        \draw [arrow] (iterate) -- node[right] {n} (stop) ;
+
+        \draw [thick] 
+            (iterate) -- 
+            ++(1.2*\chartvgap,0) node[midway, above] {y} coordinate (endpoint_1);
+        \draw [thick] 
+            (endpoint_1) -- node[above] {$i=i+1$}
+            ++(1.0*\charthgap,0) coordinate (endpoint_2);
+
+        \draw [arrow] 
+            (endpoint_2) |- (resample);
+
+        \path 
+            (ED_1) -- (fullEval) coordinate[midway] (point_1);
+        \path 
+            (ED_2) -- (subEval) coordinate[midway] (point_2);
+        \path 
+            (point_1) -- (point_2) coordinate[midway] (point_3);
+        \draw [thick] 
+            (point_1) -- (point_3);
+        \draw [arrow] 
+            (point_3) |- (evalRPCE);
+
+        \end{tikzpicture}
+    }
+    \caption{The Proposed Framework Evaluation Procedure Flowchart}
+    \label{flowchart: framework procedure}
+\end{figure}

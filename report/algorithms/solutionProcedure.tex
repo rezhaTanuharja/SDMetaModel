@@ -1,0 +1,75 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/solutionProcedure.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: solution procedure}
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output\,}
+    \mpiInit{} \\
+    $\dots$ \\
+    \vspace{1.0em}%
+    \tcp{All components compute summands of \eqref{schur_complement} in parallel}
+    $
+        \mathbf{S}_{B\text{local}} \longleftarrow
+        \overline{\mathbf{D}}_{BB}
+        -
+        \overline{\mathbf{D}}_{Bd}
+        \left(
+            \overline{\mathbf{D}}_{dd}
+        \right)^{-1}
+        \overline{\mathbf{D}}_{dB}
+    $ \\
+    $
+        \mathbf{F}_{B\text{local}} \longleftarrow
+        \overline{\mathbf{F}}_{B}
+        -
+        \overline{\mathbf{D}}_{Bd}
+        \left(
+            \overline{\mathbf{D}}_{dd}
+        \right)^{-1}
+        \overline{\mathbf{F}}_{d}
+    $ \\
+    \vspace{1.0em}%
+    \tcp{Gather matrices and vectors in the central process}
+    \uIf{rank $== 0$ }{
+        $\mathbf{S}_{B} \longleftarrow$
+        \mpiGather{$\mathbf{S}_{B\text{local}}$} \\
+        $\mathbf{F}_{B} \longleftarrow$
+        \mpiGather{$\mathbf{F}_{B\text{local}}$} \\
+        \vspace{1.0em}%
+        \tcp{Solve for boundary DOFs and send to all components}
+        $\mathbf{U}_{B} \longleftarrow$
+        $($\sum{$\mathbf{S}_{B}$}$)^{-1}$
+        \sum{$\mathbf{F}_{B}$} \\
+        \vspace{1.0em}%
+        \mpiBroadcast{$\mathbf{U}_{B}$}
+    }
+    \Else{
+        \tcc{Do nothing}
+    }
+    \vspace{1.0em}%
+    \tcp{All components solve for internal DOFs in parallel}
+    $
+        \mathbf{X}_{d} \longleftarrow
+        \overline{\mathbf{D}}_{dd}^{-1}
+        \left(
+            \overline{\mathbf{F}}_{d}
+            -
+            \overline{\mathbf{D}}_{dB}
+            \mathbf{U}_{B}
+        \right)
+    $ \\
+    \vspace{1.0em}%
+    $\dots$ \\
+    \mpiFinalize{}
+  \caption{Parallel Solution of Coupled Dynamic Components}
+\end{algorithm}
+\end{center}

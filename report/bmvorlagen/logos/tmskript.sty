@@ -1,0 +1,408 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Packages
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{ae}                  % Für PDF-Erstellung
+\usepackage[
+	format=hang,
+	font={footnotesize, sf},
+	labelfont={bf},
+	margin=1cm,
+	aboveskip=5pt,
+	belowskip=5pt
+	]{caption,subfig}      % mehrzeilige Captions ausrichten; subfig: untergrafiken 
+
+\usepackage[centertags]{amsmath} % AMS-Mathematik, centertags zentriert Nummer bei split
+\usepackage{amssymb}             % zusätzliche Symbole
+\usepackage{bm} 					% für fette Mathe-Symbole
+\usepackage{icomma}
+\usepackage{trfsigns} 					% z. B. für Fourier-Symbole
+%\dfourier  \Dfourier
+%\fourier  \Fourier
+%\laplace  \Laplace
+%\ztransf  \Ztransf
+
+%\usepackage{latexsym}           % verschiedene Symbole
+%\usepackage{textcomp}           % verschiedene Symbole
+     
+\usepackage{graphicx}            % zum Einbinden von Grafiken
+\usepackage[svgnames,table,hyperref]{xcolor}
+\usepackage{float}               % u.a. genaue Plazierung von Gleitobjekten mit H
+\renewcommand{\topfraction}{0.75}
+\renewcommand{\floatpagefraction}{0.75}
+\usepackage{pgf}
+\usepackage{xxcolor}
+\usepackage{transparent}
+
+\usepackage{epsfig}
+
+\usepackage{calc}
+\usepackage{enumerate}
+
+\usepackage[pdftex,pstarrows]{pict2e}
+
+\usepackage{array}
+\usepackage{listings}						% Code-Einbindungsumgebung
+%\usepackage{luximono}
+\usepackage{courier}       %verwende Courier statt cmtt als monospace-schrift
+
+\usepackage{rotating}							%braucht zum Rotieren
+
+\usepackage{setspace}            % Zeilenabstand einstellbar
+\usepackage{rotating}
+% \onehalfspacing                  % eineinhalbzeilig einstellen
+\usepackage{longtable}					% Ermöglicht Tabellen die über den Seitenumbruch gehen (s. Symbolverzeichnis)
+
+\usepackage{scrpage2}            % Kopf und Fusszeilen-Layout passt besser zur Dokumentklasse KOMA-Skript (scrbook) als das Pake fancyhdr, sonst ziemlich gleichwertig
+
+%%% Literatur und sonstige Referenzen
+\usepackage{natbib} %braucht man für natdin.bst (Literaturzitate mit Namen und Jahr im Text)
+\setcitestyle{square,aysep={}}             %Eckige Klammern um Zitat								
+%\citet{jon90} 	->  Jones et al. (1990)
+%\citet[chap.~2]{jon90} 	-> Jones et al. (1990, chap. 2)
+%\citep{jon90} 		-> (Jones et al., 1990)
+%\citep[chap.~2]{jon90} 		->   (Jones et al., 1990, chap. 2)
+%\citep[see][]{jon90} 		->		 (see Jones et al., 1990)
+%\citep[see][chap.~2]{jon90} 		->		 (see Jones et al., 1990, chap. 2)
+%\citet*{jon90} 		->		 Jones, Baker, and Williams (1990)
+%\citep*{jon90} 		->		 (Jones, Baker, and Williams, 1990)
+%\usepackage[german,refpage,intoc]{nomencl}        % Erweiterung für Symbolverzeichnis
+
+\usepackage{makeidx}							%für die Indexerstellung
+\usepackage[rightbars]{changebar}
+\setcounter{changebargrey}{45}
+\typearea[current]{current}        % Neuberechnung des Satzspiegels mit alten Werten nach Änderung von Zeilenabstand,etc
+\headheight = 1.3cm
+\setlength{\mathindent}{0.5cm}
+
+%\addtolength {\textheight}{-0.5cm}
+%\addtolength {\footskip}{1.5cm}
+%\addtolength {\footskip}{0.5cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% New- and Renew-Commands
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Automatische svg-to-pdf-Erzeugung:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% hierfür wird benötigt: Kommandozeilen-Parameter -shell-escape
+% inkscape-Ordner muss im PATH angehängt werden
+
+\newcommand{\executeiffilenewer}[3]{%
+\ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+{\pdffilemoddate{#2}}>0%
+{\immediate\write18{#3}}\fi%
+}
+\newcommand{\includesvg}[1]{%
+\executeiffilenewer{#1.svg}{#1.pdf}%
+{inkscape -z -C --file=#1.svg %
+--export-pdf=#1.pdf --export-latex}%
+\input{#1.pdf_tex}%
+\ifthenelse{\equal{\smodus}{dozent}}{%
+\begingroup
+\catcode`_=11%
+%\let_\textunderscore%
+\begin{rotate}{82}\fbox{\ttfamily\tiny\scantokens\expandafter{#1.svg}}\end{rotate}%
+\endgroup%
+}{}
+}
+
+
+% Features für Lückenskript
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\luecke}[1]{\setlength{\fboxrule}{1pt}\setlength{\fboxsep}{2pt}\ifthenelse{\equal{\smodus}{student}}%
+{{\ifmmode\mbox{\textcolor{white}{\texttransparent{0.01}{\Large $#1$.}}}%
+\else \fcolorbox{white}{white}{\textcolor{white}{\texttransparent{0.01}{\Large #1}}} \fi}}%
+{\ifthenelse{\equal{\smodus}{dozent}}{{\ifmmode\mbox{\fcolorbox{black}{lightgray}{ \Large $#1$}} %
+\else \fcolorbox{black}{lightgray}{ \Large #1} \fi}}%
+{#1}}}
+
+\newsavebox{\boxluecke} 
+\newenvironment{pluecke} 
+{%Anfang
+\setlength{\fboxrule}{1pt}\setlength{\fboxsep}{2pt}%
+\ifthenelse{\equal{\smodus}{student}}{% wenn student
+  \ifmmode \begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}$%
+  \else \begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth} \fi%
+  }{ % wenn nicht student
+    \ifthenelse{\equal{\smodus}{dozent}}{% wenn dozent
+      \ifmmode \begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}$%
+      \else \begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}\fi%
+    }{ % wenn weder student noch dozent
+  }}}
+{%Ende
+\ifthenelse{\equal{\smodus}{student}}{% wenn student
+  \ifmmode $ \end{minipage}\end{lrbox} %
+    \fcolorbox{white}{white}{\textcolor{white}{\texttransparent{0.01}{\usebox{\boxluecke}}}}
+  \else \end{minipage}\end{lrbox}%
+    \fcolorbox{white}{white}{\textcolor{white}{\texttransparent{0.01}{\usebox{\boxluecke}}}} \fi
+  }{% wenn nicht student
+    \ifthenelse{\equal{\smodus}{dozent}}{% wenn dozent
+    \ifmmode $ \end{minipage}\end{lrbox}\fcolorbox{black}{lightgray}{\usebox{\boxluecke}}
+    \else \end{minipage}\end{lrbox}\fcolorbox{black}{lightgray}{\usebox{\boxluecke}}\fi
+  }{% wenn weder student noch dozent
+  }}}
+
+
+% Features für Lampenboxen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\lampenboxx}[2][]{\vspace{1ex}%
+\refstepcounter{lampennummer}#1%
+\setlength{\fboxruletemp}{\fboxrule}%
+\setlength{\fboxrule}{1.5pt}%
+\setlength{\fboxseptemp}{\fboxsep}%
+\setlength{\fboxsep}{0pt}%
+\fcolorbox{black!50!white}{black!10!white}{
+\begin{minipage}{\linewidth}\setlength{\fboxsep}{6pt}\hspace{-5pt}\vspace{-1pt}\colorbox{black!50!white}{\textcolor{white}{\textsf{\textbf{\lampentext~\thelampennummer:}}}}\\[2mm]
+\begin{minipage}{0.1\linewidth}\centering\includegraphics[scale=1.4]{lampe}\end{minipage}%
+\begin{minipage}{0.9\linewidth-6pt}#2\\[-2mm]\end{minipage}\end{minipage}}%
+\vspace{1ex}%
+\setlength{\fboxrule}{\fboxruletemp}%
+\setlength{\fboxsep}{\fboxseptemp}%
+}
+
+\newsavebox{\boxlamp} 
+\newenvironment{lampenbox} 
+{%Anfang
+\begin{lrbox}[10cm]{\boxlamp}\begin{minipage}{0.1\linewidth}\includegraphics{lampe}\end{minipage}\begin{minipage}{0.9\linewidth}}
+{%Ende
+\end{minipage}\end{lrbox}\fcolorbox{black}{lightgray}{\usebox{\boxlamp}}
+}
+
+% Features für Beispiele
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{beispiel}[1][]
+{%Anfang
+%{\textbf{\beispieltext~\thechapter.\thebeispielnummer:~#1}}\\
+%\nopagebreak%
+\vspace{1.0ex}
+\refstepcounter{beispielnummer}
+\begin{minipage}{0.10\linewidth}\centering\includegraphics[scale=0.65]{calculator}\end{minipage}
+\begin{minipage}{0.90\linewidth}\subsubsection*{\beispieltext~\thebeispielnummer:~#1}\end{minipage}\sffamily\nopagebreak[4]\newline%
+}
+{%Ende
+\rmfamily
+\vspace{1.5ex}
+}
+
+
+
+
+% sonstige Definitionen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\myfourier}{\mbox{\unitlength1cm
+\begin{picture}(1.5,0.2)\put(0.3,0.1){\circle{0.2}}
+\thicklines
+\put(0.4,0.1){\line(1,0){0.7}}\put(1.2,0.1){\circle*{0.2}}
+\end{picture}}}
+
+\newcommand{\myinvfourier}{\mbox{\unitlength1cm
+\begin{picture}(1.5,0.2)\put(0.3,0.1){\circle*{0.2}}
+\thicklines
+\put(0.4,0.1){\line(1,0){0.7}}\put(1.2,0.1){\circle{0.2}}
+\end{picture}}}
+
+\newcommand{\stz}{\rule[-1.5mm]{0mm}{5mm}}
+\newcommand{\stze}{\rule[-1.5mm]{0mm}{5.5mm}}
+\newcommand{\stzj}{\rule[-5mm]{0mm}{14mm}}
+\newcommand{\stzb}{\rule[-1mm]{0mm}{5mm}}  
+\newcommand{\D}{\displaystyle}
+\newcommand{\SCS}{\scriptstyle}
+\newcommand{\SSS}{\scriptscriptstyle}
+\newcommand{\T}{\textstyle}
+\newcommand {\myarray}[1]{\ensuremath{\mathbf{#1}}} 
+\newcommand {\mymatrix}[1]{\ensuremath{\left[#1\right]}} 
+\newcommand {\myvector}[1]{\ensuremath{\bm{\mathrm{#1}}}} 
+\newcommand {\jkvector}[1]{\ensuremath{\bm{#1}}} 
+\newcommand {\einheit}[1]{\ensuremath{\mathrm{\textstyle\left[#1\right]}}} 
+\newcommand{\Grad}{\ifmmode \mGrad \else  $\hspace{-0.3em}^\circ$\,  \fi}
+\newcommand{\mGrad}{\ensuremath{^\circ}} % geht noch besser
+\newcommand\infint{\int\limits_{-\infty}^{\infty}}
+\newcommand {\lived}[2]{($\ast$#1, $\dagger$#2)} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\geteilt}[3]{%
+\begin{minipage}{#1\linewidth}
+#2
+\end{minipage}\begin{minipage}{\linewidth-#1\linewidth}
+#3
+\end{minipage}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\deckblatt}{
+\thispagestyle{empty}
+\newlength{\headsepold}
+\setlength{\headsepold}{\headsep}
+\setlength{\headsep}{-1.0cm}
+\begin{center}
+{\sffamily
+\fontsize{18}{18}\selectfont 
+\includegraphics[width=1.2cm, keepaspectratio=true]{bvlogo} \includegraphics[width=1.5cm, keepaspectratio=true]{bmlogo} \hfill 
+	\begin{minipage}[b]{80mm}
+ \small \centering Lehrstuhl für Baumechanik - TU München \\ \lehrer
+  \end{minipage}
+ \hfill \includegraphics*[width=2cm, keepaspectratio=true]{tumlogo}
+\vspace{0.5cm}
+\hrule
+\begin{center}
+\vspace{5cm}
+{\large \textbf { \veranstaltung }}\\[4 pt]
+%\sc
+\vspace{0.5cm}
+{\semester}\\
+\end{center}
+}
+\end{center}
+\enlargethispage{3.5cm}
+\vfill
+\begin{flushleft}
+\includegraphics[height=3.1cm, keepaspectratio=true]{deinvorteil}
+\end{flushleft}
+\newpage
+\setlength{\headsep}{\headsepold}
+}
+
+\newcommand{\Index}[1]{#1\index{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Definition von Kopf- und Fußzeilen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\headfont}{\scriptsize\normalfont\sffamily}    % Kolumnentitel serifenlos
+\renewcommand{\pnumfont}{\footnotesize\normalfont\ttfamily\bfseries}    % Seitennummern typewriter und fett 
+\pagestyle{scrheadings}
+\lehead[{\includegraphics[height=0.85cm, keepaspectratio=true]{bmlogo_sr_sw} }]{{\includegraphics[height=0.85cm, keepaspectratio=true]{bmlogo_sr_sw} }}
+\lohead[{\includegraphics[height=0.85cm, keepaspectratio=true]{bmlogo_sr_sw} }]{{\includegraphics[height=0.85cm, keepaspectratio=true]{bmlogo_sr_sw} }}
+%
+\rehead[{\includegraphics[height=0.75cm, keepaspectratio=true]{tumlogo_out_sw} }]{{\includegraphics[height=0.75cm, keepaspectratio=true]{tumlogo_out_sw} } }
+\rohead[{\includegraphics[height=0.75cm, keepaspectratio=true]{tumlogo_out_sw} }]{{\includegraphics[height=0.75cm, keepaspectratio=true]{tumlogo_out_sw} }}
+%
+\lofoot[\begin{spacing}{1.0}~ \\ \veranstaltung \\ \semester \end{spacing}]{\begin{spacing}{1.0}~ \\ \veranstaltung \\ \semester \end{spacing}}
+\lefoot[\begin{spacing}{1.0}~ \\ \veranstaltung \\ \semester \end{spacing}]{\begin{spacing}{1.0}~ \\ \veranstaltung \\ \semester \end{spacing}}
+%
+\rofoot[~ \\ \pagemark]{\begin{spacing}{1.0} ~ \\  \leftmark \\ \pagemark\end{spacing}}
+\refoot[~ \\ \pagemark]{\begin{spacing}{1.0} ~ \\  \leftmark \\ \pagemark\end{spacing}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%Stildefinition von listings, Setzen von Parametern verschiedener pakete
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lstdefinestyle{cppcode}{language={[Visual]C++},%
+  basicstyle=\ttfamily\footnotesize,%
+  keywordstyle={\color{Navy} \bfseries},%
+  identifierstyle={\color{DarkRed}},%
+  commentstyle={\color{DarkOrange!50!black}\slshape},%
+  stringstyle={\color{DarkGreen}},%
+  showstringspaces=false,%
+  backgroundcolor={\color{LightSkyBlue!40}},%
+  columns=fixed,%
+  keepspaces=true,%
+  basewidth={0.55em},%
+  frame=shadowbox,%
+  rulesepcolor=\color{Gray},%
+  breaklines=true,%
+  numbers=left,%
+  numberstyle=\tiny,%
+  escapeinside={°(}{)°},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+\lstdefinestyle{fort}{language={[95]Fortran},%
+  basicstyle=\ttfamily\small,%
+  keywordstyle={\color{Navy} \bfseries},%
+  identifierstyle={\color{DarkRed}},%
+  commentstyle={\color{DarkOrange!50!black}\slshape},%
+  stringstyle={\color{DarkGreen}},%
+  showstringspaces=false,%
+  backgroundcolor={\color{LightSkyBlue!40}},%
+  columns=fullflexible,%
+  keepspaces=true,%
+  basewidth={0.6em},%
+  rulesepcolor=\color{Gray},%
+  frame=shadowbox,%
+  escapeinside={°(}{)°},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+
+\lstdefinestyle{pseudocode}{basicstyle=\ttfamily\small,%
+  columns=fixed,%
+  keepspaces=true,%
+  basewidth={0.55em},%
+  frame=shadowbox,%
+  backgroundcolor={\color{LightSkyBlue!40}},%
+  rulesepcolor=\color{Gray},%
+  escapeinside={°(}{)°},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+\lstdefinestyle{maple}{%
+  basicstyle=\sffamily\small\color{Red}\bfseries,%
+  rulecolor=\color{Black},%
+  columns=fixed,%
+  keepspaces=true,%
+  basewidth={0.55em},%
+  frame=shadowbox,%
+  numbers=left,%
+  numberstyle=\tiny\color{Black},%
+  numberblanklines=false,%
+  rulesepcolor=\color{Gray},%
+  breaklines=true,%
+  breakautoindent=true,%
+  backgroundcolor={\color{LightBlue!60}},%
+  rulesepcolor=\color{Gray},%
+  escapeinside={°(}{)°},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+\lstdefinestyle{matlab}{language={Matlab},%
+  basicstyle=\ttfamily\small,%
+  keywordstyle={\color{Navy} \bfseries},%
+  identifierstyle={\color{DarkRed}},%
+  commentstyle={\color{DarkOrange!50!black}\slshape},%
+  stringstyle={\color{DarkGreen}},%
+  showstringspaces=false,%
+  backgroundcolor={\color{LightSkyBlue!30}},%
+  breaklines=true,%
+  breakautoindent=true,%
+  columns=fullflexible,%
+  keepspaces=true,%
+  basewidth={0.6em},%
+  rulesepcolor=\color{Gray},%
+  frame=shadowbox,%
+  numbers=left,%
+  numberstyle=\tiny\color{Black},%
+  escapeinside={°(}{)°},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+\newcounter{lampennummer}[chapter]
+\setcounter{lampennummer}{1}
+\newcounter{beispielnummer}[chapter]
+\setcounter{beispielnummer}{1}
+%\makeatletter
+%\renewcommand{\p@lampennummer}{\thechapter.}
+%\renewcommand{\p@beispielnummer}{\thechapter.}
+%\makeatother
+\renewcommand{\thelampennummer}{\thechapter.\arabic{lampennummer}}
+\renewcommand{\thebeispielnummer}{\thechapter.\arabic{beispielnummer}}
+\newlength{\fboxruletemp}
+\newlength{\fboxseptemp}

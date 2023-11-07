@@ -1,0 +1,44 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/substructuring.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Dynamic Substructuring}
+\label{sec: substructuring}
+
+Dynamic substructuring methods treat a complex structure as an assembly of components and divide the DOFs into two classifications: "internal DOFs" refers to DOFs that belong to exactly one component, while "boundary DOFs" refers to the rest.
+{The partitioned dynamic equation of motion for component $(r)$ in the frequency domain is}%
+\begin{equation}
+    \begin{bmatrix}
+        \mathbf{D}_{ii}^{(r)} & \mathbf{D}_{ib}^{(r)} \\
+        \mathbf{D}_{bi}^{(r)} & \mathbf{D}_{bb}^{(r)}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{U}_{i}^{(r)} \\
+        \mathbf{U}_{b}^{(r)}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \mathbf{F}_{i}^{(r)} \\
+        \mathbf{F}_{b}^{(r)}
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+        \mathbf{0} \\
+        \mathbf{G}_{b}^{(r)}
+    \end{pmatrix},
+    \label{initial_eq_of_motion}
+\end{equation}
+where $\mathbf{D}=\mathbf{K}-\omega^{2}\mathbf{M}+i\omega\mathbf{C}$ denotes the dynamic stiffness and $\mathbf{G}$ represents the interaction force with other components.
+The subscripts i and b in the equation refer to internal and boundary DOFs, respectively.
+The dependency on frequency $\omega$ is intentionally absent in the equation to keep it concise.
+In addition, the rest of this thesis omits the superscripts $(r)$ when discussing only one component for clarity.
+
+\input{chapters/literature/substructuring/craigBampton}
+\input{chapters/literature/substructuring/enhancedCB}
+\input{chapters/literature/substructuring/solutionCB}

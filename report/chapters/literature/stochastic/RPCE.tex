@@ -1,0 +1,135 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/stochastic/RPCE.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Rational PCE Model}
+\label{ssec: RPCE}
+
+PCE requires a large number of basis functions to accurately represent the highly nonlinear behavior of FRFs near the structure's eigenfrequencies.
+As the subsection above mentions, the large number of basis functions leads to a large number of required samples, thus increasing the overall computational cost.
+{An alternative is approximating FRFs with ratios of PCEs:}%
+\begin{equation}
+    H_{pq} \left( \omega, \mathbf{\Xi} \right)
+    \approx
+    \frac{
+        \sum_{k\in S_{u}}{
+            u_{pqk}\left(\omega\right)
+            \cdot
+            \Psi_{k} \left( \mathbf{\Xi} \right)
+        }
+    }{
+        \sum_{l\in S_{v}}{
+            v_{pql}\left(\omega\right)
+            \cdot
+            \Psi_{l} \left( \mathbf{\Xi} \right)
+        }
+    }
+    \quad
+    S_{u} = \left\{1, ..., N_{u}\right\},
+    \;
+    S_{v} = \left\{1, ..., N_{v}\right\}
+    .
+    \label{RPCE_approx}
+\end{equation}
+The mean square error is typically the prime candidate to be an objective function in a linear regression problem.
+However, the rational form of RPCE makes finding its minima less trivial.
+{In \cite{schneider2020polynomial}, the authors define an alternative objective function for the minimization problem:}%
+\begin{equation}
+    \left\{
+        \mathbf{u}_{pq},
+        \mathbf{v}_{pq}
+    \right\}
+    =
+    \underset{
+        \left\{
+            \hat{\mathbf{u}},
+            \hat{\mathbf{v}}
+        \right\}
+        \in 
+        \mathbb{C}^{N_{u}+N_{v}}
+    }{\arg\min}
+    \;
+    \frac{1}{N}
+    \sum_{i=0}^{N}
+    \left\|
+        H_{pq} \left( \mathbf{\Xi}_{i} \right)
+        \cdot
+        \sum_{l\in S_{v}}{
+            \hat{v}_{l} \Psi_{l} \left( \mathbf{\Xi}_{i} \right)
+        }
+        -
+        \sum_{k\in S_{u}}{
+            \hat{u}_{k} \Psi_{k} \left( \mathbf{\Xi}_{i} \right)
+        }
+    \right\|_{2}^{2},
+\end{equation}
+where the dependency on frequency is intentionally missing to keep it concise.
+{Subsequently, they show that the solution satisfies}%
+\begin{equation}
+    \begin{bmatrix}
+        \mathbf{\Psi}_{U}^{T}
+        \mathbf{\Psi}_{U}
+        &
+        -\mathbf{\Psi}_{U}^{T}
+        \mathbf{M}
+        \mathbf{\Psi}_{V}
+        \\
+        -\mathbf{\Psi}_{V}^{T}
+        \mathbf{M}^{H}
+        \mathbf{\Psi}_{U}
+        &
+        \mathbf{\Psi}_{V}^{T}
+        \mathbf{M}^{H}
+        \mathbf{M}
+        \mathbf{\Psi}_{V}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{u}_{pq} \\
+        \mathbf{v}_{pq}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \mathbf{0} \\
+        \mathbf{0}
+    \end{pmatrix},
+    \label{SVD problem}
+\end{equation}
+{where}%
+\begin{equation}
+    \left[\mathbf{\Psi}_{U}\right]_{ij}
+    =
+    \Psi_{j} \left(\mathbf{\Xi}_{i}\right)
+    \quad
+    \forall
+    \quad
+    (i,j)\in\left\{1, ..., N\right\} \otimes
+    \left\{1, ..., N_{u}\right\},
+\end{equation}
+\vspace{-3.0em}
+\begin{equation}
+    \left[\mathbf{\Psi}_{V}\right]_{ij}
+    =
+    \Psi_{j} \left(\mathbf{\Xi}_{i}\right)
+    \quad
+    \forall
+    \quad
+    (i,j)\in\left\{1, ..., N\right\} \otimes
+    \left\{1, ..., N_{v}\right\},
+\end{equation}
+{and}%
+\begin{equation}
+    \mathbf{M}
+    =
+    \text{diag} \left(
+        H_{pq} \left( \mathbf{\Xi}_{1} \right),
+        H_{pq} \left( \mathbf{\Xi}_{2} \right),
+        ..., 
+        H_{pq} \left( \mathbf{\Xi}_{N} \right)
+    \right).
+\end{equation}

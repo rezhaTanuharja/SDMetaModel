@@ -1,0 +1,31 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/sparseRPCE/inclusionCriteria.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Basis Inclusion Criteria}
+\label{ssec: inclusion criteria}
+
+The inclusion or exclusion of the basis functions is based on their contribution to the approximation's quality.
+A metric to quantify the approximation's quality is necessary to do this.
+{This study uses the coefficient of determination:}%
+\begin{equation}
+    R^{2}
+    =
+    1 -
+    \left(1-\frac{1}{n}\right)
+    \cdot
+    \frac{
+        \left\|\mathbf{x}-\hat{\mathbf{x}}\right\|_{2}^{2}
+    }{
+        \left\|\mathbf{x}-\overline{\mathbf{x}}\right\|_{2}^{2}
+    },
+\end{equation}
+where $\mathbf{x}$ is the actual model outputs, $\overline{\mathbf{x}}$ is the average of the model outputs, and $\hat{\mathbf{x}}$ is the approximation.
+This study defines a model to be better than another if it has a higher coefficient of determination.
+A perfect model, i.e., a model that can produce $\hat{\mathbf{x}}=\mathbf{x}$ has a coefficient of determination of unity.

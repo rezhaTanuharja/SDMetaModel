@@ -1,0 +1,21 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/sparseRPCE/crossValidation.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Cross Validation}
+\label{ssec: cross validation}
+
+A common problem of a collocation-based surrogate model is overfitting, i.e., approximating the outputs well on a given sample set but poorly everywhere else.
+One possible mitigation is the cross-validation technique: one splits the sample set into a training and a test set, builds the surrogate model using the training set, and subsequently evaluates its approximation quality using the test set.
+
+This study uses a particular class of cross-validation techniques: the leave-one-out cross-validation.
+The procedure approximates an output realization using an RPCE model trained with all input realizations except one that is associated with that particular output.
+Algorithm \ref{alg: looRPCE} illustrates this procedure.
+
+\input{algorithms/looRPCE}

@@ -1,0 +1,71 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/craigBampton.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: CB method}
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output\,}
+    \vspace{1.0em}%
+    \Input{%
+        $\mathbf{M}$ is the component's mass matrix \newline
+        $\mathbf{K}\:$ is the component's stiffness matrix \newline
+        $s_{i}\:\:$ is indices of the internal DOFs \newline
+        $s_{b}\:\:$ is indices of the boundary DOFs
+    }
+    \vspace{1.0em}%
+    \Output{%
+        $\mathbf{T}$ is the transformation matrix
+    }
+    \vspace{1.0em}%
+    \craigBampton{%
+        $\mathbf{M}$, $\mathbf{K}$, $s_{i}$, $s_{b}$
+    } \Begin{
+        \vspace{1.0em}%
+        \tcp{Compute normal modes and select dominant modes}
+        $\mathbf{\Phi}_{n} \longleftarrow$
+        \genEigSol{$
+            \mathbf{M}\left[s_{i},s_{i}\right], 
+            \mathbf{K}\left[s_{i},s_{i}\right]
+        $} \\
+        $\mathbf{\Phi}_{d} \longleftarrow$
+        \modeSelector{$
+            \mathbf{\Phi}_{n}
+        $} \\
+        \vspace{1.0em}%
+        \tcp{Compute constraint modes}
+        $
+            \mathbf{\Phi}_{b} \longleftarrow
+            -\left(\mathbf{K}\left[s_{i},s_{i}\right]\right)^{-1}
+            \mathbf{K}\left[s_{i},s_{b}\right]
+        $ \\
+        \vspace{1.0em}%
+        \tcp{Assemble transformation matrix}
+        $
+            \mathbf{T} \longleftarrow
+            \left[
+                \begin{bmatrix}
+                    \mathbf{\Phi}_{d} &
+                    \mathbf{\Phi}_{c}
+                \end{bmatrix}
+                \begin{bmatrix}
+                    \phantom{x}\mathbf{0}\phantom{.} &
+                    \mathbf{I}\phantom{x}
+                \end{bmatrix}
+            \right]
+        $ \\
+        \vspace{1.0em}% 
+        \Return{$\mathbf{T}$} \\
+        \vspace{1.0em}%
+   }
+    \vspace{1.0em}%
+  \caption{Craig-Bampton Transformation Matrix's Computation}
+\end{algorithm}
+\end{center}

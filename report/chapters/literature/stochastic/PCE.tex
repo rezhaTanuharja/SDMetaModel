@@ -1,0 +1,98 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/stochastic/PCE.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Polynomial Chaos Expansion}
+\label{ssec: PCE}
+
+Using MCS to estimate the probabilistic characteristics of FRFs is costly because one needs to compute and invert the dynamic stiffness matrix once for each sample in each frequency of interest.
+A computational cost reduction is possible by approximating the FRFs with surrogate models instead.
+{One such surrogate model is the PCE, i.e., an approximation using a linear combination of multivariate basis functions:}%
+\begin{equation}
+    \mathbf{H} \left( \omega, \mathbf{\Xi} \right)
+    =
+    \left(
+        \mathbf{D} \left(\omega, \mathbf{\Xi}\right)
+    \right)^{-1}
+    \approx
+    \sum_{k\in S}{
+        \Psi_{k} \left(\mathbf{\Xi}\right)
+        \cdot
+        \mathbf{H}_{k} \left(\omega\right)
+    },
+    \quad
+    S = \left\{1, ..., N_{p}\right\}
+    \label{PCE_approx1}
+\end{equation}
+{or, in component notation:}%
+\begin{equation}
+    H_{pq} \left(\omega, \mathbf{\Xi}\right)
+    \approx
+    \sum_{k\in S}{
+        \Psi_{k} \left(\mathbf{\Xi}\right)
+        \cdot
+        H_{pqk} \left(\omega\right)
+    },
+    \quad
+    S = \left\{1, ..., N_{p}\right\}.
+    \label{PCE_approx2}
+\end{equation}
+{In the PCE formulation, the basis functions $\Psi_{k}\left(\mathbf{\Xi}\right)$ are orthogonal in the following sense:}%
+\begin{equation}
+    \int_{\mathbf{\Xi}}{
+        \Psi_{p} \left( \mathbf{\Xi} \right)
+        \Psi_{q} \left( \mathbf{\Xi} \right)
+        \mathcal{P} \left( \mathbf{\Xi} \right)
+        \;
+        d\mathbf{\Xi}
+    }
+    =
+    0
+    \quad
+    \forall
+    \quad
+    p \neq q,
+\end{equation}
+where $\mathcal{P} \left( \mathbf{\Xi} \right)$ is the multivariate probability density function of the random inputs.
+{If the random inputs are independent standard normal variables, one can use products of Hermite polynomials:}%
+\begin{equation}
+    \Psi_{k} \left(\mathbf{\Xi}\right)
+    =
+    \prod_{j=1}^{m}{
+        {He}_{k_{j}} \left(\xi_{j}\right)
+    }.
+    \label{prob Hermite products}
+\end{equation}
+Various approaches exist to obtain the unknown coefficients $H_{pqk}$.
+{This study focuses on the collocation approach: one evaluates the FRFs using a set of samples $\left\{\mathbf{\Xi}_{i}, i = 1, ..., N_{sample}\right\}$ and select the coefficients that minimize a cost function, e.g., the mean square error:}%
+\begin{equation}
+    \left\{
+        H_{pqk}, k \in S
+    \right\}
+    =
+    \underset{\hat{H}_{k}, \; k \in S}{\arg\min}
+    \;
+    \frac{1}{N_{sample}}
+    \sum_{i=0}^{N_{sample}}
+    \left\|
+        H_{pq} \left(\omega, \mathbf{\Xi}_{i}\right)
+        -
+        \sum_{k\in S}{
+            \Psi_{k} \left(\mathbf{\Xi}_{i}\right)
+            \cdot
+            \hat{H}_{k} \left(\omega\right)
+        }
+    \right\|_{2}^{2}.
+    \label{PCE_min}
+\end{equation}
+One can use least square regression to solve \eqref{PCE_min}.
+While this approach still requires multiple evaluations of the FRFs, the underlying assumption is $N_{sample}\ll N_{mcs}$.
+Thus, a considerable reduction in computational cost is possible.
+Algorithm \ref{alg: PCE} illustrates an MCS using PCE to approximate the FRFs.
+\input{algorithms/PCE}

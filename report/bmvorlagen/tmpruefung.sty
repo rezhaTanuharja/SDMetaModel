@@ -1,0 +1,348 @@
+%
+% Stylefile für BM-Prüfungen
+%
+% Version 1.4.1 04.08.2017 Julian Freisinger
+% \usepackage{svg}
+% Selbst geschriebenen include svg entfernt
+% Umsortierung
+%
+% Version 1.4.1 30.05.2011 Johannes Kreutz
+%  - \usepackage[slantedGreek]{mathptmx}
+%
+% Version 1.4 28.02.2011 Johannes Kreutz
+%  - \svginclude
+%  - \usepackage{bm}
+%
+% Version 1.3.1 02.09.2010 Johannes Kreutz
+%  - Bugfix bei den Überschriften: Blanks in der ersten Aufgabenzeile beseitigt
+%
+% Version 1.3 30.08.2010 Johannes Kreutz
+%  - Karos abschaltbar mit \setcounter{karos}{0}
+%  - Bugfix bei \karofill%
+%
+% Version 1.2.1 16.08.2010 Johannes Kreutz
+%  - Aufzählungsstile auch bei allgemeinen Aufgaben konsistent
+%
+% Version 1.2 03.08.2010 Johannes Kreutz
+%  - Allgemeine Aufgaben mit extra Zaehler
+%  - Erzeugung der Aufgabentabelle aus .tab file
+%
+% Version 1.1 08.07.2010 Johannes Kreutz
+%  - mathptmx für Postscript-Schriften wie in Corel
+%  - Layout Deckblätter
+%
+% Version 1.0 21.06.2010 Johannes Kreutz
+% - alles
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages Laden
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[ansinew]{inputenc}
+\usepackage[scaled=0.9]{helvet}
+\fontfamily{helvet}\selectfont
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{array}
+\usepackage{listings}														% Code-Einbindungsumgebung
+\usepackage[svgnames,table,hyperref]{xcolor}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{icomma}
+\usepackage{graphicx}
+\usepackage{pgf}
+\usepackage{xxcolor}
+\usepackage{cases}
+\usepackage{ifthen}
+\usepackage{calc}
+\usepackage{fancyhdr}
+\usepackage{totpages}
+\usepackage{float}
+\usepackage{svg}
+
+\ifthenelse{\isundefined{\thepostscr}}{\usepackage[slantedGreek]{mathptmx}}{}
+\ifthenelse{\equal{\sprache}{de}}{\usepackage{ngerman}}{}
+
+\voffset -2.5cm
+\hoffset -2cm
+\textheight 25.2cm
+\textwidth 17cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Seitenstile
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\sffamily \footnotesize \ifthenelse{\value{karos} > 0}{ \seitevon{\thepage}{\ref{TotPages}}}{\veranstaltung~\semester}}
+\renewcommand{\headrulewidth}{0pt}
+\parindent0pt
+\setlength{\mathindent}{0.5cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Aufzählungsstile: 2. Ebene immer a) b) c)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\theenumii}{\alph{enumii}}
+\renewcommand{\labelenumii}{\textbf{\theenumii)}}
+\renewcommand{\p@enumi}{}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% New- and Renew-Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\D}{\displaystyle}
+\newcommand{\T}{\textstyle}
+\newcommand{\myfourier}{\unitlength1cm
+\begin{picture}(1.5,0.2)\put(0.3,0.1){\circle{0.2}}
+\thicklines
+\put(0.4,0.1){\line(1,0){0.7}}\put(1.2,0.1){\circle*{0.2}}
+\end{picture}}
+
+\newcommand{\myinvfourier}{\unitlength1cm
+\begin{picture}(1.5,0.2)\put(0.3,0.1){\circle*{0.2}}
+\thicklines
+\put(0.4,0.1){\line(1,0){0.7}}\put(1.2,0.1){\circle{0.2}}
+\end{picture}}
+
+\newcommand{\stz}{\rule[-1.5mm]{0mm}{5mm}}
+\newcommand{\stze}{\rule[-1.5mm]{0mm}{5.5mm}}
+\newcommand{\stzb}{\rule[-1mm]{0mm}{5mm}}
+\newcommand {\myvector}[1]{\ensuremath{\bm{#1}}}
+\newcommand {\mymatrix}[1]{\ensuremath{\underline{\underline{#1}}}}
+\newcommand {\einheit}[1]{\ensuremath{\mathrm{#1}}} 
+\newcommand{\Grad}{\ifmmode \mGrad \else  $\hspace{-0.3em}^\circ$\,  \fi}
+\newcommand{\mGrad}{\ensuremath{^\circ}} % geht noch besser
+\newcommand\infint{\int\limits_{-\infty}^{\infty}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sprachunterscheidungen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\vorname}{\ifthenelse{\equal{\sprache}{de}}{Vorname}{First Name}}
+\newcommand{\nachname}{\ifthenelse{\equal{\sprache}{de}} {Nachname}{Last Name}}
+\newcommand{\matrikelnummer}{\ifthenelse{\equal{\sprache}{de}} {Matrikelnummer}{Matr. Number}}
+\newcommand{\studiengang}{\ifthenelse{\equal{\sprache}{de}} {Studiengang}{Fields of Study}}
+\newcommand{\sitzplatz}{\ifthenelse{\equal{\sprache}{de}} {Sitzplatz}{Seat}}
+\newcommand{\aufgabewort}{\ifthenelse{\equal{\sprache}{de}} {Aufgabe}{Problem}}
+\newcommand{\hinweisarbeitszeit}{\ifthenelse{\equal{\sprache}{de}} {Bearbeitungszeit \ref{bearbeitungszeit}~Min.}{Examination time \ref{bearbeitungszeit}~min.}}
+\newcommand{\arbeitszeit}[1]{\ifthenelse{\equal{\sprache}{de}} {(ca. #1~Min.)}{(approx. #1~min.)}}
+\newcommand{\seitevon}[2]{\ifthenelse{\equal{\sprache}{de}} {Seite #1 von #2}{page #1 of #2}}
+\newcommand{\allgbuchst}{\ifthenelse{\equal{\sprache}{de}}{A}{G}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Karoseite -> vgl auch bm_karos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Karoseite
+\newcommand{\karoseite}{
+%\newpage
+%\enlargethispage{10cm}
+%\vfill
+\ifthenelse{\value{karos} > 0}{
+\begin{pgfpicture}{0cm}{0cm}{17.5cm}{25.2cm}
+\begin{colormixin}{50!white}
+\pgfgrid[stepx=0.5cm,stepy=0.5cm]{\pgfxy(0,0)}{\pgfxy(17.5,25.0)}
+\end{colormixin}
+\end{pgfpicture}}{}
+}
+
+% Karofill
+\newcommand{\karofill}{\vfill
+\ifthenelse{\value{karos} > 0}{
+\setlength{\hochzaehl}{0cm}
+\setlength{\seitenrest}{\textheight-\pagetotal-\lineskip-1.0cm}
+\setcounter{restcm}{0}  
+\ifthenelse{\lengthtest{\seitenrest>4cm}}{
+  %wieviele Kaestchen haben noch Platz
+  \whiledo{\lengthtest{\hochzaehl<\seitenrest}}{ \addtolength{\hochzaehl}{0.5cm}  \stepcounter{restcm}}
+
+  \begin{pgfpicture}% {0cm}{0cm}{17.5cm}{\textheight-\pagetotal-\lineskip-1cm}
+    \pgfsetyvec{\pgfpoint{0cm}{0.5cm}}
+    \begin{colormixin}{50!white}
+      \pgfgrid[stepx=0.5cm,stepy=0.5cm]{\pgfxy(0,0)}{\pgfxy(17.5,\value{restcm})}
+    \end{colormixin}
+  \end{pgfpicture}}{}}{}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Neue Aufgabe
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{aufgabe}[2][N]
+{%Anfang
+\newpage\aufghead[#1]{#2}}
+{%Ende
+\karofill%
+}
+
+% Ueberschrift fuer eine Aufgabe.
+\newcommand{\aufghead}[2][N]{\ifthenelse{\not\equal{#1}{N}}{%
+%allgemeine Aufgabe
+\refstepcounter{aaufgabennummer}\textbf{\large \aufgabewort~#1~\theaaufgabennummer} \arbeitszeit{#2}%
+\addtocounter{minuten}{#2}\createentry{#1~\theaaufgabennummer}%
+%Auzählunsstile jeweweils anpassen:
+\makeatletter%
+\renewcommand{\theenumi}{#1~\theaaufgabennummer.\arabic{enumi}}%
+\renewcommand{\labelenumi}{\textbf{\theenumi)}}%
+%\renewcommand{\p@enumi}{}%
+\makeatother \\[7mm]%
+}%
+
+
+% normale Aufgabe
+{\refstepcounter{aufgabennummer}\textbf{\large \aufgabewort~\theaufgabennummer} \arbeitszeit{#2}%
+\addtocounter{minuten}{#2}\createentry{\theaufgabennummer}%
+
+%Auzählunsstile jeweweils anpassen:
+\makeatletter%
+\renewcommand{\theenumi}{\theaufgabennummer.\arabic{enumi}}%
+\renewcommand{\labelenumi}{\textbf{\theenumi)}}%
+
+%\renewcommand{\p@enumi}{}
+\makeatother \\[7mm]%
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Geteilt Umegebung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\geteilt}[3]{%
+\begin{minipage}{#1\linewidth}
+#2
+\end{minipage}\begin{minipage}{\linewidth-#1\linewidth}
+#3
+\end{minipage}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Deckblatt der Prüfung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\deckblatt}{
+\setcounter{itemp}{0}
+
+\includegraphics*[width=1.2cm, keepaspectratio=true]{bvlogosw} \includegraphics*[width=1.5cm, keepaspectratio=true]{bmlogosw} \hfill 
+	\begin{minipage}[b]{80mm}
+ \small \centering {\sffamily Lehrstuhl für Baumechanik - TU München \\ \pruefer } 
+  \end{minipage}
+ \hfill \includegraphics*[width=2cm, keepaspectratio=true]{tumlogosw}
+\vspace{0.5cm}
+\hrule
+\vspace{5mm}
+\hspace {82mm}
+{\begin{minipage}[]{80mm}
+ 		\vspace{2mm}
+ 		\small
+ 		\sffamily{  
+ 			\vorname:~\hrulefill\\[2mm]
+ 			\nachname:~\hrulefill\\[2mm]
+ 			\matrikelnummer:~\hrulefill\\[2mm]
+ 			\studiengang:~\hrulefill\\[2mm]
+ 			\sitzplatz:~\hrulefill\\
+ 			\vspace{-3mm}
+ 			}
+\end{minipage}}\\
+
+\vfill
+\begin{center}
+\vspace{0.5cm}
+{\large \bf \sffamily{\veranstaltung}}\\[4 pt]
+%\sc
+{\sffamily{\semester}}\\
+\vspace{0.5cm}
+%\bf {\sffamily{Examination}} \\
+\sffamily{\prfdatum} \\
+\bf {\footnotesize \sffamily{\hinweisarbeitszeit}} \\
+\bf {\footnotesize \sffamily{\hilfsmittel}} \\ 
+\bf {\scriptsize \sffamily{\hilfsmittelergaenzung}} 
+\end{center}
+\vfill
+\setcounter{itemp}{1}
+\setlength{\arrayrulewidth}{0.3mm}
+\begin{center}
+\Auftabelle
+\end{center}
+\vspace{10mm}
+\vfill
+\hinweis
+}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand*\createentry[1]{%
+\protected@write\@auxout{}{%
+\protect\@writefile{tab}{\protect\parbox[0pt][4ex][c]{25mm}{\protect\centering\protect\bf\protect\sffamily{#1}}&&\protect\\\protect\hline}%
+}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand*\Auftabelle{%
+\null%<-make sure output-routing comes to action
+% so that aux gets written.
+\@starttoc{tab}%
+}%
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Am Schluss vom Dokument soll die Gesamtminutenzahl rausgeschrieben werden,
+% damit sie beim nächsten Lauf auf das Deckblatt kommt.
+\makeatletter
+\AtEndDocument{%
+\immediate\write\@mainaux{%
+\string\newlabel
+{bearbeitungszeit}{{\theminuten}{\thepage}{}{}}%
+\string\newlabel
+{totaufgaben}{{\theaufgabennummer}{\thepage}{}{}}%
+}%
+%
+%Tabelle für das Deckblatt im .tab file fertigbasteln
+\protected@write\@auxout{}{%
+\protect\@writefile{tab}{\protect\end{tabular}}%
+}\protected@write\@auxout{}{%
+\protect\@writefile{tab}{\endgroup}%
+}%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% .tab file vorbereiten 
+% 
+\makeatletter
+\protected@write\@auxout{}{%
+\protect\@writefile{tab}{\begingroup%
+}%
+}\protected@write\@auxout{}{%
+\protect\@writefile{tab}{%
+\protect\noindent\protect\begin{tabular}%
+{|m{25mm}|m{25mm}|m{25mm}|}}%
+\protect\@writefile{tab}{\protect\hline
+}%
+}\protected@write\@auxout{}{%
+\protect\@writefile{tab}{\protect\parbox[0pt][5ex][c]{25mm}%
+{\protect\centering\protect\bf\protect\sffamily{\protect\aufgabewort}}&&\protect\\\protect\hline}%
+}
+\makeatother	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newcounter{bearbeitungszeit}
+\newcounter{aufgabennummer}
+\setcounter{aufgabennummer}{0} 
+\newcounter{aaufgabennummer}
+\setcounter{aaufgabennummer}{0} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Hilfsvariablen
+\newlength{\seitenrest}
+\newlength{\hochzaehl}
+\newcounter{restcm}
+\newcounter{itemp}
+\newcounter{minuten}
+\setcounter{minuten}{0}
+
+\newcounter{karos}
+\setcounter{karos}{1}

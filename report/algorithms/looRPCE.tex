@@ -1,0 +1,58 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/looRPCE.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: looRPCE}
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output\,}
+    \vspace{1.0em}%
+    \Input{%
+        $\mathbf{Y}$ is the sample model outputs \newline
+        $\mathbf{A}\:$ is the full sample regressors \newline
+        $S_{u}\:$ is the set of numerator indices \newline
+        $S_{v}\:$ is the set of denominator indices
+    }
+    \vspace{1.0em}%
+    \Output{%
+        $\hat{\mathbf{Y}}$ is the approximation
+    }
+    \vspace{1.0em}%
+    \looRPCE{%
+        $\mathbf{Y}$, $\mathbf{A}$, $S_{u}$, $S_{v}$
+    } \Begin{
+        \vspace{1.0em}%
+        $\hat{\mathbf{Y}} \longleftarrow$
+        \zeros{\numel{$\mathbf{Y}$}} \\
+        \vspace{1.0em}%
+        \For{$j=1, ...,$ \numel{$\mathbf{Y}$}} {
+            \vspace{1.0em}%
+            $
+                \mathbf{Y}_{train} \phantom{.}\longleftarrow 
+                \mathbf{Y} \setminus \left\{\mathbf{Y}[j]\right\}
+            $ \\
+            $
+                \mathbf{A}_{train} \:\longleftarrow 
+                \mathbf{A} \setminus \left\{\mathbf{A}[j]\right\}
+            $ \\
+            \vspace{1.0em}%
+            $\mathbf{u},\mathbf{v} \longleftarrow$
+            \trainRPCE{$\mathbf{Y}_{train}, \mathbf{A}_{train}, S_{u}, S_{v}$} \\
+            \vspace{1.0em}%
+            $\hat{\mathbf{Y}}[j] \longleftarrow$
+            \computeRPCE{$\mathbf{A}[j], S_{u}, S_{v}, \mathbf{u}, \mathbf{v}$} \\
+            \vspace{1.0em}%
+        }
+        \vspace{1.0em}%
+        \Return{$\hat{\mathbf{Y}}$}
+        }
+  \caption{Leave-One-Out RPCE Approximation}
+\end{algorithm}
+\end{center}

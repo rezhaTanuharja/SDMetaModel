@@ -1,0 +1,66 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/PCE.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: PCE}
+    \ForEach{$\omega$ in $\left\{\omega_{1}, ..., \omega_{m}\right\}$}{
+        \vspace{1.0em}%
+        $\mathbf{Y} \longleftarrow [\phantom{x}]$ \\ 
+        $\mathbf{A} \longleftarrow [\phantom{x}]$ \\ 
+        \vspace{1.0em}%
+        \tcp{Generate random samples}
+        \For{$i = 1, ..., N_{sample}$}{
+            $\mathbf{\Xi}_{i} \longleftarrow$
+            \sample{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            \tcc{Compute dynamic stiffness matrix $\mathbf{D}\left(\omega, \mathbf{\Xi}_{i}\right)$}
+            $\dots$ \\
+            \vspace{1.0em}%
+            $
+                \mathbf{Y}\left[i\right] \longleftarrow
+                -\omega^{2}\left(\mathbf{D}\left(\omega, \mathbf{\Xi}_{i}\right)\right)^{-1}
+            $ \\
+            $
+                \mathbf{A}\left[i\right] \longleftarrow
+                \left[\Psi_{k}\left(\mathbf{\Xi}_{i}\right),\;\; k \in S\right]
+            $
+        }
+        \vspace{1.0em}%
+        $\left\{\mathbf{H}_{k}, k\in S\right\} \longleftarrow$ 
+        \lsRegression{$\mathbf{Y}, \mathbf{A}$} \\
+        \vspace{1.0em}%
+        $\hat{\mathbf{H}} \longleftarrow [\phantom{x}]$ \\ 
+        \vspace{1.0em}%
+        \tcp{Perform MC simulation using PCE}
+        \For{$i = 1, ..., N_{mcs}$}{
+            $\mathbf{\Xi}_{i} \longleftarrow$
+            \sample{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            \tcp{Approximate FRF}
+            $
+                \hat{\mathbf{H}}\left[i\right] \longleftarrow
+            $
+                \sum{
+                    $
+                    \Psi_{k} \left(\mathbf{\Xi}_{i}\right)
+                    \cdot 
+                    \mathbf{H}_{k}
+                    $
+                }
+            % $
+        }
+        \vspace{1.0em}%
+        \tcc{Estimate characteristics of $\mathbf{H}\left(\omega, \mathbf{\Xi}\right)$ from $\hat{\mathbf{H}}$}
+        $\dots$
+    }
+  \caption{Monte Carlo Simulation of The FRFs with PCE}
+\end{algorithm}
+\end{center}

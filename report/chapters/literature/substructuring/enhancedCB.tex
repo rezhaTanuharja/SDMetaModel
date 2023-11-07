@@ -1,0 +1,125 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/substructuring/enhancedCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Enhanced Craig-Bampton Method}
+\label{ssec: ECB method}
+
+The CB method uses only the dominant modes and neglects the contribution of the rest of the normal modes, referred to as the residual modes.
+One approach to improve its accuracy is to compensate for the absence of these residual modes in the formulation.
+{The ECB method does this by considering the residual modes in the transformation $\mathbf{U}=\tilde{\mathbf{T}}\mathbf{X}$}%
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{U}_{i} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \;\;\mathbf{\Phi}_{d}
+        & 
+        \;\;\mathbf{\Phi}_{r}
+        &
+        \;\;\mathbf{\Phi}_{c} \\
+        \mathbf{0} & \mathbf{0} & \mathbf{I}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d} \\
+        \mathbf{X}_{r} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}.
+    \label{enhanced_transformation}
+\end{equation}
+{Using $\tilde{\mathbf{T}}$ from \eqref{enhanced_transformation} in the transformation $\overline{\mathbf{D}}=\tilde{\mathbf{T}}^{T}\mathbf{D}\tilde{\mathbf{T}}$, the second row of the dynamic stiffness becomes}%
+\begin{equation}
+    \begin{bmatrix}
+        \overline{\mathbf{D}}_{rd} &
+        \overline{\mathbf{D}}_{rr} &
+        \overline{\mathbf{D}}_{rc} 
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{0}
+        &
+        \mathbf{\Phi}_{r}^{T}
+        \mathbf{D}_{ii}
+        \mathbf{\Phi}_{r}
+        \quad
+        &
+        \mathbf{\Phi}_{r}^{T}
+        \mathbf{D}_{ii}
+        \mathbf{\Phi}_{b}
+        +
+        \mathbf{\Phi}_{r}^{T}
+        \mathbf{D}_{ib}
+    \end{bmatrix}.
+\end{equation}
+{Imposing the condition of zero residual dynamic force, the relation between the residual modal DOFs and the boundary DOFs is}%
+\begin{equation}
+    \mathbf{X}_{r}
+    =
+    -\mathbf{\Lambda}_{r}^{-1}
+    \left[
+        \mathbf{\Phi}_{r}^{T}
+        \mathbf{D}_{ii}
+        \mathbf{\Phi}_{b}
+    +
+        \mathbf{\Phi}_{r}^{T}
+        \mathbf{D}_{ib}
+    \right]
+    \mathbf{U}_{b},
+    \text{ where }
+    \mathbf{\Lambda}_{r}
+    =
+    \mathbf{\Phi}_{r}^{T}
+    \mathbf{D}_{ii}
+    \mathbf{\Phi}_{r}.
+    \label{residual_and_boundary_relation}
+\end{equation}
+{Subsequently, ECB uses \eqref{residual_and_boundary_relation} to condense \eqref{enhanced_transformation} into}%
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{U}_{i} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{\Phi}_{d} &
+        -\mathbf{D}_{ii}^{-1} \mathbf{D}_{ib}
+        +
+        \left(
+            \mathbf{\Phi}_{d}
+            \mathbf{\Lambda}_{d}^{-1}
+            \mathbf{\Phi}_{d}^{T}
+        \right)
+        \left(
+            \mathbf{D}_{ii}
+            \mathbf{\Phi}_{c}
+            +
+            \mathbf{D}_{ib}
+        \right)
+        \\
+        \mathbf{0}
+        &
+        \mathbf{I}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d} \\
+        \mathbf{U}_{b}
+    \end{pmatrix},
+    \label{final_enhanced_transformation}
+\end{equation}
+in which $
+    \mathbf{\Lambda}_{d}
+    =
+    \mathbf{\Phi}_{d}^{T}
+    \mathbf{D}_{ii}
+    \mathbf{\Phi}_{d}
+$.
+Using \eqref{final_enhanced_transformation} instead of \eqref{cb_transformation} improves the CB method's accuracy.
+Further simplifications and detailed steps to compute the transformation efficiently are available in \cite{kim2015enhanced}, but are not relevant to this study.

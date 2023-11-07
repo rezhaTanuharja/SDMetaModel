@@ -1,0 +1,155 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% images/procedureUCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{figure}[H]
+    \centering
+    \scalebox{0.75}{
+        \begin{tikzpicture}[
+            startstop/.style={%
+                thick, rectangle, rounded corners,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\charttwid%
+            },
+            io/.style={%
+                thick, trapezium, trapezium left angle=75, trapezium right angle=105,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\chartvgap%
+            },
+            process/.style={%
+                thick, rectangle,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\charttwid%
+            },
+            blankprocess/.style={%
+                thick, rectangle,%
+                minimum width=\charthgap, minimum height=\chartvgap,%
+                text centered, draw=none, fill=none, text width=\charttwid%
+            },
+            decision/.style={%
+                thick, diamond,%
+                minimum width=\chartvgap, minimum height=\chartvgap,%
+                text centered, draw=black, fill=white, text width=\chartvgap%
+            },
+            arrow/.style={thick,->,>=stealth}
+        ]
+
+        % Define nodes
+        \node (start) [startstop] {%
+            Start
+        };
+
+        \node (input1) [
+                io, below of=start,
+                % xshift=-0.7*\charthgap,
+                yshift=-\chartvgap
+            ] {$\phantom{a}$};
+
+        \node (ED_1) [
+                blankprocess, below of=start,
+                % xshift=-0.7*\charthgap,
+                yshift=-\chartvgap
+            ] {
+            Experimental Design
+            };
+
+        \node (fullEval) [
+                process, below of=ED_1,
+                xshift=-0.7*\charthgap,
+                yshift=-\chartvgap
+            ] {
+                MC Simulations\\
+                Complete Plate Model
+            };
+
+        \node (subEval) [
+                process, below of=ED_1,
+                xshift=0.7*\charthgap,
+                yshift=-\chartvgap
+            ] {
+                MC Simulations\\
+                CUCB / HUCB
+            };
+
+        \node (input5) [io, below of=subEval, yshift=-\chartvgap] {
+            $\phantom{a}$
+        };
+        \node (ED_5) [blankprocess, below of=subEval, yshift=-\chartvgap] {
+            Output Estimates\\
+            CUCB / HUCB
+        };
+
+        \node (input6) [io, below of=fullEval, yshift=-\chartvgap] {
+            $\phantom{a}$
+        };
+        \node (ED_6) [blankprocess, below of=fullEval, yshift=-\chartvgap] {
+            Output Benchmarks
+        };
+
+        \path 
+            (ED_5) -- (ED_6) coordinate[midway] (ED_56);
+
+        \node (compare) [process, below of=ED_56, yshift=-\chartvgap] {
+            Bootstrapping
+        };
+        \node (iterate) [process, below of=compare, yshift=-\chartvgap] {
+            Comparison
+        };
+        \node (stop) [startstop, below of=iterate, yshift=-1.2*\chartvgap] {Stop};
+
+        \draw [arrow] (start) -- (ED_1);
+        \draw [arrow] (input1) -| (fullEval);
+        \draw [arrow] (input1) -| (subEval);
+        \draw [arrow] (fullEval) -- (ED_6);
+        \draw [arrow] (subEval) -- (ED_5);
+        \draw [arrow] (ED_6) |- (compare);
+        \draw [arrow] (ED_5) |- (compare);
+        \draw [arrow] (compare) -- (iterate);
+        \draw [arrow] (iterate) -- (stop);
+
+        % \path (start) -- (ED_1) coordinate[midway] (midpoint_1);
+        % \draw [arrow] (midpoint_1) -| (ED_2);
+        % \draw [arrow] (ED_2) -- (subEval);
+        % \draw [arrow] (subEval) -- (ED_3);
+        % \draw [arrow] (ED_3) -- (resample);
+        % \draw [arrow] (resample) -- (ED_4);
+        % \draw [arrow] (ED_4) -- (train);
+        % \draw [arrow] (train) -- (evalRPCE);
+        % \draw [arrow] (evalRPCE) -- (ED_5);
+        % \draw [arrow] (ED_5) |- (compare);
+
+        % \draw [arrow] (compare) -- (iterate);
+        % \draw [arrow] (iterate) -- node[right] {n} (stop) ;
+
+        % \draw [thick] 
+        %     (iterate) -- 
+        %     ++(1.2*\chartvgap,0) node[midway, above] {y} coordinate (endpoint_1);
+        % \draw [thick] 
+        %     (endpoint_1) -- node[above] {$i=i+1$}
+        %     ++(1.0*\charthgap,0) coordinate (endpoint_2);
+
+        % \draw [arrow] 
+        %     (endpoint_2) |- (resample);
+
+        % \path 
+        %     (ED_1) -- (fullEval) coordinate[midway] (point_1);
+        % \path 
+        %     (ED_2) -- (subEval) coordinate[midway] (point_2);
+        % \path 
+        %     (point_1) -- (point_2) coordinate[midway] (point_3);
+        % \draw [thick] 
+        %     (point_1) -- (point_3);
+        % \draw [arrow] 
+        %     (point_3) |- (evalRPCE);
+
+        \end{tikzpicture}
+    }
+    \caption{The UCBs Evaluation Procedure Flowchart}
+    \label{flowchart: UCB procedure}
+\end{figure}

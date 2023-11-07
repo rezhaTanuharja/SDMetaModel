@@ -1,0 +1,35 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/methodology/testProcedure.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Evaluation Procedures}
+\label{sec: evaluation procedure}
+
+First, the author evaluates the performance of CUCB and HUCB in approximating the complete plate model.
+The author generates an experimental design (ED) of size $N_{ed}=300$ through random sampling.
+Subsequently, a direct MCS for FRFs using the complete plate model takes place.
+The outputs serve as the benchmark for comparison.
+Then, the author runs MCS for FRFs using the substructured plate model with the CUCB and HUCB methods.
+Comparisons between the outputs with the benchmark and error calculations follow.
+Because the size of the ED is not large, the author uses bootstrapping with a $1000$ number of resamplings to estimate the error statistics.
+Figure \ref{flowchart: UCB procedure} illustrates this evaluation procedure.
+\input{images/procedureUCB}
+
+Subsequently, the author evaluates the performance of HUCB + NI-RPCE models in approximating the complete plate model.
+The author generates two EDs of size $N_{ed}=300$ through random sampling.
+The first ED is for direct MCS using the complete plate model.
+Similar to the procedure above, the outputs serve as the benchmark for comparison.
+Then, the author runs MCS for FRFs using the substructured plate model with the HUCB methods, using the second ED.
+The outputs serve as the pool of training data for the RPCE models.
+The training process of the RPCE models follows, using a random subset of these training data.
+The author then feeds the first ED to the trained model.
+Afterward, the comparisons between the outputs with the benchmark and error calculations follow.
+To take into account the effect of the training data, the author varies the size of the random subset and repeats these steps $N=40$ times for each subset's size.
+Figure \ref{flowchart: framework procedure} illustrates the evaluation procedure.
+\input{images/procedureFramework}

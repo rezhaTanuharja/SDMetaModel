@@ -1,0 +1,182 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/integratedFramework.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: integrated framework 1}
+    \SetKwProg{ForEach}{foreach}{ do}{}
+    \SetKwProg{For}{for}{ do}{}
+    \mpiInit{} \\
+    $\dots$ \\
+    \vspace{1.0em}%
+    \tcp{Compute reference normal modes}
+    $\mathbf{\Xi}_{0} \:\:\longleftarrow \mathbf{0}$ \\
+    $\mathbf{\Phi}_{n} \;\longleftarrow$
+    \genEigSol{%
+        $\mathbf{M} \left(\mathbf{\Xi}_{0}\right)$,
+        $\mathbf{K} \left(\mathbf{\Xi}_{0}\right)$
+    } \\
+    \vspace{1.0em}%
+    $\mathbf{H} \longleftarrow \left\{\phantom{x}\right\}$, 
+    $\mathbf{A}_{u} \longleftarrow \left\{\phantom{x}\right\}$, 
+    $\mathbf{A}_{v} \longleftarrow \left\{\phantom{x}\right\}$ \\
+    \vspace{1.0em}%
+    \ForEach{$\omega$ in $\left\{\omega_{1}, ..., \omega_{m}\right\}$}{
+        \vspace{1.0em}%
+        $\mathbf{\Phi}_{d} \longleftarrow$
+        \modeSelector{$
+            \mathbf{\Phi}_{n}, \omega
+        $} \\
+        \vspace{1.0em}%
+        \tcp{Generate random samples}
+        \For{$j = 1, ..., N_{sample}$}{
+            \vspace{1.0em}%
+            $\mathbf{\Xi}_{j} \longleftarrow$
+            \sample{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            \tcc{Compute dynamic stiffness matrix $\mathbf{D} = \mathbf{D}\left(\omega, \mathbf{\Xi}_{j}\right)$}
+            $\dots$ \\
+            \vspace{1.0em}%
+            $%
+                \tilde{\mathbf{\Phi}}_{c} \longleftarrow
+                -\mathbf{D}_{ii}^{-1}
+                \mathbf{D}_{ib}
+            $ \\
+            \vspace{1.0em}%
+            \tcc{Use $\mathbf{\Phi}_{d}$ and $\tilde{\mathbf{\Phi}}_{c}$ to compute $\overline{\mathbf{D}}$ and $\overline{\mathbf{F}}$}
+            $\dots$ \\
+            \vspace{1.0em}%
+            $
+                \mathbf{S}_{B\text{local}} \longleftarrow
+                \overline{\mathbf{D}}_{BB}
+                -
+                \overline{\mathbf{D}}_{Bd}
+                \left(
+                    \overline{\mathbf{D}}_{dd}
+                \right)^{-1}
+                \overline{\mathbf{D}}_{dB}
+            $ \\
+            $
+                \mathbf{P}_{B\text{local}} \longleftarrow
+                \overline{\mathbf{F}}_{B}
+                -
+                \overline{\mathbf{D}}_{Bd}
+                \left(
+                    \overline{\mathbf{D}}_{dd}
+                \right)^{-1}
+                \overline{\mathbf{F}}_{d}
+            $ \\
+            \vspace{1.0em}%
+            $\dots$ \\
+            \vspace{1.0em}%
+        }
+    }
+  \caption{MC Simulation with The CB Method and Sparse RPCE}
+\end{algorithm}
+\end{center}
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: integrated framework 2}
+    \SetKwProg{ForEach}{}{}{end}
+    \SetKwProg{For}{}{}{end}
+    \vspace{-1.6em}
+    \ForEach{}{
+        \vspace{-1.5em}
+        \For{}{
+            \vspace{1.0em}%
+            $\dots$ \\
+            \vspace{1.0em}%
+            \uIf{$rank==0$}{
+                \vspace{1.0em}%
+                $\mathbf{S}_{B} \longleftarrow$
+                \mpiGather{$\mathbf{D}_{B\text{local}}$} \\
+                $\mathbf{P}_{B} \longleftarrow$
+                \mpiGather{$\mathbf{F}_{B\text{local}}$} \\
+                \vspace{1.0em}%
+                $\mathbf{U}_{B} \longleftarrow$
+                    \sum{$\mathbf{D}_{B}$}$^{-1}$ 
+                    \sum{$\mathbf{F}_{B}$}
+                \\
+                \mpiBroadcast{$\mathbf{U}_{B}$} \\
+                \vspace{1.0em}%
+            }
+            \Else{
+                \tcp{Do nothing}
+            }
+            \vspace{1.0em}%
+            $
+                \mathbf{X}_{d} \longleftarrow
+                \overline{\mathbf{D}}_{dd}^{-1}
+                \left(
+                    \overline{\mathbf{F}}_{d}
+                    -
+                    \overline{\mathbf{D}}_{db}
+                    \mathbf{U}_{b}
+                \right)
+            $ \\
+            \vspace{1.0em}%
+            $\hat{\mathbf{H}} \left[j\right] \longleftarrow$ \\
+            \vspace{1.0em}%
+            $
+                \hat{\mathbf{A}}_{u} \left[j\right] \longleftarrow
+                \left[
+                    \mathbf{\Psi}_{k} \left(\mathbf{\Xi}_{j}\right),
+                    k \;= 1, ..., N_{u}
+                \right]
+            $ \\
+            $
+                \hat{\mathbf{A}}_{v} \left[j\right] \longleftarrow
+                \left[
+                    \mathbf{\Psi}_{l} \;\left(\mathbf{\Xi}_{j}\right),
+                    l \:\:= 1, ..., N_{v}
+                \right]
+            $ \\
+            \vspace{1.0em}%
+        }
+        \vspace{1.0em}%
+        $S_{u}, S_{v} \longleftarrow$
+        \basisSelector{%
+            $\hat{\mathbf{H}}$, 
+            $\mathbf{A}_{u}$, 
+            $\mathbf{A}_{v}$
+        } \\
+        $\mathbf{u}, \mathbf{v} \longleftarrow$
+        \trainRPCE{%
+            $\hat{\mathbf{H}}$, 
+            $\mathbf{A}_{u}$, 
+            $\mathbf{A}_{v}$,
+            $S_{u}$,
+            $S_{v}$
+        } \\
+        \vspace{1.0em}%
+        $\hat{\mathbf{H}} \longleftarrow \left\{\phantom{x}\right\}$ \\
+        \vspace{1.0em}%
+        \SetKwProg{For}{for}{}{end}
+        \For{$j = 1, ..., N_{mcs}$}{
+                \vspace{1.0em}%
+                $\mathbf{\Xi}_{j} \longleftarrow$
+                \sample{$\mathbf{\Xi}$} \\
+                \vspace{1.0em}%
+                $\hat{\mathbf{H}} \left[j\right] \longleftarrow$
+                \computeRPCE{%
+                    $\mathbf{\Xi}_{j}$,
+                    $S_{u}$,
+                    $S_{v}$
+                }
+                \vspace{1.0em}%
+        }
+        \vspace{1.0em}%
+        \tcc{Estimate characteristics of $\mathbf{H}\left(\omega, \mathbf{\Xi}\right)$ from $\hat{\mathbf{H}}$}
+        $\dots$
+    }
+  \caption{MC Simulation with The CB Method and Sparse RPCE (Cont'd)}
+\end{algorithm}
+\end{center}

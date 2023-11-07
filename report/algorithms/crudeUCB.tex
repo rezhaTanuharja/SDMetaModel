@@ -1,0 +1,45 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/crudeUCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: CUCB}
+    \tcc{
+        Compute matrices
+        $\mathbf{M}\left(\mathbf{\Xi}_{0}\right)$,
+        $\mathbf{K}\left(\mathbf{\Xi}_{0}\right)$
+    }
+    $\dots$ \\
+    \vspace{1.0em}%
+    $\mathbf{T}_{0} \longleftarrow$
+    \craigBampton{
+    $\mathbf{M}\left(\mathbf{\Xi}_{0}\right)$, 
+    $\mathbf{K}\left(\mathbf{\Xi}_{0}\right)$,
+    $s_{i}$, $s_{b}$
+    } \\
+    \vspace{1.0em}% 
+    \ForEach{$\omega$ in $\left\{\omega_{1}, ..., \omega_{m}\right\}$}{
+        \vspace{1.0em}%
+        \For{$j = 1, ..., N_{sample}$}{
+            \vspace{1.0em}%
+            $\mathbf{\Xi}_{j} \longleftarrow$
+            \sample{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            \tcc{%
+                Reduce components using $\mathbf{T}_{0}$ and solve for 
+                $\mathbf{H} \left(\omega, \mathbf{\Xi}_{j}\right)$
+            }
+            $\dots$
+        }
+        $\dots$
+    }
+  \caption{The Crude UCB Method for FRFs}
+\end{algorithm}
+\end{center}

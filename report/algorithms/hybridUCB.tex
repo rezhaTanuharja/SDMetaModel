@@ -1,0 +1,73 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/hybridUCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: HUCB}
+    \vspace{1.0em}%
+    \tcp{Compute reference normal modes}
+    $\mathbf{\Xi}_{0} \:\longleftarrow \mathbf{0}$ \\
+    $\mathbf{\Phi}_{n} \longleftarrow$
+    \genEigSol{$
+        \mathbf{M}_{ii}\left(\mathbf{\Xi}_{0}\right), 
+        \mathbf{K}_{ii}\left(\mathbf{\Xi}_{0}\right)
+    $} \\
+    \vspace{1.0em}%
+    \ForEach{$\omega$ in $\left\{\omega_{1}, ..., \omega_{m}\right\}$}{
+        \vspace{1.0em}%
+        $\mathbf{\Phi}_{d} \longleftarrow$
+        \modeSelector{$
+            \mathbf{\Phi}_{n}, \omega
+        $} \\
+        \vspace{1.0em}%
+        \tcp{Generate random samples}
+        \For{$i = 1, ..., N_{train}$}{
+            \vspace{1.0em}%
+            $\mathbf{\Xi}_{i} \longleftarrow$
+            \sample{$\mathbf{\Xi}$} \\
+            \vspace{1.0em}%
+            \tcc{Compute dynamic stiffness matrix $\mathbf{D}\left(\omega, \mathbf{\Xi}_{i}\right)$}
+            $\dots$ \\
+            \vspace{1.0em}%
+            $
+                \tilde{\mathbf{\Phi}}_{c} \longleftarrow 
+                -\left(
+                    \mathbf{D}_{ii}\left(\omega, \mathbf{\Xi}\right)
+                \right)^{-1}
+                \mathbf{D}_{ib}\left(\omega, \mathbf{\Xi}\right)
+            $ \\
+            \vspace{1.0em}%
+            $
+                \mathbf{T} \;\longleftarrow
+                \left[
+                    \begin{bmatrix}
+                        \mathbf{\Phi}_{d} &
+                        \tilde{\mathbf{\Phi}}_{c}
+                    \end{bmatrix}
+                    \begin{bmatrix}
+                        \phantom{x}\mathbf{0}\phantom{.} &
+                        \mathbf{I}\phantom{x}
+                    \end{bmatrix}
+                \right]
+            $ \\
+        \vspace{1.0em}% 
+            \tcc{%
+                Reduce components with $\mathbf{T}$ and solve for 
+                $\mathbf{H} \left(\omega, \mathbf{\Xi}_{j}\right)$
+            }
+            $\dots$
+        }
+        \vspace{1.0em}%
+        \tcc{Further processes}
+        $\dots$
+    }
+  \caption{The Hybrid UCB Method for FRFs}
+\end{algorithm}
+\end{center}

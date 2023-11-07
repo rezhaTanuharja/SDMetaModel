@@ -1,0 +1,40 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/sparsePCERemoval.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: sparse PCE removal}
+    \vspace{1.0em}%
+    \ForEach{$i \in S$}{
+        \vspace{1.0em}%
+        $S\setminus \left\{i\right\}$ \\
+        \vspace{1.0em}%
+        \tcp{Only compute coefficients with index in $S$}
+        $\mathbf{x} \:\phantom{\left[S\right]} \longleftarrow$
+        \zeros{$N_{p}$} \\
+        $\mathbf{x}\left[S\right] \longleftarrow$
+        \lsRegression{$\mathbf{Y}_{train}, \mathbf{A}_{train}\left[\;:,\;S\;\right]$} \\
+        \vspace{1.0em}%
+        $\epsilon^{-} \longleftarrow$
+        \err{$\mathbf{Y}_{test}, \mathbf{A}_{test}, \mathbf{x}$} \\
+        \vspace{1.0em}%
+        \tcp{Reinstate $i$ in $S$ if error increase is significant}
+        \uIf{$\epsilon^{-} -\epsilon > \epsilon_{0}$}{
+            $S \longleftarrow S\cup\left\{i\right\}$
+        }
+        \Else{
+            $\epsilon \longleftarrow \epsilon^{-}$
+        }
+        \vspace{1.0em}%
+    }
+    \vspace{1.0em}%
+  \caption{Basis Removal Steps for Sparse PCE Model}
+\end{algorithm}
+\end{center}

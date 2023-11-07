@@ -1,0 +1,31 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/sparseRPCE/selectionProcedure.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Basis Selection Procedure}
+\label{ssec: selection procedure}
+
+The procedure starts with all basis functions in the numerator and denominator.
+It removes a basis function from the numerator and evaluates the approximation's quality.
+If the coefficient of determination significantly declines, the basis function returns to the model.
+{This study defines a significant decline in the coefficient of determination as:}%
+\begin{equation}
+    R^{2} - R_{-}^{2} > \epsilon_{0} \cdot \left(1-R^{2}\right),
+    \label{decline criteria}
+\end{equation}
+where $\epsilon_{0}$ is a tuning parameter, $R^{2}$ and $R_{-}^{2}$ are the coefficient of determinations before and after the basis removal, respectively.
+The author repeats these steps for all basis functions in the numerator, from the highest order to the lowest order.
+Algorithm \ref{alg: sparse RPCE numerator} illustrates this process.
+
+\input{algorithms/sparseRPCENumerator}
+
+After going through all of the basis functions in the numerator, the same procedure takes place for the denominator.
+Algorithm \ref{alg: sparse RPCE denominator} illustrates this process.
+
+\input{algorithms/sparseRPCEDenominator}

@@ -1,0 +1,146 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% images/completeModel.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[
+        scale=0.35, 
+        %
+        % Isometric-esque appearance
+        x={( 0.6cm,-0.2cm)}, 
+        y={( 0.5cm, 0.3cm)}, 
+        z={( 0.0cm, 1.0cm)}, 
+        %
+        draw opacity=0.7
+    ]
+
+        % Define grid parameters
+        % maxes are lengths - one step because of plotting
+        \def\xmin{0} \def\xmax{47.0}
+        \def\ymin{0} \def\ymax{22.8}
+        % the dimension of each rectangular element
+        \def\xstep{1.0}
+        \def\ystep{1.2}
+
+        % Define clamping wall parameters
+        \def\wallh{1.2}
+        \def\wallt{1.0}
+
+        % Define markers' diameter
+        \def\noder{0.5}
+
+        % Draw the side left clamping wall 
+        \draw[pattern=north west lines] 
+            (   \xmin, \ymin, -\wallh) -- 
+            (   \xmin, \ymin,  \wallh) -- 
+            ( -\wallt, \ymin,  \wallh) -- 
+            ( -\wallt, \ymin, -\wallh) -- 
+            cycle;
+
+        % Draw the top left clamping wall
+        \draw[pattern=north west lines] 
+            (   \xmin, \ymin       ,  \wallh) -- 
+            (   \xmin, \ymax+\ystep,  \wallh) -- 
+            ( -\wallt, \ymax+\ystep,  \wallh) -- 
+            ( -\wallt, \ymin       ,  \wallh) -- 
+            cycle;
+
+        % Draw the front left clamping wall
+        \draw[fill=white]
+            (   \xmin, \ymin       , -\wallh) -- 
+            (   \xmin, \ymax+\ystep, -\wallh) --
+            (   \xmin, \ymax+\ystep,  \wallh) --
+            (   \xmin, \ymin       ,  \wallh) -- 
+            cycle; 
+    
+        % Draw grid
+        \foreach \x in {\xmin,\xstep,...,\xmax}
+            \foreach \y in {\ymin,\ystep,...,\ymax}
+                \draw[fill=white] 
+                      ( \x   , \y   , 0) -- 
+                    ++( \xstep, 0    , 0) -- 
+                    ++( 0    , \ystep, 0) -- 
+                    ++(-\xstep, 0    , 0) -- 
+                    cycle;
+
+        % Put the back right clamping wall in front of the grid
+        \draw[fill=white]
+            (   \xmax+\wallt+\xstep, \ymin       , -\wallh) -- 
+            (   \xmax+\wallt+\xstep, \ymax+\ystep, -\wallh) --
+            (   \xmax+\wallt+\xstep, \ymax+\ystep,  \wallh) --
+            (   \xmax+\wallt+\xstep, \ymin       ,  \wallh) -- 
+            cycle; 
+
+        % Draw the back right clamping wall
+        \draw[pattern=north east lines]
+            (   \xmax+\wallt+\xstep, \ymin       , -\wallh) -- 
+            (   \xmax+\wallt+\xstep, \ymax+\ystep, -\wallh) --
+            (   \xmax+\wallt+\xstep, \ymax+\ystep,  \wallh) --
+            (   \xmax+\wallt+\xstep, \ymin       ,  \wallh) -- 
+            cycle; 
+
+        % Put the side right clamping wall in front of the grid
+        \draw[fill=white] 
+            ( \xmax+\xstep       , \ymin, -\wallh) -- 
+            ( \xmax+\xstep       , \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin, -\wallh) -- 
+            cycle;
+        
+        % Draw the side right clamping wall
+        \draw[pattern=north west lines] 
+            ( \xmax+\xstep       , \ymin, -\wallh) -- 
+            ( \xmax+\xstep       , \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin, -\wallh) -- 
+            cycle;
+        
+        % Put the top right clamping wall in front of the grid
+        \draw[fill=white] 
+            ( \xmax+\xstep       , \ymin       ,  \wallh) -- 
+            ( \xmax+\xstep       , \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin       ,  \wallh) -- 
+            cycle;
+
+        % Draw the top right clamping wall
+        \draw[pattern=north west lines] 
+            ( \xmax+\xstep       , \ymin       ,  \wallh) -- 
+            ( \xmax+\xstep       , \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin       ,  \wallh) -- 
+            cycle;
+
+        % Draw a marker for the node B
+        \draw[fill=red] 
+            ( 8*\xstep, 9.5*\ystep ) ellipse (0.3 and 0.3);
+        % Draw a line pointing at the marker for the node B
+        \draw[thick]
+            (  8*\xstep, 9.5*\ystep,        0 ) --
+            ( -1*\xstep, 9.5*\ystep, 2*\wallh );
+        % Add label B
+        \node at
+            ( -2*\xstep, 9.5*\ystep, 2*\wallh+0.6*\xstep ) {B};
+
+        % Draw a marker for the node A
+        \draw[fill=red] 
+            ( 32*\xstep, 20*\ystep ) ellipse (0.3 and 0.3);
+        % Draw a line pointing at the two markers for the node A
+        \draw[thick]
+            ( 32*\xstep         , 20*\ystep       , 0               ) --
+            ( 32*\xstep+7*\xstep, 20*\ystep+\ystep, \wallh+3*\xstep );
+        % Add label A
+        \node at (32*\xstep+8*\xstep,20*\ystep+\ystep, \wallh+4*\xstep) {A};
+
+    \end{tikzpicture}
+    \caption{Meshed Complete Plate Model with Locations of Nodes A and B}
+    \label{fig: complete model}
+\end{figure}

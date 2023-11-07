@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<txcop:outputProfiles version="2" xmlns:txcop="http://schemas.ToolsCenter.org/TeXnicCenter/OutputProfiles.xsd">
+	<outputProfileList>
+		<outputProfile name="LaTeX =&gt; PDF (Smt) 2.9" stopOnLatexError="false">
+			<texCommand execute="true" path="C:\Program Files (x86)\MiKTeX 2.9\miktex\bin\pdflatex.exe" arguments="-synctex=-1 -interaction=nonstopmode &quot;%pm&quot; -shell-escape"/>
+			<bibTexCommand execute="true" path="C:\Program Files (x86)\MiKTeX 2.9\miktex\bin\bibtex.exe" arguments="&quot;%bm&quot;"/>
+			<makeIndexCommand execute="true" path="C:\Program Files (x86)\MiKTeX 2.9\miktex\bin\makeindex.exe" arguments="&quot;%bm&quot;"/>
+			<preProcessors/>
+			<postProcessors/>
+			<viewer path="&quot;C:\Program Files\SumatraPDF\SumatraPDF.exe&quot;  -inverse-search &quot;\&quot;C:\Program Files\TeXnicCenter\texniccenter.exe\&quot; /ddecmd  \&quot;[goto('%f','%l')]\&quot;&quot;" closeBeforeCompilation="false">
+				<viewProjectCommand type="commandLine">
+					<commandLineCommand path="&quot;C:\Program Files\SumatraPDF\SumatraPDF.exe&quot;  -inverse-search &quot;\&quot;C:\Program Files\TeXnicCenter\texniccenter.exe\&quot; /ddecmd  \&quot;[goto('%f','%l')]\&quot;&quot;" arguments=" &quot;%bm.pdf&quot;"/>
+					<ddeCommand path="" server="" topic="System" command=""/>
+				</viewProjectCommand>
+				<viewCurrentFileCommand type="dde">
+					<commandLineCommand path="&quot;C:\Program Files\SumatraPDF\SumatraPDF.exe&quot;  -inverse-search &quot;\&quot;C:\Program Files\TeXnicCenter\TEXCNTR.EXE\&quot; /ddecmd  \&quot;[goto('%f','%l')]\&quot;&quot;" arguments="  &quot;%bm.pdf&quot;"/>
+					<ddeCommand path="&quot;C:\Program Files\SumatraPDF\SumatraPDF.exe&quot;  -inverse-search &quot;\&quot;C:\Program Files\TeXnicCenter\texniccenter.exe\&quot; /ddecmd  \&quot;[goto('%f','%l')]\&quot;&quot;" server="SUMATRA" topic="Control" command="[ForwardSearch(&quot;%bm.pdf&quot;, &quot;%Wc&quot;,%l,0,0,1)]"/>
+				</viewCurrentFileCommand>
+				<viewCloseCommand type="commandLine">
+					<commandLineCommand path="" arguments=""/>
+					<ddeCommand path="" server="" topic="System" command=""/>
+				</viewCloseCommand>
+			</viewer>
+		</outputProfile>
+	</outputProfileList>
+</txcop:outputProfiles>

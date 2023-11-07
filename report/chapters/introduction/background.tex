@@ -1,0 +1,43 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/introduction/background.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Background}
+\label{sec: background}
+
+Structures can have numerous elements and interacting parts.
+Each element adds to the system's degrees of freedom (DOFs).
+As structures become more complex, their dynamic analysis becomes increasingly expensive because one must simultaneously compute more DOFs.
+Component mode synthesis (CMS) addresses this challenge by dividing the structure into smaller components and models the dynamic behavior and interactions of these components \cite{hurty1960vibrations}\cite{hurty1965dynamic}.
+This component-wise analysis is faster and more cost-effective than evaluating the complete structure simultaneously.
+
+As the benefit of CMS became apparent, further development followed, which led to the classic Craig-Bampton (CB) method in \cite{craig1968coupling}.
+The method distinguishes the components' internal dynamic responses from intercomponent interactions via a modal decomposition.
+By performing mathematical reduction on the internal dynamic model, the CB method reduces the number of DOFs and, therefore, the computational cost.
+However, the reduction introduces a discrepancy between the assembly of these components and the original structure.
+Consequently, there have been several efforts to improve the accuracy of the CB method, such as the flexibility-based CMS (F-CMS) \cite{park2004partitioned} and the enhanced CB (ECB) method \cite{kim2015enhanced}\cite{boo2018towards}.
+Regardless, the CB method is still popular because of its simplicity.
+
+Like most available approaches, the CB method assumes that all structural parameters are precisely known.
+In reality, this is seldom the case.
+Therefore, uncertainty quantification due to variability in the structural parameters is necessary.
+Several publications have combined CMS and the CB method with uncertainty quantification methods, such as the perturbation method \cite{hinke2009component}\cite{sarsri2016dynamic}, the stochastic reduced basis projection \cite{dohnal2009joint}, and neural networks \cite{chatterjee2021multilevel}.
+
+In a separate context, surrogate modeling has emerged as a popular method for uncertainty quantification in structural dynamics.
+An example of a surrogate model is the polynomial chaos expansion (PCE), which approximates model outputs using linear combinations of multivariate polynomials.
+There are various means to obtain the polynomials' coefficients, including the stochastic Galerkin method \cite{Ghanem1991}, numerical quadrature \cite{xiu2007efficient}, interpolation \cite{babuvska2007stochastic}, and various regression techniques \cite{berveiller2006stochastic}\cite{blatman2010adaptive}\cite{blatman2011adaptive}.
+
+Despite its popularity, PCE performs poorly in approximating frequency response functions around structures' eigenfrequencies \cite{jacquelin2015polynomial}.
+Authors of \cite{jacquelin2017polynomial} proposed to approximate model outputs using ratios of PCEs (RPCE) instead, using the stochastic Galerkin method to compute the PCEs' coefficients.
+The authors of the paper show that RPCE requires a lower number of basis functions to approximate highly nonlinear models compared to PCE.
+
+Recently, the authors of \cite{schneider2020polynomial} developed the non-intrusive RPCE (NI-RPCE), using regression to compute the coefficients.
+This model saw further development in \cite{schneider2023sparse}, in which sparse Bayesian learning helps to avoid overfitting.
+An attractive feature of NI-RPCE is that it approximates each output independently.
+Therefore, the CB method and NI-RPCE combination may be promising for uncertainty propagation as the surrogate model can approximate each component's dynamic response separately.

@@ -1,0 +1,72 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/methodology/measure.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Error Measure}
+\label{sec: performance measure}
+
+This study compares the proposed framework's outputs against the outputs of direct MCS.
+Two kinds of error measures quantify the framework's performance: relative empirical error and response statistic relative error.
+
+\subsection{Relative Empirical Error}
+\label{ssec: pointwise error}
+
+This error measure quantifies the difference in the outputs of two models when using the same set of input parameters.
+For the complete plate model $\mathcal{M}$, the RPCE model $\widehat{\mathcal{M}}$ and the size of the first experimental design $N_{ed}$, the empirical error is:
+\begin{equation}
+    err_{emp} \left(\omega\right)
+    =
+    \frac{1}{N_{ed}} \sum_{i=1}^{N_{ed}}{
+        \left|
+            \widehat{\mathcal{M}} \left(
+                \omega, \mathbf{\Xi}_{i}
+            \right)
+            -
+            \mathcal{M} \left(
+                \omega, \mathbf{\Xi}_{i}
+            \right)
+        \right|^{2}
+    }.
+\end{equation}
+The relative empirical error is the ratio between the empirical error and the sample variance of the outputs from direct MC simulations:
+\begin{equation}
+    \epsilon_{emp} \left(\omega\right)
+    =
+    \frac{
+        err_{emp} \left(\omega\right)
+    }{
+        \widehat{\text{Var}}\left(
+            \mathcal{M}\left(
+                \omega, \mathbf{\Xi}
+            \right)
+        \right)
+    }.
+\end{equation}
+
+\subsection{Response Statistic Relative Error}
+\label{ssec: statistic error}
+
+This error measure quantifies the difference in the outputs' statistics of two models when being fed the same ED.
+For an outputs' statistic of the complete plate model $m\left(\omega\right)$ and the outputs' statistic of the proposed framework $\widehat{m}\left(\omega\right)$, the relative error is:
+\begin{equation}
+    \epsilon_{rel, m} \left(\omega\right)
+    =
+    \frac{
+        \left|
+            \widehat{m}\left(\omega\right)
+            -
+            m\left(\omega\right)
+        \right|
+    }{
+        \left|
+            m\left(\omega\right)
+        \right|
+    }
+\end{equation}
+The outputs' statistics of interest in this study are the means and variances of the outputs.

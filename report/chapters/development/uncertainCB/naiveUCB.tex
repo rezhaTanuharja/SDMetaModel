@@ -1,0 +1,22 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/uncertainCB/naiveUCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Naive Uncertain CB Method}
+\label{ssec: NUCB}
+
+The naive approach simply uses the ECB method inside an MCS.
+The transformation matrix computation must take place in each iteration because a different set of input parameters may lead to a different set of components' modes.
+Algorithm \ref{alg: NUCB} depicts the naive UCB method.
+
+\input{algorithms/naiveUCB}
+
+Computing the ECB's transformation matrix involves solving a generalized eigenproblem and a linear system of equations.
+The naive approach computes the transformation matrix once for each sample in each frequency of interest, making it too costly.
+Therefore, using the original surrogate modeling approach without the CB method may be faster.

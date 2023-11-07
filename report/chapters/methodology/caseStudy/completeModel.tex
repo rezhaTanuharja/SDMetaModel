@@ -1,0 +1,65 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/methodology/caseStudy/completeModel.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Complete Plate Model}
+\label{ssec: full model}
+
+The discretization process uses biquadratic rectangular elements in a uniform mesh. There are three DOFs at each node: the vertical displacement, the rotation about the $x$ axis, and the rotation about the $y$ axis.
+Tabel \ref{table: Mesh Parameter} provides the mesh's parameters.
+
+\begin{table}[H]
+    \setlength{\extrarowheight}{2pt}
+    \centering 
+    \begin{tabular}{
+        L{0.3\textwidth} C{0.2\textwidth}
+    }
+        \hline
+        Parameter & 
+        Value \\
+        \hline
+        Number of elements (x) &
+        48 \\
+        Number of elements (y) &
+        20 \\
+        & \\
+        Total number of nodes &
+        3977 \\
+        Total number of DOFs &
+        11931 \\
+        \hline 
+    \end{tabular}
+    \caption{Complete Plate Model Mesh's Parameters}
+    \label{table: Mesh Parameter}
+\end{table}%
+%
+The case study focuses on two particular nodes: node A located on the edge of the plate and node B located inside the plate's interior.
+Table \ref{table: Node Coordinates} provides the coordinates of these two nodes.
+
+\begin{table}[H]
+    \setlength{\extrarowheight}{2pt}
+    \centering
+    \begin{tabular}{
+        C{0.15\textwidth} C{0.15\textwidth} C{0.15\textwidth}
+    }
+        \hline
+        Node & $x$ [m] & $y$ [m] \\
+        \hline
+        A & $5.\bar{3}$ & $4.0$ \\
+        B & $1.\bar{3}$ & $1.9$ \\
+        \hline
+    \end{tabular}
+    \caption{Coordinates of Two Nodes of Interest}
+    \label{table: Node Coordinates}
+\end{table}
+
+In the evaluation, the author applies a unit vertical force on node A and computes the vertical accelerations of nodes A and B.
+Figure \ref{fig: complete model} illustrates the meshed full plate model and the two nodes.
+
+\input{images/completeModel}

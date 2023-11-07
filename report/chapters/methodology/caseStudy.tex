@@ -1,0 +1,60 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/methodology/caseStudy.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Case Study}
+\label{sec: case study}
+
+This study demonstrates the practical application of the new framework using a simple yet relevant example: a plate clamped at both of its ends.
+The choice of case is deliberate, as it is sufficiently large for the substructuring methods while still maintaining the feasibility of direct MC simulations.
+Figure \ref{fig: case study} illustrates the plate and its dimensions.
+
+\input{images/caseStudy}
+
+Table \ref{table: Plate Parameter} lists the relevant plate's parameters.
+The plate's density and thickness are uncertain and modeled by random variables.
+The parameters $\xi_{1}$ and $\xi_{2}$ are statistically independent standard normal random variables.
+
+\begin{table}[H]
+    \setlength{\extrarowheight}{2pt}
+    \centering
+    \begin{tabular}{
+        L{0.32\textwidth}rccC{0.25\textwidth}
+    }
+        \hline
+        Parameter & \multicolumn{3}{c}{Value} & Unit \\
+        \hline
+        Thickness &
+            $(1.0+0.2\xi_{1})$ & $\times$ & $0.01$ &
+            \einheit{m} \\
+        Density & 
+            $(1.0+0.2\xi_{2})$ & $\times$ & $7850.0$ &
+            \einheit{kg/{m}^{3}} \\
+        Shear modulus & 
+            \multicolumn{3}{c}{$79.3$} &
+            \einheit{GPa} \\
+        Shear correction factor & 
+            \multicolumn{3}{c}{$0.83$} &
+            -- \\
+        Poisson ratio & 
+            \multicolumn{3}{c}{$0.3$} &
+            -- \\
+        \hline
+    \end{tabular}
+    \caption{Plate's Parameters in The Case Study}
+    \label{table: Plate Parameter}
+\end{table}
+
+Two discrete models approximate the plate using the FE method with Kirchoff plate theory: the complete plate model and the substructured plate model.
+The proposed framework uses the latter to generate training data for the NI-RPCE models, which will approximate the complete plate model.
+On the other hand, the FRFs from direct MCS using the complete plate model serve as the baselines for comparison.
+
+\input{chapters/methodology/caseStudy/completeModel}
+\input{chapters/methodology/caseStudy/substructuredModel}
+\input{chapters/methodology/caseStudy/surrogateModel}

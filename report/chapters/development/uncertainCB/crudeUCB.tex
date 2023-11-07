@@ -1,0 +1,22 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/uncertainCB/crudeUCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Crude Uncertain CB Method}
+\label{ssec: CUCB}
+
+The crude UCB method is an alternative to the naive UCB method: it computes the transformation matrix using a reference structure and uses it for each sample in each frequency of interest.
+In addition, it uses the original CB's transformation instead of the ECB's.
+Algorithm \ref{alg: CUCB} illustrates this method.
+
+\input{algorithms/crudeUCB}
+
+By computing the transformation matrix only once, the computational cost becomes much lower.
+This difference in computational cost becomes more pronounced as the number of frequencies and samples increases.
+The crude UCB method sacrifices accuracy to reduce the computational cost: it does not account for modes' changes due to the structural parameters' variability.

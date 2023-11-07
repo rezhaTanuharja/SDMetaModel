@@ -1,0 +1,29 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/conclussion.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\chapter{Summary and Conclusion}
+\label{ch: conclusion}
+
+This study has developed a novel framework for uncertainty quantification of large and complex structures by combining the well-established CB method with the recently developed surrogate model, the NI-RPCE model.
+
+The first part of the proposed framework consists of the hybrid UCB method: a modified CB method for models with varying input parameters.
+The hybrid UCB method avoids computing the components' internal modes for each realization of input parameters.
+The transformation of the structure's equation of motion uses invariant reference internal modes instead.
+Consequently, one only needs to solve a generalized eigenproblem for each component, thus reducing the computational cost.
+
+The second part of the proposed framework consists of the sparse NI-RPCE model.
+A newly developed procedure selectively removes bases from the model, thus leading to a sparse model.
+The sparse RPCE model yields smaller errors compared to the original RPCE model when training data sizes are small.
+Consequently, a lower number of evaluations of the structures' dynamic response is necessary, thus further reducing the overall computational cost.
+
+The proposed framework combines the hybrid UCB method with the sparse NI-RPCE models.
+It uses the former to generate training data at a lower computational cost, trains the latter using the data, and uses the sparse NI-RPCE models to estimate the structure's dynamic responses.
+Consequently, the framework offers two advantages: lower computational cost to generate each training data and reduce the required number of training data.
+This study has demonstrated the framework using a case study: a plate clamped at both of its ends, in which the performance of the new framework is satisfactory.

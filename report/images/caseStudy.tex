@@ -1,0 +1,155 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% images/caseStudy.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}[
+        scale=0.35, 
+        %
+        % Isometric-esque appearance
+        x={( 0.6cm,-0.2cm)}, 
+        y={( 0.5cm, 0.3cm)}, 
+        z={( 0.0cm, 1.0cm)}, 
+        %
+        draw opacity=0.7
+    ]
+
+        % Define plate parameters
+        % maxes are lengths - one step because of plotting
+        \def\xmin{0} \def\xmax{47.0}
+        \def\ymin{0} \def\ymax{22.8}
+        % the dimension of each rectangular element
+        \def\xstep{1.0}
+        \def\ystep{1.2}
+
+        % Define clamping wall parameters
+        \def\wallh{1.2}
+        \def\wallt{1.0}
+
+        % Draw the side left clamping wall 
+        \draw[pattern=north west lines] 
+            (   \xmin, \ymin, -\wallh) -- 
+            (   \xmin, \ymin,  \wallh) -- 
+            ( -\wallt, \ymin,  \wallh) -- 
+            ( -\wallt, \ymin, -\wallh) -- 
+            cycle;
+
+        % Draw the top left clamping wall
+        \draw[pattern=north west lines] 
+            (   \xmin, \ymin       ,  \wallh) -- 
+            (   \xmin, \ymax+\ystep,  \wallh) -- 
+            ( -\wallt, \ymax+\ystep,  \wallh) -- 
+            ( -\wallt, \ymin       ,  \wallh) -- 
+            cycle;
+
+        % Draw the front left clamping wall
+        \draw[fill=white]
+            (   \xmin, \ymin       , -\wallh) -- 
+            (   \xmin, \ymax+\ystep, -\wallh) --
+            (   \xmin, \ymax+\ystep,  \wallh) --
+            (   \xmin, \ymin       ,  \wallh) -- 
+            cycle; 
+    
+        % Draw the plate
+        \draw[fill=white] 
+            ( \xmin       , \ymin       , 0) -- 
+            ( \xmax+\xstep, \ymin       , 0) -- 
+            ( \xmax+\xstep, \ymax+\ystep, 0) -- 
+            ( \xmin       , \ymax+\ystep, 0) -- 
+            cycle;
+
+        % Draw annotations
+        \draw[thin]
+            ( \xmin, \ymax+  \ystep, 0 ) --
+            ( \xmin, \ymax+4*\ystep, 0);
+
+        \draw[thin]
+            ( \xmax+\xstep, \ymax+  \ystep, 0 ) --
+            ( \xmax+\xstep, \ymax+4*\ystep, 0);
+
+        \draw[latex-latex]
+            ( \xmin       , \ymax+3*\ystep, 0) --
+            node[sloped, anchor=center, above] {$8.0\text{ m}$}
+            ( \xmax+\xstep, \ymax+3*\ystep, 0);
+
+        \draw[latex-latex]
+            ( \xmax-5*\xstep, \ymin, 0 ) --
+            node[sloped, anchor=center, above] {$4.0\text{ m}$}
+            ( \xmax-5*\xstep, \ymax+\ystep, 0 );
+
+        % Put the back right clamping wall in front of the plate
+        \draw[fill=white]
+            (   \xmax+\wallt+\xstep, \ymin       , -\wallh) -- 
+            (   \xmax+\wallt+\xstep, \ymax+\ystep, -\wallh) --
+            (   \xmax+\wallt+\xstep, \ymax+\ystep,  \wallh) --
+            (   \xmax+\wallt+\xstep, \ymin       ,  \wallh) -- 
+            cycle; 
+
+        % Draw the back right clamping wall
+        \draw[pattern=north east lines]
+            (   \xmax+\wallt+\xstep, \ymin       , -\wallh) -- 
+            (   \xmax+\wallt+\xstep, \ymax+\ystep, -\wallh) --
+            (   \xmax+\wallt+\xstep, \ymax+\ystep,  \wallh) --
+            (   \xmax+\wallt+\xstep, \ymin       ,  \wallh) -- 
+            cycle; 
+
+        % Put the side right clamping wall in front of the plate
+        \draw[fill=white] 
+            ( \xmax+\xstep       , \ymin, -\wallh) -- 
+            ( \xmax+\xstep       , \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin, -\wallh) -- 
+            cycle;
+        
+        % Draw the side right clamping wall
+        \draw[pattern=north west lines] 
+            ( \xmax+\xstep       , \ymin, -\wallh) -- 
+            ( \xmax+\xstep       , \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin, -\wallh) -- 
+            cycle;
+        
+        % Put the top right clamping wall in front of the plate
+        \draw[fill=white] 
+            ( \xmax+\xstep       , \ymin       ,  \wallh) -- 
+            ( \xmax+\xstep       , \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin       ,  \wallh) -- 
+            cycle;
+
+        % Draw the top right clamping wall
+        \draw[pattern=north west lines] 
+            ( \xmax+\xstep       , \ymin       ,  \wallh) -- 
+            ( \xmax+\xstep       , \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymax+\ystep,  \wallh) -- 
+            ( \xmax+\xstep+\wallt, \ymin       ,  \wallh) -- 
+            cycle;
+
+        % Draw coordinate axis
+        \draw[thick, ->]
+            ( \xmin, \ymin-6*\ystep, 0) --
+            ( \xmin, \ymin-6*\ystep, -1.5*\xstep)
+            node [below] {$u$};
+
+        \draw[thick, ->]
+            ( \xmin         , \ymin-6*\ystep, 0) --
+            ( \xmin+2*\xstep, \ymin-6*\ystep, 0)
+            node [right, xshift=-1.5*\xstep, yshift=-1.5*\ystep] {$x$};
+
+        \draw[thick, ->]
+            ( \xmin, \ymin-6*\ystep, 0) --
+            ( \xmin, \ymin-4*\ystep, 0)
+            node [above, xshift=5.5*\xstep, yshift=-2.5*\ystep] {$y$};
+
+    \end{tikzpicture}
+    \caption{Case Study: A Plate Clamped at Both Ends}
+    \label{fig: case study}
+\end{figure}

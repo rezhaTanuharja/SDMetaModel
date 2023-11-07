@@ -1,0 +1,20 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/development/sparseRPCE.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Sparse RPCE Model}
+\label{sec: stepwise RPCE}
+
+The sparse PCE's main idea is to use as few basis functions as possible without compromising the ability to approximate the outputs.
+The procedure in \ref{ssec: sparse PCE} achieves this by using only the basis functions that contribute significantly to the approximation's quality.
+The following is an adaptation of this procedure for the RPCE models.
+
+\input{chapters/development/sparseRPCE/inclusionCriteria}
+\input{chapters/development/sparseRPCE/crossValidation}
+\input{chapters/development/sparseRPCE/selectionProcedure}

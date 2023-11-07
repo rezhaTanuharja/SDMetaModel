@@ -1,0 +1,31 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/stochastic.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\section{Uncertainty Propagation}
+\label{sec: stochastic}
+
+The previous section considers deterministic dynamic structures, i.e., it assumes that all structural parameters are precisely known.
+This assumption is not necessarily valid.
+{Alternatively, one can use a dynamic model with parametric uncertainties instead:}%
+\begin{equation}
+    \mathbf{D} \left(\omega, \mathbf{\Xi}\right)
+    \mathbf{U} \left(\omega, \mathbf{\Xi}\right)
+    =
+    \mathbf{F} \left(\omega, \mathbf{\Xi}\right),
+    \label{stochastic_eq_of_motion}
+\end{equation}
+where the dynamic stiffness, force vector, and displacement vector are functions of a set of zero-mean random variables $\mathbf{\Xi}=\left\{\xi_{1}, \xi_{2},...,\xi_{m}\right\}$.
+In this context, the outputs of the model are not deterministic.
+Therefore, the aim is to estimate the probabilistic characteristics of the model's outputs.
+
+\input{chapters/literature/stochastic/monteCarlo}
+\input{chapters/literature/stochastic/PCE}
+\input{chapters/literature/stochastic/sparsePCE}
+\input{chapters/literature/stochastic/RPCE}

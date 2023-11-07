@@ -1,0 +1,72 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% algorithm/sparseRPCENumerator.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\begin{center}
+\begin{algorithm}[H]
+    \label{alg: sparse RPCE numerator}
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output\,}
+    \vspace{1.0em}%
+    \Input{%
+        $\mathbf{Y}\:\:$ is the sample model outputs \newline
+        $\mathbf{A}_{u}$ is the sample regressors in the numerator \newline
+        $\mathbf{A}_{v}$ is the sample regressors in the denominator
+    }
+    \vspace{1.0em}%
+    \Output{%
+        $S_{u}$ is the selected numerator indices \newline
+        $S_{v}$ is the selected denominator indices
+    }
+    \vspace{1.0em}%
+    \basisSelector{%
+        $\mathbf{Y}$,
+        $\mathbf{A}_{u}$,
+        $\mathbf{A}_{v}$
+    } \Begin{
+        \tcp{Initialize numerator and denominator's indices}
+        $N_{u} \longleftarrow$ \len{$\mathbf{A}_{u}$} \\ 
+        $N_{v} \longleftarrow$ \len{$\mathbf{A}_{v}$} \\ 
+        \vspace{1.0em}%
+        $S_{u} \longleftarrow \left\{1, ..., N_{u}\right\}$ \\
+        $S_{v} \longleftarrow \left\{1, ..., N_{v}\right\}$ \\
+        \vspace{1.0em}%
+        \tcp{Initialize coefficient of determination}
+        $\hat{\mathbf{Y}} \longleftarrow$
+        \looRPCE{$\mathbf{Y}$, $\mathbf{A}_{u}$, $\mathbf{A}_{v}$, $S_{u}$, $S_{v}$} \\
+        $R^{2} \longleftarrow$
+        \detCoeff{$\mathbf{Y}, \hat{\mathbf{Y}}$}\\
+        \vspace{1.0em}%
+        \For{$i = N_{u}, ..., 1$}{
+            \vspace{1.0em}%
+            $S_{u} \setminus \{i\}$ \\
+            \vspace{1.0em}%
+            $\hat{\mathbf{Y}} \longleftarrow$
+            \looRPCE{$\mathbf{Y}$, $\mathbf{A}_{u}$, $\mathbf{A}_{v}$, $S_{u}$, $S_{v}$} \\
+            \vspace{1.0em}%
+            $R_{-}^{2} \longleftarrow$
+            \detCoeff{$\mathbf{Y}, \hat{\mathbf{Y}}$}\\
+            \vspace{1.0em}%
+            \uIf{$R^{2}-R_{-}^{2} > \epsilon_{0}\cdot(1-R^{2})$}{
+                $S_{u} \longleftarrow S_{u}\cup\left\{i\right\}$
+            }
+            \Else{
+                $R^{2} \longleftarrow R_{-}^{2}$
+            }
+        }
+        \vspace{1.0em}%
+        \tcc{Removal steps for denominator}
+        \vspace{1.0em}%
+        \Return{$S_{u}$, $S_{v}$} \\
+        \vspace{1.0em}%
+    }
+    \vspace{1.0em}%
+  \caption{RPCE Numerator's Basis Function Selection}
+\end{algorithm}
+\end{center}

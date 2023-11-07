@@ -1,0 +1,77 @@
+\thispagestyle{empty}
+\newlength{\headsepold}
+\setlength{\headsepold}{\headsep}
+\setlength{\headsep}{-1.26cm}
+\newgeometry{left=1.28cm,right=1.28cm,top=1.28cm,bottom=0cm}
+
+\begin{center}
+{\sffamily
+\fontsize{18}{18}\selectfont 
+\begin{minipage}[b]{120mm}
+\definecolor{tum_blau_2016}{RGB}{0,101,189}
+
+\ifthenelse{\boolean{bmgerman}}{
+\small \textcolor{tum_blau_2016}{Lehrstuhl f{\"u}r Baumechanik \\
+TUM School of Engineering and Design \\
+Technische Universit{\"a}t M{\"u}nchen}}
+{
+\small \textcolor{tum_blau_2016}{Chair of Structural Mechanics \\
+TUM School of Engineering and Design \\
+Technical University of Munich}
+}
+\end{minipage}
+%\includegraphics[width=1.2cm, keepaspectratio=true]{bvlogo} \includegraphics[width=1.5cm, keepaspectratio=true]{bmlogo} \hfill 
+	%\begin{minipage}[b]{80mm}
+ %\small \centering Lehrstuhl f{\"u}r Baumechanik - TU M{\"u}nchen \\ 
+  %\end{minipage}
+ \hfill \includegraphics*[height=1.28cm, keepaspectratio=true]{TUM_Logo_blau_rgb_2016}
+\vspace{0.5cm}
+%\hrule
+\begin{center}
+\vspace{4cm}
+\begin{doublespace} %Größerer Zeilenabstand, falls Veranstaltungstitel umgebrochen werden muss
+{\huge{\textbf{\veranstaltung}}}%
+\end{doublespace}%
+\Large \lehrer  %\sc
+\ifdef{\assistent}{\\[.1cm]\normalsize \assistent}{}
+\\[.8cm] 
+\large \semester
+\ifdef{\Skriptteil}{\\[1.0cm]\Large \textbf{\Skriptteil}}{}
+\end{center}
+}
+\enlargethispage{3.5cm}
+\vspace{3cm}
+\includegraphics[width=12cm, keepaspectratio=true]{Bild_TUM_Uhrenturm_2016}
+\end{center}
+\vfill
+%\begin{flushleft}
+%\href{http://www.sqk.bv.tum.de}{\includegraphics[height=3.1cm, keepaspectratio=true]{deinvorteil}}
+%\end{flushleft}
+\restoregeometry
+\newpage
+\thispagestyle{empty}
+%
+\vspace*{\fill}
+%
+\ifthenelse{\boolean{bmgerman}}
+{
+Copyright \copyright\xspace Prof. Dr. Ing. Gerhard M{\"u}ller \\
+
+Publiziert am Lehrstuhl für Baumechanik, Technische Universität München \\
+
+Ausschließlich für akademische Zwecke. Vervielfältigung und Verbreitung sind ohne Zustimmung des Autors nicht gestattet. \\
+
+München, \today.
+}{
+Copyright \copyright\xspace Prof. Dr. Ing. Gerhard M{\"u}ller \\
+
+Published by the Chair of Structural Mechanics, Technical University of Munich \\
+
+For academic use only. Reproduction and distribution are not permitted without the permission of the author. \\
+
+Munich, \today.
+}
+%
+\newpage
+%
+\setlength{\headsep}{\headsepold}

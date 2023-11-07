@@ -1,0 +1,79 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/substructuring/craigBampton.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Craig-Bampton Method}
+\label{ssec: CB method}
+
+The CB method uses a transformation to a modal space.
+Two modes are defined: normal and constraint modes.
+{Normal modes are the component's undamped eigenmodes with all boundary DOFs constrained, i.e., the solutions to the generalized eigenproblem}%
+\begin{equation}
+    \mathbf{0}
+    =
+    \left(\mathbf{K}_{ii}-\lambda\mathbf{M}_{ii}\right)\mathbf{\Phi}_{n}.
+\end{equation}
+Model order reduction is possible by using only a subset of the normal modes, referred to as the dominant modes. 
+The tall matrix $\mathbf{\Phi}_{d}$ stores these dominant modes.
+On the other hand, each constraint mode is the substructure's static displacement when subjected to a unit displacement of a boundary DOF while the rest of the boundary DOFs are constrained.
+{By this definition, the constraint modes satisfy the static equation}%
+\begin{equation}
+    \mathbf{0}
+    =
+    \mathbf{K}_{ii} \mathbf{\Phi}_{c} +
+    \mathbf{K}_{ib} \mathbf{I}_{b}
+    \iff
+    \mathbf{\Phi}_{c}
+    =
+    -\mathbf{K}_{ii}^{-1}\mathbf{K}_{ib}.
+\end{equation}
+{The transformation $\mathbf{U}=\mathbf{T}\mathbf{X}$ relates the component's initial and modal coordinates:}%
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{U}_{i} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \;\;\mathbf{\Phi}_{d} & \;\;\mathbf{\Phi}_{c} \\
+        \mathbf{0} & \mathbf{I}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d} \\
+        \mathbf{X}_{c}
+    \end{pmatrix}.
+    \label{cb_transformation}
+\end{equation}
+Equation \eqref{cb_transformation} implies that $\mathbf{U}_{b}=\mathbf{X}_{c}$ and the two terms are interchangeable.
+Algorithm \ref{alg: CB method} summarizes the procedure to compute the transformation matrix.
+\input{algorithms/craigBampton}
+{Following the transformations $\overline{\mathbf{D}} = \mathbf{T}^{T}\mathbf{D}\mathbf{T}$ and $\overline{\mathbf{F}} = \mathbf{T}^{T}\mathbf{F}$, the reduced component's dynamic equation of motion in the frequency domain is}%
+\begin{equation}
+    \begin{bmatrix}
+        \overline{\mathbf{D}}_{dd} & \overline{\mathbf{D}}_{dc} \\
+        \overline{\mathbf{D}}_{cd} & \overline{\mathbf{D}}_{cc}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d} \\
+        \mathbf{U}_{b}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \overline{\mathbf{F}}_{d} \\
+        \overline{\mathbf{F}}_{c}
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+        \mathbf{0} \\
+        \mathbf{G}_{b}
+    \end{pmatrix}.
+    \label{modal_eq_of_motion}
+\end{equation}
+Between \eqref{initial_eq_of_motion} and \eqref{modal_eq_of_motion}, the transformation, including the model order reduction, does not alter the boundary DOFs or the coupling force, i.e., it does not affect compatibility or equilibrium conditions among components.
+As a result, the CB method enables an independent reduction of each component, leading to multiple levels of fidelity among the components.

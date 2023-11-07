@@ -1,0 +1,37 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/stochastic/sparsePCE.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Sparse PCE Model}
+\label{ssec: sparse PCE}
+
+The computation of FRFs is likely the most expensive step in the method above.
+Therefore, the number of samples dictates the overall computational cost.
+As the number of basis functions in the approximation increases, so does the required number of samples.
+There are several procedures to shrink the number of basis functions.
+The following is an example of such procedures and is a simplified version of the one in \cite{blatman2010adaptive}.
+
+The procedure starts with an empty approximation.
+It enriches the model with one basis function at a time and checks its accuracy.
+If accuracy improves significantly, it keeps the basis function in the model.
+Otherwise, it removes the basis functions from the model.
+These steps aim to include only the basis functions that significantly improve the model's approximation.
+Algorithm \ref{alg: sparse PCE addition} illustrates these steps.
+
+\input{algorithms/sparsePCEAddition}
+
+Subsequently, the procedure removes one basis function at a time from the approximation and checks the accuracy.
+If accuracy declines significantly, it reinstates the basis in the approximation.
+These steps aim to remove the basis functions that do not significantly improve the model's approximation.
+Algorithm \ref{alg: sparse PCE removal} illustrates these steps.
+
+\input{algorithms/sparsePCERemoval}
+
+After the selective inclusion and exclusion steps above, only some of the basis functions are present in the PCE model.
+Hence the term sparse PCE model.

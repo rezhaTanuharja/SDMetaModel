@@ -1,0 +1,18 @@
+\newcommand{\blattkopf}{
+%
+%% Kopfzeile mit Lehrstuhl links und TUM Logo rechts
+{\sffamily
+\fontsize{18}{18}\selectfont 
+\begin{minipage}[b]{120mm}
+\ifthenelse{\boolean{bmgerman}}{
+\small {Lehrstuhl f{\"u}r Baumechanik \\
+TUM School of Engineering and Design \\
+Technische Universit{\"a}t M{\"u}nchen}}
+{
+\small {Chair of Structural Mechanics \\
+TUM School of Engineering and Design \\
+Technical University of Munich}
+}
+\end{minipage}
+\hfill \includegraphics*[height=1.28cm, keepaspectratio=true]{TUM_Logo_schwarz_rgb_2016}
+}}

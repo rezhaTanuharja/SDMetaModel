@@ -1,0 +1,1000 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Features für Lückenskript
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------------------------
+% Boxlücke
+%-------------------------------------------------------------------------------------------------
+
+\definecolor{GreyBox}{RGB}{242,242,242}
+
+\newsavebox{\boxluecke} 
+
+%-------------------------------------------------------------------------------------------------
+% Myphantom
+%-------------------------------------------------------------------------------------------------
+%\newenvironment{myphantom}{\phantomtemp}{} %wandelt das command \phantom in eine umgebung um...
+%\def\phantomtemp #1  { \phantom{#1 }}
+
+%-------------------------------------------------------------------------------------------------
+% Lücke klein
+%-------------------------------------------------------------------------------------------------
+
+\newcommand{\lueckek}[1]{%
+\setlength{\fboxrule}{1pt}%
+\setlength{\fboxsep}{2pt}%
+\ifthenelse{\equal{\smodus}{student}}%
+	{%
+		\ifmmode%
+			\fcolorbox{white}{white}{\mbox{\phantom{$#1$}}}%
+		\else%
+			\fcolorbox{white}{white}{\mbox{\phantom{#1}}}%
+		\fi%
+	}%
+	{%
+		\ifthenelse{\equal{\smodus}{dozent}}%
+			{%
+				\ifmmode%
+					\fcolorbox{black}{GreyBox}{\mbox{$#1$}}%
+				\else%
+					\fcolorbox{black}{GreyBox}{\mbox{#1}}%
+				\fi%
+			}%
+			{%
+				#1%
+			}%
+		}%
+	}%
+
+
+%-------------------------------------------------------------------------------------------------
+% Lücke Medium
+%-------------------------------------------------------------------------------------------------
+
+\newcommand{\lueckem}[1]{
+\setlength{\fboxrule}{1pt}
+\setlength{\fboxsep}{2pt}
+\ifthenelse{\equal{\smodus}{student}}
+	{%
+		\ifmmode%
+			\fcolorbox{white}{white}{\mbox{\phantom{\large $#1$}}}%
+		\else%
+			\fcolorbox{white}{white}{\mbox{\phantom{\large #1}}}%
+		\fi%
+	}%
+	{%
+		\ifthenelse{\equal{\smodus}{dozent}}%
+			{%
+				\ifmmode%
+					\fcolorbox{black}{GreyBox}{\mbox{\large$#1$}}%
+				\else%
+					\fcolorbox{black}{GreyBox}{\mbox{\large#1}}%
+				\fi%
+			}%
+			{%
+				#1%
+			}%
+		}%
+	}%
+
+%-------------------------------------------------------------------------------------------------
+% Lücke Groß
+%-------------------------------------------------------------------------------------------------
+
+\newcommand{\luecke}[1]{
+\setlength{\fboxrule}{1pt}
+\setlength{\fboxsep}{2pt}
+\ifthenelse{\equal{\smodus}{student}}%
+	{%
+		\ifmmode%
+			\fcolorbox{white}{white}{\mbox{\phantom{\Large $#1$}}}%
+		\else%
+			\fcolorbox{white}{white}{\mbox{\phantom{\Large #1}}}%
+		\fi%
+	}%
+	{%
+		\ifthenelse{\equal{\smodus}{dozent}}%
+			{%
+				\ifmmode%
+					\fcolorbox{black}{GreyBox}{\mbox{\Large$#1$}}%
+				\else%
+					\fcolorbox{black}{GreyBox}{\mbox{\Large#1}}%
+				\fi%
+			}%
+			{%
+				#1%
+			}%
+		}%
+	}%
+
+%-------------------------------------------------------------------------------------------------
+% Command pluecke für ganze Seitebreite
+%-------------------------------------------------------------------------------------------------
+
+\newcommand{\pluecke}[1]
+{
+	\setlength{\fboxrule}{1pt}
+	\setlength{\fboxsep}{2pt}
+	% Speicherung einer Box mit Inhalt unter dem Namen \boxluecke im Boxenregister
+	\ifmmode 
+			\begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}$#1$\end{minipage}\end{lrbox}  
+	\else 
+			\begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}#1\end{minipage}\end{lrbox}  
+	\fi
+	\ifthenelse{\equal{\smodus}{student}}{
+	% Verwenden der \boxluecke um eine \phantom-Box zu zeichnen
+		\phantom{\fcolorbox{black}{GreyBox}{\usebox{\boxluecke}}}
+	}
+	{
+		\ifthenelse{\equal{\smodus}{dozent}}{
+		% Verwenden der \boxluecke um eine grau hinterlegte Box zu drucken
+				\fcolorbox{black}{GreyBox}{\usebox{\boxluecke}}
+		}
+		{#1}%für Modus Buch wird der Parameter einfach ohne Veränderung gedruckt
+	}
+}
+
+%-------------------------------------------------------------------------------------------------
+% Command luecke für Verwendung in Box Umgebung
+%-------------------------------------------------------------------------------------------------
+\newcommand{\bluecke}[1]{
+\setlength{\fboxrule}{1pt}
+\setlength{\fboxsep}{2pt}
+\ifthenelse{\equal{\smodus}{student}}
+    {              
+       \ifmmode
+           \transparent{0.0}{\fcolorbox{black}{GreyBox}{\mbox{\phantom{\Large $#1$}}}}
+       \else 
+           \transparent{0.0}{\fcolorbox{black}{GreyBox}{\mbox{\phantom{\Large #1}}}}
+       \fi
+       \transparent{1.0}
+    }
+    {
+       	\ifthenelse{\equal{\smodus}{dozent}}
+	        {              
+	            \ifmmode
+	                \fcolorbox{black}{GreyBox}{\mbox{\Large$#1$}}
+	            \else
+	                \fcolorbox{black}{GreyBox}{\mbox{\Large#1}}
+	            \fi
+	        }
+	        {
+	                        #1
+	        }
+	    }
+	}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Features für Lampenboxen 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%   Packages   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{tikz}															%boxxdesign
+\usepackage[framemethod=default]{mdframed}		%boxxdesign
+%\usepackage{graphicx}												%boxxdesign
+\usepackage{paralist}													%zum umfließen von Bildern mit listen
+\usepackage{bmvorlagen/additionalPackages/picins}														%zum umfließen von Bildern mit text, da veraltet wird das Paket selber in den Vorlagen im Ordner additionalPackages mit übergeben
+\makeatletter 																%macht das mdframed packet mit picins kompatiebel
+\let\@captype\@undefined
+\def\newcaption{%
+\begingroup%
+\def\@captype{figure}%
+\refstepcounter\@captype\@dblarg{\@newcaption\@captype}%
+\endgroup%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%   Lampenboxxxstyle   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\BackgroundColorLampenboxxx}{white}%{black!5!white}
+\mdfdefinestyle{lampenboxxxstyle}{
+topline=true,
+frametitleaboveskip=-1pt,%\dimexpr-\ht\strutbox\relax, %Diese Option nehmen, falls die Titelbox mittig auf dem Rahmen sitzen soll
+%frametitlefont={\normalfont\sffamily\color{white}\hspace{−5pt}},
+linewidth=2pt,
+linecolor={black!50!white},
+backgroundcolor={\BackgroundColorLampenboxxx},
+fontcolor=black,
+font={},
+innerleftmargin=3ex,
+innerrightmargin=3ex,
+innertopmargin=3ex,
+innerbottommargin=3ex,
+leftmargin=0ex,
+rightmargin=0,
+skipabove=3ex,
+skipbelow=3ex
+}
+
+%%%%%%%%%%%%%%%%%%   Lampenboxxxzähler   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{lampenboxxxcounter}[chapter]
+\renewcommand{\thelampenboxxxcounter}{\thechapter.\arabic{lampenboxxxcounter}}
+\newcommand{\neededspace}{}
+
+
+%%%%%%%%%%%%%%%%%%   Eigentliche Lampenboxxxumgebung   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Erzeugt eine Box mit einer Lampe drin um den Text in der Umgebung. Die Box hat einen
+% Titel der im main durch das Kommando \lampentext definiert werden muss
+% Die Umgebung hat zwei Optionale Parameter: (Die Reihenfolge ist wichtig!!!)
+%  #1: Ergänzung des Titels
+%  #2: Längenangabe für \Needspace um einen Umbruch der Lampenboxxx direkt nach dem Titel zu verhindern (Default 5cm) 
+%  #3: Label um auf die Box verweisen zu können
+%
+%  Beispiel:
+%   \begin{lampenboxxx}[Die Geschichte vom Pferd][5cm][\label{lampbox:Perd}]
+%       Das Pferd ist groß und stark
+%   \end{lampenboxxx}
+%
+% Braucht man die Paramter nicht können sie auch weggelassen werden.
+% Braucht man nur das Label, muss das erste Argument leer gelassen werden:
+%   \begin{lampenboxxx}[][][\label{lampbox:Perd}]
+%       Das Pferd ist groß und stark
+%   \end{lampenboxxx}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ExampleNewton}{%
+  {\scalebox{.021}{\includesvg{bmvorlagen/logos/lamp}}}%
+}
+
+\NewDocumentEnvironment{lampenboxxx}{O{} O{} O{}}{
+\refstepcounter{lampenboxxxcounter}
+%Defaultwert für \Needspace (Wird nicht nach \NewDocumentEnvironment definiert, damit auch die Anwendung von \begin{lampenboxxx}[][][\label{box:xy}] ein Needspace mit 5cm bekommt.
+\ifstrempty{#2}{\renewcommand{\neededspace}{5cm}}{\renewcommand{\neededspace}{#2}}
+\Needspace{\neededspace}
+%Unterscheidung ob Titel definiert ist oder nicht
+\ifstrempty{#1}
+{\mdfsetup{
+frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Lampenbox nach links, damit er bündig mit dem Lampemboxrahmen abschließt
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=black!50!white]
+{\strut \ExampleNewton~#3\textcolor{white}{\textsf{\textbf{\lampentext~\thelampenboxxxcounter}}}};}
+}}
+{\mdfsetup{
+frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Lampenbox nach links, damit er bündig mit dem Lampemboxrahmen abschließt
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=black!50!white]
+{\strut \ExampleNewton~#3\textcolor{white}{\textsf{\textbf{\lampentext~\thelampenboxxxcounter:~#1}}}};}
+}}
+\mdfsetup{style=lampenboxxxstyle
+}
+\begin{mdframed}[]\relax
+}
+{
+\end{mdframed}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Features für Beispiele
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------------------------
+% Beispiel
+%-------------------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%   Beispielzähler   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{beispielnummermitneedspace}[chapter]
+\renewcommand{\thebeispielnummermitneedspace}{\thechapter.\arabic{beispielnummermitneedspace}}
+
+%%%%%%%%%%%%%%%%%%   Beispielumgebung   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Ohne Boxxx, aber mit anderer Schriftart
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{beispiel}[1][]
+{
+\vspace{1.0ex}
+\Needspace{5cm} %mindestrestlänge auf seite.
+\refstepcounter{beispielnummermitneedspace}
+\begin{minipage}{0.10\textwidth}\centering\includegraphics[scale=0.65]{calculator}\end{minipage}
+\ifstrempty{#1}{
+\begin{minipage}{0.90\textwidth}\subsubsection*{\beispieltext~\thebeispielnummermitneedspace}\end{minipage}\sffamily\nopagebreak
+}
+{
+\begin{minipage}{0.90\textwidth}\subsubsection*{\beispieltext~\thebeispielnummermitneedspace:~#1}\end{minipage}\sffamily\nopagebreak
+}
+}
+{
+\rmfamily
+\vspace{0.5ex}
+}
+
+%-------------------------------------------------------------------------------------------------
+% Beispielboxxx
+%-------------------------------------------------------------------------------------------------
+
+%
+%%%%%%%%%%%%%%%%%%%%   beispielstyle   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\newcommand{\BackgroundColorBeispielboxxx}{white}%{black!5!white}
+\mdfdefinestyle{beispielstyle}{
+topline=true,
+frametitleaboveskip=-1pt,%\dimexpr-\ht\strutbox\relax, %Diese Option nehmen, falls die Titelbox mittig auf dem Rahmen sitzen soll
+%frametitlefont={\normalfont\sffamily\color{white}\hspace{−5pt}},
+linewidth=2pt,
+linecolor={black!50!white},
+backgroundcolor={\BackgroundColorBeispielboxxx},
+fontcolor=black,
+font={},
+innerleftmargin=3ex,
+innerrightmargin=3ex,
+innertopmargin=3ex,
+innerbottommargin=3ex,
+leftmargin=0ex,
+rightmargin=0,
+skipabove=3ex,
+skipbelow=3ex
+}
+%%%%%%%%%%%%%%%%%%%%   Beispielboxxxumgebung   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Funktionsweise analog zu Lampenboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\ExampleCalc}{%
+  %{\mbox{\includesvg[height=\baselineskip]{bmvorlagen/logos/calculator}}}%
+	{\scalebox{.020}{\includesvg{bmvorlagen/logos/calculator}}}%
+}
+
+\NewDocumentEnvironment{beispielboxxx}{O{} O{} O{} O{}}{
+\refstepcounter{beispielnummermitneedspace}
+%Defaultwert für \Needspace (Wird nicht nach \NewDocumentEnvironment definiert, damit auch die Anwendung von \begin{Beispielboxxx}[][][\label{box:xy}] ein Needspace mit 5cm bekommt.
+\ifstrempty{#2}{\renewcommand{\neededspace}{5cm}}{\renewcommand{\neededspace}{#2}}
+\Needspace{\neededspace}
+%Unterscheidung ob Titel definiert ist oder nicht
+\ifstrempty{#1}
+{
+	\mdfsetup{
+	frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Beispielbox nach links, damit er bündig mit dem Beispielboxrahmen abschließt
+	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+	\node[anchor=east,rectangle,fill=black!50!white]
+	{\strut \ExampleCalc~#3\textcolor{white}{\textsf{\textbf{\beispieltext~\thebeispielnummermitneedspace}}}};}
+	}
+	\ifstrempty{#4}{}{\ifstrequal{#4}{y}{
+	\addcontentsline{toc}{subsection}{\protect\numberline{$\mathcal{B}$\thebeispielnummermitneedspace}{Beispiel}}%
+	}{}}
+}
+{
+	\mdfsetup{
+	frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Beispielbox nach links, damit er bündig mit dem Beispielboxrahmen abschließt
+	\tikz[baseline=(current bounding box.east),outer sep=0pt]
+	\node[anchor=east,rectangle,fill=black!50!white]
+	{\strut \ExampleCalc~#3\textcolor{white}{\textsf{\textbf{\beispieltext~\thebeispielnummermitneedspace:~#1}}}};}
+	}
+	\ifstrempty{#4}{}{\ifstrequal{#4}{y}{
+		\addcontentsline{toc}{subsection}{\protect\numberline{$\mathcal{B}$\thebeispielnummermitneedspace}{#1}}%
+	}{}}
+}
+%{\mdfsetup{
+%		frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Beispielbox nach links, damit er bündig mit dem Beispielboxrahmen abschließt
+%			\tikz[baseline=(current bounding box.east),outer sep=0pt]
+%			\node[anchor=east,rectangle,fill=black!50!white]
+%			{\strut \ExampleCalc~#3\textcolor{white}{\textsf{\textbf{\beispieltext~\thebeispielnummermitneedspace}}}};}
+%}}
+%{\mdfsetup{
+%		frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Beispielbox nach links, damit er bündig mit dem Beispielboxrahmen abschließt
+%			\tikz[baseline=(current bounding box.east),outer sep=0pt]
+%			\node[anchor=east,rectangle,fill=black!50!white]
+%			{\strut \ExampleCalc~#3\textcolor{white}{\textsf{\textbf{\beispieltext~\thebeispielnummermitneedspace:~#1}}}};}
+%}}
+\mdfsetup{style=beispielstyle
+}
+\begin{mdframed}[]\relax
+}
+{
+\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------------------------
+% Boxxx - Ohne Numereirung, Bild und vordefinierter Überschrift
+%-------------------------------------------------------------------------------------------------
+
+%
+%%%%%%%%%%%%%%%%%%%%   boxxxstyle   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\newcommand{\BackgroundColorBoxxx}{white}%{black!5!white}
+\mdfdefinestyle{boxxxstyle}{
+topline=true,
+frametitleaboveskip=-1pt,%\dimexpr-\ht\strutbox\relax, %Diese Option nehmen, falls die Titelbox mittig auf dem Rahmen sitzen soll
+%frametitlefont={\normalfont\sffamily\color{white}\hspace{−5pt}},
+linewidth=2pt,
+linecolor={black!50!white},
+backgroundcolor={\BackgroundColorBoxxx},
+fontcolor=black,
+font={},
+innerleftmargin=3ex,
+innerrightmargin=3ex,
+innertopmargin=3ex,
+innerbottommargin=3ex,
+leftmargin=0ex,
+rightmargin=0,
+skipabove=3ex,
+skipbelow=3ex
+}
+%%%%%%%%%%%%%%%%%%%%   boxxxumgebung   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Funktionsweise analog zu Lampenboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentEnvironment{boxxx}{O{} O{5cm}}{
+\Needspace{#2}
+\ifstrempty{#1}{}{
+\mdfsetup{
+frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Lampenbox nach links, damit er bündig mit dem Lampemboxrahmen abschließt
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=black!50!white]
+{\strut \textcolor{white}{\textsf{\textbf{#1}}}};}
+}
+}
+\mdfsetup{style=boxxxstyle
+}
+\begin{mdframed}[]\relax
+}
+{
+\end{mdframed}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%footnote in mdframed
+%
+%\makeatletter
+%\AfterEndEnvironment{mdframed}{%
+ %\tfn@tablefootnoteprintout%
+ %\gdef\tfn@fnt{0}%
+%}
+%\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Features Frageboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%   fragenboxxxstyle   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\BackgroundColorFragenboxxx}{white}%{black!5!white}
+\mdfdefinestyle{fragenboxxxstyle}{
+topline=true,
+frametitleaboveskip=-1pt,%\dimexpr-\ht\strutbox\relax, %Diese Option nehmen, falls die Titelbox mittig auf dem Rahmen sitzen soll
+%frametitlefont={\normalfont\sffamily\color{white}\hspace{−5pt}},
+linewidth=2pt,
+linecolor={black!50!white},
+backgroundcolor={\BackgroundColorFragenboxxx},
+fontcolor=black,
+font={},
+innerleftmargin=3ex,
+innerrightmargin=3ex,
+innertopmargin=3ex,
+innerbottommargin=3ex,
+leftmargin=0ex,
+rightmargin=0,
+skipabove=3ex,
+skipbelow=3ex
+}
+
+%%%%%%%%%%%%%%%%%%   Frageboxxxumgebung   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Funktionsweise analog zu Lampenboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ExampleFrageLogo}{%
+	%{\mbox{\includesvg[height=\baselineskip]{bmvorlagen/logos/calculator}}}%
+	{\scalebox{.026}{\includesvg{bmvorlagen/logos/questionmark}}}%
+}
+
+\NewDocumentEnvironment{fragenboxxx}{O{} O{}}{
+%Defaultwert für \Needspace (Wird nicht nach \NewDocumentEnvironment definiert, damit auch die Anwendung von \begin{fragenboxxx}[][] ein Needspace mit 5cm bekommt.
+\ifstrempty{#2}{\renewcommand{\neededspace}{5cm}}{\renewcommand{\neededspace}{#2}}
+\Needspace{\neededspace}
+\ifstrempty{#1}
+{\mdfsetup{
+frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Fragenbox nach links, damit er bündig mit dem Fragenboxrahmen abschließt
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=black!50!white]
+{\strut \ExampleFrageLogo~\textcolor{white}{\textsf{\textbf{\fragentext}}}};}}}
+{\mdfsetup{
+frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Fragenbox nach links, damit er bündig mit dem Fragenboxrahmen abschließt
+\tikz[baseline=(current bounding box.east),outer sep=0pt]
+\node[anchor=east,rectangle,fill=black!50!white]
+{\strut \ExampleFrageLogo~\textcolor{white}{\textsf{\textbf{\fragentext:~#1}}}};}}}
+\mdfsetup{style=fragenboxxxstyle
+}
+\begin{mdframed}[]\relax
+%\IfFileExists{bmvorlagen/logos/frage.pdf}{
+%\parpic{\includegraphics[width=1.8cm]{frage}}}
+%~
+}
+{
+\end{mdframed}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Features Zieleboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%   fragenboxxxstyle   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\BackgroundColorZieleboxxx}{white}%{black!5!white}
+\mdfdefinestyle{zieleboxxxstyle}{
+topline=true,
+frametitleaboveskip=-1pt,%\dimexpr-\ht\strutbox\relax, %Diese Option nehmen, falls die Titelbox mittig auf dem Rahmen sitzen soll
+%frametitlefont={\normalfont\sffamily\color{white}\hspace{−5pt}},
+linewidth=2pt,
+linecolor={black!50!white},
+backgroundcolor={\BackgroundColorZieleboxxx},
+fontcolor=black,
+font={},
+innerleftmargin=3ex,
+innerrightmargin=3ex,
+innertopmargin=3ex,
+innerbottommargin=3ex,
+leftmargin=0ex,
+rightmargin=0,
+skipabove=3ex,
+skipbelow=3ex
+}
+
+%%%%%%%%%%%%%%%%%%   Frageboxxxumgebung   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Funktionsweise analog zu Lampenboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ExampleZieleLogo}{%
+%{\mbox{\includesvg[height=\baselineskip]{bmvorlagen/logos/calculator}}}%
+{\scalebox{.026}{\includesvg{bmvorlagen/logos/ziele}}}%
+}
+
+\NewDocumentEnvironment{zieleboxxx}{O{} O{}}{
+%Defaultwert für \Needspace (Wird nicht nach \NewDocumentEnvironment definiert, damit auch die Anwendung von \begin{fragenboxxx}[][] ein Needspace mit 5cm bekommt.
+\ifstrempty{#2}{\renewcommand{\neededspace}{5cm}}{\renewcommand{\neededspace}{#2}}
+\Needspace{\neededspace}
+\ifstrempty{#1}
+{\mdfsetup{
+	frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Fragenbox nach links, damit er bündig mit dem Fragenboxrahmen abschließt
+		\tikz[baseline=(current bounding box.east),outer sep=0pt]
+		\node[anchor=east,rectangle,fill=black!50!white]
+		{\strut \ExampleZieleLogo~\textcolor{white}{\textsf{\textbf{\zieletext}}}};}}}
+{\mdfsetup{
+	frametitle={\hspace{-3ex}%Verschieben der Box mit dem Titel der Fragenbox nach links, damit er bündig mit dem Fragenboxrahmen abschließt
+		\tikz[baseline=(current bounding box.east),outer sep=0pt]
+		\node[anchor=east,rectangle,fill=black!50!white]
+		{\strut \ExampleZieleLogo~\textcolor{white}{\textsf{\textbf{\zieletext:~#1}}}};}}}
+\mdfsetup{style=zieleboxxxstyle
+}
+\begin{mdframed}[]\relax
+%\IfFileExists{bmvorlagen/logos/frage.pdf}{
+%\parpic{\includegraphics[width=1.8cm]{frage}}}
+%~
+}
+{
+\end{mdframed}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Features Notizboxxx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{scrlfile}
+%\usepackage{marginnote}
+%
+%\newwrite\notefile
+%\AtBeginDocument{%
+  %\openout\notefile \jobname-note.tex
+  %\write\notefile{\expandafter\detokenize\expandafter{\notepreamble}}%
+  %\write\notefile{%
+    %\string\makeatletter^^J%
+    %\string\newcounter{NotizzaelerRueckseite}^^J%
+    %\string\newcommand\string\notiz[2]{%
+      %\string\@whilenum \string\value{page}<\string#1 \string\do{%
+        %\string\null\string\newpage
+      %}%
+      %\string\stepcounter{NotizzaelerRueckseite}%
+      %\string\paragraph*{\string\theNotizzaelerRueckseite:}%
+      %\string#2
+    %}^^J%
+    %\string\makeatother^^J%
+    %\string\pagestyle{empty}^^J%
+    %\string\begin{document}}%
+%\AfterReadingMainAux{%
+  %\immediate\write\notefile{\string\end{document}}%
+  %\immediate\closeout\notefile
+%}%
+%}
+%
+%\newcounter{Notizzaeler}
+%\newcommand{\notiz}[1]{%
+  %\stepcounter{Notizzaeler}%
+	%\ifthenelse{\equal{\smodus}{dozent}}{
+    %\marginnote{\textcolor{Red}{\small \textbf{!!!} $\rightarrow$ \theNotizzaeler \normalsize}}}
+	%{\relax}%
+  %\write\notefile{\string\notiz{\thepage}{\detokenize{#1}}}%
+%}
+%
+%\makeatletter
+%\newcommand*\notepreamble{
+%\documentclass[a4paper,12pt,fleqn,german,titlepage]{article}^^J
+%\usepackage{amsmath}^^J
+%\usepackage[utf8]{inputenc}^^J
+%\usepackage{listings}^^J
+%\usepackage{tabularx}^^J
+%\usepackage{booktabs}^^J
+%\usepackage{graphicx}^^J
+%\usepackage{empheq}^^J
+%\usepackage{textcomp}^^J
+%\usepackage{tabto}^^J
+%\usepackage{listliketab}^^J
+%\usepackage{amssymb}^^J
+%\usepackage{mathtools}^^J
+%\usepackage{needspace}^^J
+%\usepackage{paralist}^^J
+%\usepackage{bmvorlagen/additionalPackages/picins}^^J
+%\usepackage[ngerman]{babel}^^J
+%\usepackage[svgnames]{xcolor}^^J
+%}
+%\makeatother
+%
+%\usepackage{verbatim}
+%
+%\mdfdefinestyle{notizboxxxstyle}{
+%topline=true,
+%frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
+%linewidth=3pt,
+%linecolor={Magenta},
+%backgroundcolor={Aquamarine!90!white},
+%fontcolor=black,
+%font={},
+%innerleftmargin=3ex,
+%innerrightmargin=3ex,
+%innertopmargin=3ex,
+%innerbottommargin=3ex,
+%leftmargin=0ex,
+%rightmargin=0,
+%skipabove=3ex,
+%skipbelow=3ex
+%}
+%
+%\newenvironment{notizboxxx}{
+%\ifthenelse{\equal{\smodus}{dozent}}
+%{
+%\Needspace{5cm}
+%\mdfsetup{
+%frametitle={
+%\tikz[baseline=(current bounding box.east),outer sep=0pt]
+%\node[anchor=east,rectangle,fill=Magenta]
+%{\strut \textcolor{BlueViolet!75!black}{Notiz}};}
+%}
+%\mdfsetup{style=notizboxxxstyle}
+%\begin{mdframed}[]\relax
+%}{\comment }
+%}{
+%\ifthenelse{\equal{\smodus}{dozent}}{
+%\end{mdframed}}{\endcomment}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Links zu Mediendateien einbinden
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\includemedialink[4][bmvorlagen/logos/Videosymbol.pdf]
+{
+%\geteilt{0.1}
+%\colorbox{blue} % zum testen der minipage Ausrichtung
+{\begin{minipage}[c][]{0.1\linewidth}
+	{\ifthenelse{\equal{#3}{y}}
+	  {
+	  %\vspace{3mm}
+	  \includegraphics[width=0.8\linewidth]{#1} 
+	  %\vspace{2mm}		
+	  } 
+	  {
+		\href{#2}{
+	  %\vspace{3mm}
+	  \includegraphics[width=0.8\linewidth]{#1} 
+	  %\vspace{2mm}
+		}				
+	  }
+	}\end{minipage}
+}
+	%\colorbox{red} % zum testen der minipage Ausrichtung
+{\begin{minipage}[c][]{\linewidth-0.1\linewidth}
+	{\ifthenelse{\equal{#3}{y}} 
+	  {#4\\
+	  \url{#2}}{
+	  #4}
+	}\end{minipage}
+}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% QR Codes einbinden
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{qrcode}
+
+\newcommand\qrcodeBM[4][default]{
+
+% #1  -> [optional] parameter 1: Link der im Volltext angezeigt wird, sofern abweichend von parameter 2
+% #2  -> parameter 2: Link der zum Erstellen des QRCode verwendet werden soll
+% #3  -> parameter 3: y/n Link ausgeschrieben anzeigen oder nicht
+% #4  -> parameter 4: zwingend notwendige Beschreibung
+
+\ifthenelse{\equal{\smodus}{student}}
+% if student offline is choosen then use a QR Code
+{
+	\qrcode[height=0.5in]{#2}
+	{\hspace{0.5cm} 
+		\begin{minipage}[c][]{\linewidth-0.1\linewidth}
+		%
+		{\ifthenelse{\equal{#3}{y}}
+			{\ifthenelse{\equal{#1}{default}}
+			{#4\\
+			\url{#2}
+			}
+			{#4\\
+			\url{#1}
+			}
+			}
+			{#4}
+		}
+		\end{minipage}
+	}
+%
+}
+{
+
+	\ifthenelse{\equal{\smodus}{buch}}
+	% if student offline is choosen then use a QR Code
+	{
+	\qrcode[height=0.5in]{#2}
+		{\hspace{0.5cm} 
+		\begin{minipage}[c][]{\linewidth-0.1\linewidth}
+		%
+		{\ifthenelse{\equal{#3}{y}}
+			{\ifthenelse{\equal{#1}{default}}
+			{#4\\
+			\url{#2}
+			}
+			{#4\\
+			\url{#1}
+			}
+			}
+			{#4}
+		}
+		\end{minipage}
+		}
+	%
+	}
+	{
+	% all other option use the default media link symbol 
+	\includemedialink{#2}{#3}{#4} 
+	}
+}
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Eigene Befehle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcolumntype{C}{>{\centering\arraybackslash}X} %zentrierte spalte für tabualrx
+
+%\setlength{\extrarowheight}{2mm} %passt Tabellenabstände an, wurde in TM1 und TM2 verwendet.
+\newcommand{\intbora}{\left( A \right)}
+\newcommand{\bracea}{\left( a \right)}
+\newcommand{\bracex}{\left( x \right)}
+\newcommand{\bracey}{\left( y \right)}
+\newcommand{\bracez}{\left( z \right)}
+%\newcommand{\braces}{\left( s \right)}
+\newcommand{\braced}[1]{\left( #1 \right)}
+%
+\newlength{\absatz}
+\setlength{\absatz}{\parskip}	%parskip ist in minipages manchmal glich null gestzt...
+%
+
+\newcommand{\pic}[1]{
+\begin{center}
+\includesvg{bilder_svg/#1}
+\end{center}}
+
+
+\newcounter{gleichungszaehler}
+\renewcommand{\thegleichungszaehler}{(\arabic{gleichungszaehler})}
+\newcommand{\gleichung}{\refstepcounter{gleichungszaehler}\thegleichungszaehler}
+
+%%%%%%%
+% Aus TM2 -> verwendungszweck piccount unklar
+%%%%%%%%
+%\newcounter{piccount}
+%\setcounter{piccount}{0}
+%
+%\newcommand{\pic}[1]{
+%\begin{center}
+%\includesvg{bilder_svg/#1}
+%\end{center}
+%\stepcounter{piccount}}
+%
+%
+%
+\newlength{\Rightarrowlength} %länge für tapto
+\settowidth{\Rightarrowlength}{$\Rightarrow$}
+%
+\newlength{\Leftrightarrowlength} %länge für tapto
+\settowidth{\Leftrightarrowlength}{$\Leftrightarrow$}
+%
+\makeatletter %umstellen der Abstände von Formeln zum Fließtext.
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{3ex}
+  \setlength\belowdisplayskip{3ex}
+  \setlength\abovedisplayshortskip{3ex}
+  \setlength\belowdisplayshortskip{3ex}
+}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT ALT
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Notizbox
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{verbatim}
+%
+%\mdfdefinestyle{notizstyle}{
+%topline=true,
+%frametitleaboveskip=\dimexpr-\ht\strutbox\relax,
+%linewidth=3pt,
+%linecolor={Magenta},
+%backgroundcolor={Aquamarine!90!white},
+%fontcolor=black,
+%font={},
+%innerleftmargin=3ex,
+%innerrightmargin=3ex,
+%innertopmargin=3ex,
+%innerbottommargin=3ex,
+%leftmargin=0ex,
+%rightmargin=0,
+%skipabove=3ex,
+%skipbelow=3ex
+%}
+%
+%\newenvironment{notiz}{
+%\ifthenelse{\equal{\smodus}{dozent}}
+%{
+%\Needspace{5cm}
+%\mdfsetup{
+%frametitle={
+%\tikz[baseline=(current bounding box.east),outer sep=0pt]
+%\node[anchor=east,rectangle,fill=Magenta]
+%{\strut \textcolor{BlueViolet!75!black}{Notiz}};}
+%}
+%\mdfsetup{style=notizstyle}
+%\begin{mdframed}[]\relax
+%}{\comment }
+%}{
+%\ifthenelse{\equal{\smodus}{dozent}}{
+%\end{mdframed}}{\endcomment}
+%}
+
+%%%%%%%%%%%%%%%%%%% pluecke als umgebung normal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newenvironment{plueckek} 
+%{
+	%\setlength{\fboxrule}{1pt}
+	%\setlength{\fboxsep}{2pt}
+	%\ifthenelse{\equal{\smodus}{student}}{
+		%\ifmmode 
+			%\begin{lrbox}{\boxluecke} \begin{minipage}{0.95\linewidth}$\begin{myphantom}
+		%\else 
+			%\begin{lrbox}{\boxluecke} \begin{minipage}{0.95\linewidth}\begin{myphantom}
+		%\fi
+		%}{
+			%\ifthenelse{\equal{\smodus}{dozent}}{
+				%\ifmmode 
+					%\begin{lrbox}{\boxluecke} \begin{minipage}{0.95\linewidth}$
+				%\else 
+					%\begin{lrbox}{\boxluecke} \begin{minipage}{0.95\linewidth}
+				%\fi
+			%}{\relax}
+			%}
+%}
+%{
+	%\ifthenelse{\equal{\smodus}{student}}{
+		%\ifmmode 
+			%\end{myphantom}$ \end{minipage}\end{lrbox}
+		%\else 
+			%\end{myphantom}\end{minipage}\end{lrbox}
+		%\fi
+		%}{
+			%\ifthenelse{\equal{\smodus}{dozent}}{
+			%\ifmmode 
+				%$ \end{minipage}\end{lrbox}\fcolorbox{black}{GreyBox}{\usebox{\boxluecke}}
+			%\else 
+				%\end{minipage}\end{lrbox}\fcolorbox{black}{GreyBox}{\usebox{\boxluecke}}
+			%\fi
+		%}{
+		%}}
+%}
+
+%%%%%%%%%%%%%%%%%%% pluecke als Umgebung vergrößert %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\renewenvironment{pluecke} 
+%{
+	%\setlength{\fboxrule}{1pt}
+	%\setlength{\fboxsep}{2pt}
+	%\ifthenelse{\equal{\smodus}{student}}{
+		%\ifmmode 
+			%\begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}$\begin{myphantom}
+		%\else 
+			%\begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}\begin{myphantom}
+		%\fi
+		%}{
+			%\ifthenelse{\equal{\smodus}{dozent}}{
+				%\ifmmode 
+					%\begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}$
+				%\else 
+					%\begin{lrbox}{\boxluecke}\Large \begin{minipage}{0.95\linewidth}
+				%\fi
+			%}{\relax}
+			%}
+%}
+%{
+	%\ifthenelse{\equal{\smodus}{student}}{
+		%\ifmmode 
+			%\end{myphantom}$ \end{minipage}\end{lrbox}
+		%\else 
+			%\end{myphantom}\end{minipage}\end{lrbox}
+		%\fi
+		%}{
+			%\ifthenelse{\equal{\smodus}{dozent}}{
+			%\ifmmode 
+				%$ \end{minipage}\end{lrbox}\fcolorbox{black}{GreyBox}{\usebox{\boxluecke}}
+			%\else 
+				%\end{minipage}\end{lrbox}\fcolorbox{black}{GreyBox}{\usebox{\boxluecke}}
+			%\fi
+		%}{
+		%}}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Features für Beispiele
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\newenvironment{beispiel}[1][]
+%{%Anfang
+%%{\textbf{\beispieltext~\thechapter.\thebeispielnummer:~#1}}\\
+%%\nopagebreak%
+%\vspace{1.0ex}
+%\refstepcounter{beispielnummer}
+%\begin{minipage}{0.10\linewidth}\centering\includegraphics[scale=0.65]{calculator}\end{minipage}
+%\begin{minipage}{0.90\linewidth}\subsubsection*{\beispieltext~\thebeispielnummer:~#1}\end{minipage}\sffamily\nopagebreak[4]\newline%
+%}
+%{%Ende
+%\rmfamily
+%\vspace{1.5ex}
+%}
+%\newcounter{beispielnummer}[chapter]
+%\setcounter{beispielnummer}{1}
+%\renewcommand{\thebeispielnummer}{\thechapter.\arabic{beispielnummer}}
+%
+%\newlength{\fboxruletemp}
+%\newlength{\fboxseptemp}

@@ -1,0 +1,150 @@
+\newcommand{\blattkopf}{
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Header Layout 2016
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\sffamily
+\fontsize{18}{18}\selectfont 
+\begin{minipage}[b]{120mm}
+\ifthenelse{\boolean{bmgerman}}{
+\small {Lehrstuhl f{\"u}r Baumechanik \\
+TUM School of Engineering and Design \\
+Technische Universit{\"a}t M{\"u}nchen}}
+{
+\small {Chair of Structural Mechanics \\
+TUM School of Engineering and Design \\
+Technical University of Munich}
+}
+\end{minipage}
+ \hfill \includegraphics*[height=1.28cm, keepaspectratio=true]{TUM_Logo_schwarz_rgb_2016}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name und Matrikelnummer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\value{namematrikel} > 0 \or \(\not\isundefined{\Ausgabe}\) \or \(\not\isundefined{\Abgabe}\) \or \(\not\isundefined{\Abgabehinweis}\)}%
+%then
+{\vspace{5mm}}%
+%else (keine der Vorüberschirftssachen ist definiert)
+{\vspace{-5mm}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ausgabe & Abgabe
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Ausgabe
+\begin{tabular}{lr}\hspace{-2mm}\begin{minipage}[]{80mm}
+\sffamily{  
+\begin{flushleft}
+\ifdefined\Ausgabe\Ausgabe\\\fi
+\end{flushleft}}
+
+% Name Matrikelnummer
+\ifthenelse{\value{namematrikel} > 0}{ \small \sffamily{ 
+Name:\hrulefill\\[3.5mm]
+\matrikelnummer:\hrulefill}}{}
+\end{minipage}
+\hfill &
+
+% Abgabe
+\begin{minipage}[]{\textwidth-85mm}
+\small\sffamily{
+\begin{flushright}
+\ifdefined\Abgabe\Abgabe\\\fi
+\ifdefined\Abgabehinweis\Abgabehinweis\\\fi
+\end{flushright}}
+\end{minipage}
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Blattkopf: Fach, Blattname, Blattnummer, Semester, Dozent
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+\vspace{0.8cm}
+{\large \bfseries \sffamily{ \fach~-~\blattwort~\ifdefined\theblattnummer\theblattnummer\\[4pt]\fi }}%\\[4 pt]
+\ifdefined\thema{\bfseries \sffamily{ \thema }}\\[4 pt]\fi
+{\sffamily{ \semester }}\\[4 pt]
+{\sffamily{ \lehrer }}\\
+\end{center}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Alte Befehle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Header Layout 2015
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\includegraphics[width=0.85cm, keepaspectratio=true]{bvlogo_sw} \includegraphics[width=1.05cm, keepaspectratio=true]{bmlogo_sw} \hfill 
+	%\begin{minipage}[b]{80mm}
+ %\small \centering {\sffamily Lehrstuhl für Baumechanik - TU München \\ \lehrer } 
+  %\end{minipage}
+ %\hfill \includegraphics[height=0.75cm, keepaspectratio=true]{tumlogo_out_sw}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Header Layout 2016 mit BV Logo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%{\sffamily
+%\fontsize{18}{18}\selectfont 
+%\begin{minipage}[b]{80mm}
+%\small {Lehrstuhl f{\"u}r Baumechanik \\
+%Ingenieurfakultät Bau Geo Umwelt \\
+%Technische Universit{\"a}t M{\"u}nchen}
+%\end{minipage}
+%%\includegraphics[width=1.2cm, keepaspectratio=true]{bvlogo} \includegraphics[width=1.5cm, keepaspectratio=true]{bmlogo} \hfill 
+	%%\begin{minipage}[b]{80mm}
+ %%\small \centering Lehrstuhl f{\"u}r Baumechanik - TU M{\"u}nchen \\ 
+  %%\end{minipage}
+ %\hfill \includegraphics*[height=1.28cm, keepaspectratio=true]{TUM_Logo_schwarz_rgb_2016}
+%%\vspace{0.8cm}
+%}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dein Vorteil Logo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%% Variante 1
+%\ifthenelse{\value{deinvorteil} > 0}{
+%\begin{minipage}{14.3cm}}{}
+%
+%
+%% Variante 2
+%\ifthenelse{\value{deinvorteil} > 0}{
+%\end{minipage}
+%\begin{minipage}[c][3.8cm]{2cm}
+%\href{http://www.sqk.bv.tum.de}{\includegraphics[height=3.1cm, keepaspectratio=true]{deinvorteil}}
+%\end{minipage}}{}
+%\vspace{0.3cm}
+%}

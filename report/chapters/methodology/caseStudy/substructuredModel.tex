@@ -1,0 +1,47 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/methodology/caseStudy/substructuredModel.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Substructured Plate Model}
+\label{ssec: substructured model}
+
+The substructured plate model partitions the plate into three components along the $x$ axis.
+The components have different numbers of DOFs and different modes because their lengths are not equal.
+This choice is intentional, since in practical applications, components rarely have the same number of DOFs and the same modes.
+Table \ref{table: components' parameters} provides the meshes' parameters for the three components.
+
+\begin{table}[H]
+    \setlength{\extrarowheight}{2pt}
+    \centering
+    \begin{tabular}{
+        L{0.3\textwidth} C{0.15\textwidth} C{0.15\textwidth} C{0.15\textwidth}
+    }
+    \hline
+    Parameter & Left & Middle & Right \\
+    \hline
+    Number of element (x) &
+    16 & 14 & 18 \\
+    Number of element (y) &
+    20 & 20 & 20 \\
+    & & & \\
+    Number of Nodes &
+    1353 & 1189 & 1517 \\
+    Number of DOFs &
+    4059 & 3567 & 4551 \\
+    \hline
+    \end{tabular}
+    \caption{Substructured Plate Model's Meshes' Parameters}
+    \label{table: components' parameters}
+\end{table}
+
+The author selects the meshes' parameters such that the elements' sizes are uniform and equal to the elements' sizes in the complete plate model.
+This is to avoid numerical artifacts in the comparison caused by different elements' sizes between the two models.
+Figure \ref{fig: substructured model} illustrates the substructured plate model and the two nodes.
+
+\input{images/substructuredModel}

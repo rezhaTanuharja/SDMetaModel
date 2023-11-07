@@ -1,0 +1,177 @@
+% -----------------------------------------------------------------------------
+% Master thesis in the study program computational mechanics
+%
+% B.Sc. Rezha Adrian Tanuharja - 03751261
+% M.Sc. Felix Schneider (supervisor)
+%
+% chapters/literature/substructuring/solutionCB.tex
+% Last edited 03 November 2023
+% -----------------------------------------------------------------------------
+
+\subsection{Assembly and Solution Procedure}
+\label{ssec: solution}
+
+The following assembly approach uses the primal formulation in \cite{de2008general}.
+{Let $\mathbf{U}_{B}$ be a vector containing all unique boundary DOFs and $\mathbf{L}^{(r)}$ be a binary matrix localizing the boundary DOFs of the $r$-th component such that $\mathbf{U}_{b}^{(r)}=\mathbf{L}^{(r)}\mathbf{U}_{B}$ and}%
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{X}_{d}^{(r)} \\
+        \mathbf{U}_{b}^{(r)}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{I} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{L}^{(r)}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d}^{(r)} \\
+        \mathbf{U}_{B}
+    \end{pmatrix}.
+    \label{assembly_transformation}
+\end{equation}
+{Using the transformation \eqref{assembly_transformation}, the reduced component's dynamic equation of motion in the frequency domain \eqref{modal_eq_of_motion} becomes}%
+\begin{equation}
+    \begin{bmatrix}
+        \overline{\mathbf{D}}_{dd}^{(r)} &
+        \overline{\mathbf{D}}_{dB}^{(r)} \\
+        \overline{\mathbf{D}}_{Bd}^{(r)} &
+        \overline{\mathbf{D}}_{BB}^{(r)}
+    \end{bmatrix}
+    \begin{pmatrix}
+        \mathbf{X}_{d}^{(r)} \\
+        \mathbf{U}_{B}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \overline{\mathbf{F}}_{d}^{(r)} \\
+        \overline{\mathbf{F}}_{B}^{(r)}
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+        \mathbf{0} \\
+        \mathbf{G}_{B}^{(r)}
+    \end{pmatrix},
+    \label{semi_global_dynamic_equation}
+\end{equation}
+{where}%
+\begin{equation}
+    \begin{bmatrix}
+        \overline{\mathbf{D}}_{dd}^{(r)} &
+        \overline{\mathbf{D}}_{dB}^{(r)} \\
+        \overline{\mathbf{D}}_{Bd}^{(r)} &
+        \overline{\mathbf{D}}_{BB}^{(r)}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{I} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{L}^{(r)}
+    \end{bmatrix}^{T}
+    \begin{bmatrix}
+        \overline{\mathbf{D}}_{dd}^{(r)} &
+        \overline{\mathbf{D}}_{dc}^{(r)} \\
+        \overline{\mathbf{D}}_{cd}^{(r)} &
+        \overline{\mathbf{D}}_{bc}^{(r)}
+    \end{bmatrix}
+    \begin{bmatrix}
+        \mathbf{I} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{L}^{(r)}
+    \end{bmatrix},
+\end{equation}
+\vspace{-1.0em}
+\begin{equation}
+    \begin{pmatrix}
+        \overline{\mathbf{F}}_{d}^{(r)} \\
+        \overline{\mathbf{F}}_{B}^{(r)}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{I} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{L}^{(r)}
+    \end{bmatrix}^{T}
+    \begin{pmatrix}
+        \overline{\mathbf{F}}_{d}^{(r)} \\
+        \overline{\mathbf{F}}_{c}^{(r)}
+    \end{pmatrix},
+\end{equation}
+{and}%
+\begin{equation}
+    \begin{pmatrix}
+        \mathbf{0} \\
+        \mathbf{G}_{B}^{(r)}
+    \end{pmatrix}
+    =
+    \begin{bmatrix}
+        \mathbf{I} & \mathbf{0} \\
+        \mathbf{0} & \mathbf{L}^{(r)}
+    \end{bmatrix}^{T}
+    \begin{pmatrix}
+        \mathbf{0} \\
+        \mathbf{G}_{b}^{(r)}
+    \end{pmatrix}.
+\end{equation}
+The strong equilibrium condition requires the sum of interaction forces to be zero, i.e., $\sum_{r}\mathbf{G}_{B}^{(r)}=\mathbf{0}$.
+{Consequently, the sum of all boundary forces in \eqref{semi_global_dynamic_equation} is}%
+\begin{equation}
+    \sum_{r}{
+        \overline{\mathbf{F}}_{B}^{(r)}
+    }
+    =
+    \sum_{r}{\left(
+        \overline{\mathbf{D}}_{Bd}^{(r)}
+        \mathbf{X}_{i}^{(r)}
+        +
+        \overline{\mathbf{D}}_{BB}^{(r)}
+        \mathbf{U}_{B}
+    \right)}.
+    \label{boundary_force_sum}
+\end{equation}
+Equation \eqref{semi_global_dynamic_equation} also gives the relation between the component's internal DOFs and the boundary DOFs:
+\begin{equation}
+    \overline{\mathbf{F}}_{d}^{(r)}
+    =
+    \overline{\mathbf{D}}_{dd}^{(r)}
+    \mathbf{X}_{d}^{(r)}
+    +
+    \overline{\mathbf{D}}_{dB}^{(r)}
+    \mathbf{U}_{B}
+    \iff
+    \mathbf{X}_{d}^{(r)}
+    =
+    \left(
+        \overline{\mathbf{D}}_{dd}^{(r)}
+    \right)^{-1}
+    \left(
+        \overline{\mathbf{F}}_{d}^{(r)}
+        -
+        \overline{\mathbf{D}}_{dB}^{(r)}
+        \mathbf{U}_{B}
+    \right).
+    \label{internal_boundary_relation}
+\end{equation}
+The substitution of \eqref{internal_boundary_relation} into \eqref{boundary_force_sum} yields
+\begin{equation}
+    \sum_{r}{\left(
+        \overline{\mathbf{F}}_{B}^{(r)}
+        -
+        \overline{\mathbf{D}}_{Bd}^{(r)}
+        \left(
+            \overline{\mathbf{D}}_{dd}^{(r)}
+        \right)^{-1}
+        \overline{\mathbf{F}}_{d}^{(r)}
+    \right)}
+    =
+    \sum_{r}{\left(
+        \overline{\mathbf{D}}_{BB}^{(r)}
+        -
+        \overline{\mathbf{D}}_{Bd}^{(r)}
+        \left(
+            \overline{\mathbf{D}}_{dd}^{(r)}
+        \right)^{-1}
+        \overline{\mathbf{D}}_{dB}^{(r)}
+    \right)}
+    \mathbf{U}_{B}.
+    \label{schur_complement}
+\end{equation}
+Solving \eqref{internal_boundary_relation} and \eqref{schur_complement} gives the dynamic response of the assembled components.
+Algorithm \ref{alg: solution procedure} illustrates a solution procedure with parallel processing.
+\input{algorithms/solutionProcedure}

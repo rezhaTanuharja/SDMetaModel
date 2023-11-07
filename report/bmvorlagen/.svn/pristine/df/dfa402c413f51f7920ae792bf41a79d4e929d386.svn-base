@@ -1,0 +1,259 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Laden von Paketen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[T1]{fontenc}        % T1-kodierte Schriften, korrekte Trennmuster fuer Worte mit Umlauten
+%\usepackage{ae}                  % Für PDF-Erstellung
+\usepackage{trfsigns}							%\dfourier  \Dfourier \fourier  \Fourier \laplace  \Laplace \ztransf  \Ztransf
+\usepackage{rotating}
+\usepackage{tablefootnote}
+\usepackage{pgf}
+\usepackage{xxcolor}
+\usepackage{transparent}
+%\usepackage{enumerate}						% veraltet; ersetzt durch enumitem
+\usepackage{calc}
+\usepackage[scaled]{helvet}
+\usepackage{svg}									% zum automatischen kompilieren von *.svg Bilder in pdf + pdf_tex inkl. Skalierung
+\usepackage{cancel}								% erzeugt eine ausgetrichene Formelzeile 
+\usepackage{textcmds}							% erzeugt Zitate in der Form: \pp{Zitat} -> "Zitat"
+\usepackage{needspace}						% erzwingt die folgenden **cm als zusammenhängenden Block dazustellen, sollte i.d.R der Vorzug gegenüber newpage gegeben werden
+\usepackage{enumitem}             % zum anpassen der enum umgebungen
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Laden von Paketen mit variiernden Parametern 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Notizen z.B. am Rand des Druckbereichs sowie das erstellen von ToDos welche in einer Übersicht am Beginn des Dokuments gelistet werden können
+\ifdefined\smodus
+\ifthenelse{ \equal{\smodus}{dozent} }
+	{ \usepackage{todonotes} }
+	{ \ifthenelse{ \equal{\smodus}{dozentnolabel} }{ \usepackage{todonotes} }{\usepackage[disable]{todonotes}}	}
+	% \usepackage[disable]{todonotes} -> Deaktivieren der Notizen aus dem Paket todonotes für studenten und buchversion im Skript 
+\else \usepackage{todonotes}
+\fi
+\presetkeys{todonotes}{linecolor=red!30!white, backgroundcolor=red!30!white, size=\tiny}{}
+
+\newcommand{\randnotiz}[2][]
+{ 
+   \todo [linecolor=orange!10!white, backgroundcolor=orange!10!white, size=\tiny, caption={}, #1] { 
+	                                                                                                 {\setlength{\mathindent}{0cm} #2} 
+																																																	} 
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Selbst Definierte Befehle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Geteilt Umgebung -> Prozentuale Aufteilung der Gesamtseite in zwei Minipages
+\newcommand{\geteilt}[3]{%
+\begin{minipage}{#1\linewidth}
+#2
+\end{minipage}\begin{minipage}{\linewidth-#1\linewidth}
+#3
+\end{minipage}
+}
+
+% Beide beginnen in der ersten Zeile je Spalte
+\newcommand{\geteilttop}[3]{%geteilt-Umgebung mit Ausrichtung an der Oberkante
+\begin{minipage}[t][][b]{#1\linewidth}
+#2 %\vspace{-\ht\strutbox} #2
+\end{minipage}\begin{minipage}[t][][b]{\linewidth-#1\linewidth}
+#3 %\vspace{-\ht\strutbox} #3
+\end{minipage}
+}
+
+\newcommand{\geteiltbottom}[3]{ %geteilt-Umgebung mit Ausrichtung an der Unterkante
+\begin{minipage}[b][][t]{#1\linewidth}
+#2
+\end{minipage}\begin{minipage}[b][][t]{\linewidth-#1\linewidth}
+#3
+\end{minipage}
+}
+
+%Zweisprachigkeit: ist die Globale Variable "german" in den Optionen der \documentclass gesetzt wird das erste Argument (=der deutschsprachige Text) des folgenden Command verwendet, sonst das zweite Argument (=der englischsprachige Text).
+\newcommand{\deutschenglisch}[2]{%
+\ifthenelse{\boolean{bmgerman}}%
+{%
+#1
+}%
+{%
+#2
+}%a
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Eps -> Pdf
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Gnuplot
+\newcommand{\includegp}[1]{%
+%\immediate\write18{wgnuplot #1.gp}%
+\executeiffilenewer{#1.plt}{#1.eps}%
+{gnuplot #1.plt}%
+\ifpdf\executeiffilenewer{#1.eps}{#1.pdf}%
+{epstopdf #1.eps}\fi%
+\input{#1.tex}%
+\ifthenelse{\boolean{bmshowl}}{%
+\begingroup
+\catcode`_=11%
+%\let_\textunderscore%
+\begin{rotate}{82}\fbox{\ttfamily\tiny\scantokens\expandafter{#1.plt}}\end{rotate}%
+\endgroup%
+}{}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Zwei Gleichungen in einer Zeile mit (a,b)-Nummerierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{mySubCounter}
+ \newcommand{\twocoleqnalph}[2]{
+ \setcounter{mySubCounter}{0}%
+ \let\OldTheEquation\theequation%
+ \renewcommand{\theequation}{\OldTheEquation\alph{mySubCounter}}%
+ \noindent%
+ \begin{minipage}{.5\textwidth}
+ \refstepcounter{mySubCounter}
+ \begin{equation}
+ #1
+ \end{equation}
+ \end{minipage}%\hfill%
+ \addtocounter{equation}{-1}%
+ \begin{minipage}{.5\textwidth}
+ \refstepcounter{mySubCounter}
+ \begin{equation}
+ #2
+ \end{equation}
+ \end{minipage}%
+ \let\theequation\OldTheEquation
+ }
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Zwei Gleichungen in einer Zeile mit fortlaufende Nummerierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \newcommand{\twocoleqn}[2]{
+ %\let\OldTheEquation\theequation%
+ %\renewcommand{\theequation}{\OldTheEquation}%
+ \noindent%
+ \begin{minipage}{.46\textwidth}
+ \begin{equation}
+ #1
+ \end{equation}
+ \end{minipage}%\hfill%
+ \begin{minipage}{.54\textwidth}
+ \begin{equation}
+ #2
+ \end{equation}
+ \end{minipage}%
+ %\let\theequation\OldTheEquation
+ }
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Stildefinition von Listings
+% Setzen von Parametern verschiedener pakete
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lstdefinestyle{cppcode}{language={[Visual]C++},%
+  basicstyle=\ttfamily\footnotesize,%
+  keywordstyle={\color{Navy} \bfseries},%
+  identifierstyle={\color{DarkRed}},%
+  commentstyle={\color{DarkOrange!50!black}\slshape},%
+  stringstyle={\color{DarkGreen}},%
+  showstringspaces=false,%
+  backgroundcolor={\color{LightSkyBlue!40}},%
+  columns=fixed,%
+  keepspaces=true,%
+  basewidth={0.55em},%
+  frame=shadowbox,%
+  rulesepcolor=\color{Gray},%
+  breaklines=true,%
+  numbers=left,%
+  numberstyle=\tiny,%
+  escapeinside={(*@}{@*)},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+\lstdefinestyle{fort}{language={[95]Fortran},%
+  basicstyle=\ttfamily\small,%
+  keywordstyle={\color{Navy} \bfseries},%
+  identifierstyle={\color{DarkRed}},%
+  commentstyle={\color{DarkOrange!50!black}\slshape},%
+  stringstyle={\color{DarkGreen}},%
+  showstringspaces=false,%
+  backgroundcolor={\color{LightSkyBlue!40}},%
+  columns=fullflexible,%
+  keepspaces=true,%
+  basewidth={0.6em},%
+  rulesepcolor=\color{Gray},%
+  frame=shadowbox,%
+  escapeinside={(*@}{@*)},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+
+\lstdefinestyle{pseudocode}{basicstyle=\ttfamily\small,%
+  columns=fixed,%
+  keepspaces=true,%
+  basewidth={0.55em},%
+  frame=shadowbox,%
+  backgroundcolor={\color{LightSkyBlue!40}},%
+  rulesepcolor=\color{Gray},%
+  escapeinside={(*@}{@*)},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+\lstdefinestyle{maple}{%
+  basicstyle=\sffamily\small\color{Red}\bfseries,%
+  rulecolor=\color{Black},%
+  columns=fixed,%
+  keepspaces=true,%
+  basewidth={0.55em},%
+  frame=shadowbox,%
+  numbers=left,%
+  numberstyle=\tiny\color{Black},%
+  numberblanklines=false,%
+  rulesepcolor=\color{Gray},%
+  breaklines=true,%
+  breakautoindent=true,%
+  backgroundcolor={\color{LightBlue!60}},%
+  rulesepcolor=\color{Gray},%
+  escapeinside={(*@}{@*)},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%
+
+%\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+\usepackage[numbered,framed]{matlab-prettifier}
+\lstdefinestyle{matlab}{style=Matlab-editor,
+  backgroundcolor={\color{black!2!white!98}}}
+
+  
+\lstdefinestyle{matlab_old}{language={Matlab},%
+  basicstyle=\ttfamily\small,%
+  keywordstyle={\color{Navy} \bfseries},%
+  identifierstyle={\color{DarkRed}},%
+  commentstyle={\color{DarkOrange!50!black}\slshape},%
+  stringstyle={\color{DarkGreen}},%
+  showstringspaces=false,%
+  backgroundcolor={\color{LightSkyBlue!30}},%
+  breaklines=true,%
+  breakautoindent=true,%
+  columns=fullflexible,%
+  keepspaces=true,%
+  basewidth={0.6em},%
+  rulesepcolor=\color{Gray},%
+  frame=shadowbox,%
+  numbers=left,%
+  numberstyle=\tiny\color{Black},%
+  escapeinside={(*@}{@*)},%
+  moredelim={[is][\bfseries]{°^}{^°}},%
+  belowcaptionskip=0.5cm%
+  }%

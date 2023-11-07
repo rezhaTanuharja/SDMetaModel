@@ -64,6 +64,35 @@ FLOAT normalVariable ( const FLOAT mean, const FLOAT stdDev, const INT seed ) {
 } // normalVariable
 
 
+std::vector<INT> randomSubset (
+  const std::vector<INT>& set, const INT size, const INT seed
+) {
+
+  std::mt19937 generator ( seed );
+
+  std::vector<INT> order ( set.size() );
+  std::copy (
+    set.begin(), set.end(), order.begin()
+  );
+
+  std::shuffle ( order.begin(), order.end(), generator );
+
+  std::vector<INT> subset;
+
+  for ( INT num : order ) {
+    if ( subset.size() == size ) {
+      break;
+    }
+    subset.push_back ( num );
+  }
+
+  std::sort ( subset.begin(), subset.end() );
+
+  return subset;
+
+} // randomSubset
+
+
 void saveVector (
   const std::string& filename, const std::vector<FLOAT>& vector
 ) {

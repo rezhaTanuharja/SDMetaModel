@@ -84,6 +84,21 @@ FLOAT normalVariable ( const FLOAT mean, const FLOAT stdDev, const INT seed );
 
 /**
  * @brief
+ * Select a random subset from a given set.
+ *
+ * @param set   the original set to select from
+ * @param size  the size of the random subset
+ * @param seed  the seed for the random generator
+ *
+ * @return a random subset of the original set in a vector
+*/
+std::vector<INT> randomSubset (
+  const std::vector<INT>& set, const INT size, const INT seed
+);
+
+
+/**
+ * @brief
  * Append vector to a binary file.
  *
  * @param filename  name of file to append to

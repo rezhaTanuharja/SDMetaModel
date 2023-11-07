@@ -25,6 +25,9 @@ int main () {
   INT dimension = 2;
 
   INT nOmega = 18;
+  INT nReps  = 40;
+
+  std::vector<INT> seedOffsets = { 1001, 1007 };
 
   std::string node = "A";
 
@@ -44,31 +47,73 @@ int main () {
       trainData
     );
 
-    std::vector<INT> seeds;
-    surrogate::loadVector (
-      "MCS/seeds_" + std::to_string ( i ),
-      seeds
-    );
+    INT nPoint = trainData.size() / nDOFs;
 
-    std::vector<FLOAT> inputParameters;
-    for ( INT j = 0; j < seeds.size(); j++ ) {
-      inputParameters.push_back (
-        surrogate::normalVariable ( 0.0, 1.0, seeds[j] + 1 )
-      );
-      inputParameters.push_back (
-        surrogate::normalVariable ( 0.0, 1.0, seeds[j] + 7 )
-      );
-    }
+    for ( INT j = 40; j < nPoint; j += 10 ) {
+      for ( INT k = 0; k < nReps; k++ ) {
 
-    model.train ( inputParameters, trainData );
+        std::vector<INT> pointID ( nPoint );
+        std::iota ( pointID.begin(), pointID.end(), 0 );
 
-    std::vector<FLOAT> estimates = model.computeResponse ( inputParameters );
-    surrogate::saveVector (
-      "rRPCE/rRPCE_" + node + "_64_" + std::to_string ( i ),
-      estimates
-    );
+        std::vector<INT> testID = surrogate::randomSubset ( pointID, j, k );
 
-  } // loop through omega
+        std::vector<FLOAT> trainInputParameters;
+        for ( INT p = 0; p < testID.size(); p++ ) {
+          for ( INT q = 0; q < dimension; q++ ) {
+            trainInputParameters.push_back (
+              surrogate::normalVariable ( 
+                0.0, 1.0, 
+                testID[p] + seedOffsets[q] 
+              )
+            );
+          }
+        }
+
+        std::vector<FLOAT> trainResponses;
+        for ( INT p = 0; p < testID.size(); p++ ) {
+          for ( INT q = 0; q < nDOFs; q++ ) {
+            trainResponses.push_back (
+              trainData[ p * nDOFs + q ]
+            );
+          }
+        }
+
+        model.train ( trainInputParameters, trainResponses );
+
+        std::vector<INT> seeds;
+        surrogate::loadVector (
+          "MCS/seeds_" + std::to_string ( i ),
+          seeds
+        );
+
+        std::vector<FLOAT> testInputParameters;
+        for ( INT j = 0; j < seeds.size(); j++ ) {
+          testInputParameters.push_back (
+            surrogate::normalVariable ( 0.0, 1.0, seeds[j] + 1001 )
+          );
+          testInputParameters.push_back (
+            surrogate::normalVariable ( 0.0, 1.0, seeds[j] + 1007 )
+          );
+        }
+
+        std::vector<FLOAT> estimates = model.computeResponse ( 
+          testInputParameters 
+        );
+
+        surrogate::saveVector (
+          "rRPCE/rRPCE_" + node + "_64_" 
+          + std::to_string ( i ) + "_"
+          + std::to_string ( j ) + "_"
+          + std::to_string ( k ),
+          estimates
+        );
+
+      } // loop through repetitions (k)
+
+    } // loop through number of samples (j)
+
+  } // loop through omega (i)
+
 
 } // main
 

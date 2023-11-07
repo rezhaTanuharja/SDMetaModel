@@ -47,7 +47,6 @@ void RPCE::train (
   Eigen::Map<MatrixXF> numPsi (
     numBasis.data(), nNumBasis, nPoints
   );
-
   Eigen::Map<MatrixXF> denPsi (
     denBasis.data(), nDenBasis, nPoints
   );
